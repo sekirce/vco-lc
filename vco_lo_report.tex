@@ -67,6 +67,8 @@ LO block is LC VCO with internal inductor and fully differential output buffer. 
 		\hline
 		2 & Phase Noise at 300 kHz &  &  &  & <-101 & dBc/Hz \\ 
 		\hline
+		2* & Phase Noise at 1 MHz &  &  &  & <-112.4 & dBc/Hz \\ 
+		\hline
 		3 & Vtune &  & 0.1 &  & 1 & V  \\ 
 		\hline
 		4 & Tuning Sensitivity $K_{VCO}$ &  &  &  & 100 & MHz/V  \\ 
@@ -105,7 +107,7 @@ LO block is LC VCO with internal inductor and fully differential output buffer. 
 
 \end{table}
 
-Min and max for supply voltage are not defined in the original document, and time for switching between two cores was defined during the meeting.
+Min and max for supply voltage are not defined in the original document, and time for switching between two cores was defined during the meeting. Updated 2* specification for phase noise, frequency pushing update not clear.
 
 Currently Full LO range is split between two cores so the requirement should look like this:
 
@@ -132,7 +134,31 @@ Currently Full LO range is split between two cores so the requirement should loo
 	Didn't get answer for this. It's probably also typical and a value that is expected by the PLL design.
 \end{question}
 
+\subsection{Definition of VCO}
+
+A VCO, a voltage-controlled signal generator, is a sine-like signal source consisting of two switchable LC circuits with varicaps, frequency tuning banks, and an output buffer. The VCO must have a shutdown mode. The VCO parameters are shown in Table X. Figure Y shows a block diagram of the VCO.
+
+% Should drow a block diagram for VCO.
+
 % Footnotes do not work.
+
+Types of VCO LC:
+
+\begin{itemize}
+	\item Selective feedback (L, C, Transformer)
+	\item Colpitts (2C + 1L)
+	\item Clapp (2C+1LC)
+	\item Armstrong (1C + xfmr)
+	\item Hartley (1C + 2L)
+	\item Negative gm or cross-coupled with tuned amplifier and unity feedback.
+\end{itemize}
+
+
+\subsection{Introduction for Hartley VCO LC}
+
+Among the building blocks of a radio frequency (RF) transceiver, the voltage controlled oscillator (VCO) is an important block since it affects the system performances of the transceiver to a large extent. In the past, many approaches have been taken to design integrated VCOs. Cross-coupled oscillators have been preferred over other topologies due to their ease of implementation and differential operation. The Colpitts oscillator [1] can potentially achieve lower phase noise due to superior cyclostationary noise properties. Hartley tapped inductors were considered more difficult to integrate than Colpitts tapped capacitors, therefore fully-integrated Hartley oscillator is rarely implemented in CMOS technology. Nowdays fully-integrated tapped inductors are easy to design like other passive RF components, and Hartley oscillator may have good cyclostationary noise properties just like its Colpitts counterpart. In addition, the tapped inductor provides both dc and ac path, while the tapped capacitor provides only ac path, this will result in a simpler circuit in certain VCO topology [2]. Thus it is important to have a fully-integrated CMOS Hartley VCO with high performance for future application. 
+
+\subsection{File for the old technology}
 
 Process corners can be found at:
 
@@ -140,6 +166,8 @@ Process corners can be found at:
 /tech/tsmc/tsmc40/models/spectre/crn40lp_2d5_v2d0_2_shrink0d9_embedded_usage.scs
 \end{verbatim}
 % Seems that 
+
+
 
 \section{Scaldio Design Review}
 
@@ -169,7 +197,7 @@ Is it done for whole PLL?
 
 
 Lowest bit of digital varactor (L0\_PLL\_hbVCO\_Cdig\_SC2B\_VCOS\_SC2C\_PLL) doesn't do anything, isn't even monotonous. Maybe makes more sense when simulating extracted cells. Digital varactor needs to be redesigned, it could lower the Q factor.
-Main difference between class B and class C can be observed by investigating their drain currents.
+Main difference between class B and class C can be observed by investigating their drain currents. Because of this there is a difference in filtering the flicker noise coming from the bias providing tail current. 
 
 \begin{figure}[ht!]
 	\includegraphics[width=\linewidth]{Figures/drainCurrent_classB_vs_classC.png}
@@ -385,7 +413,7 @@ Results for class C with pmos bias, only dc change of $V_{DD}$:
 	\end{tabular}
 \end{center}
 
-This shows some improvement from frequency pushing of 250 - 300 MHz that was observed for the nmos bias of IMEC Scaldio design.
+This shows some improvement from frequency pushing of 250 - 300 MHz that was observed for the NMOS bias of IMEC Scaldio design.
 
 %----------------------------------------------------------------------------------------
 \section{Changing topology and lowering phase noise}
@@ -397,7 +425,6 @@ However, if non-negligible parasitic capacitances are found at the tank outputs,
 \end{info}
 
 More on the $\frac{1}{f^2}$ Phase Noise Performance of CMOS Differential-Pair LC-Tank Oscillators in \href{https://backend.orbit.dtu.dk/ws/files/3913656/Andreani.pdf}{\textbf{paper}} by Pietro Andreani.
-
 
 \subsection{Hybrid class C and class B}
 
@@ -434,7 +461,7 @@ This is from \href{https://www.semanticscholar.org/paper/Dual-Core-High-Swing-Cl
 \end{itemize}
 
 
-\subsection{Questions about new double feedback}
+\section{Questions about new double feedback}
 
 
 Amplitude Control Feedback and Voltage bias control for Robust start up. 
@@ -448,15 +475,25 @@ Amplitude Control Feedback and Voltage bias control for Robust start up.
 
 Referent voltage should be set and controlled around 800 mV. Need tests for OTAs inside for VCO, currently simulated only PM and DC gain, should test different $V_{ref}$ levels.
 
-\subsection{OTA2 - Start up and bias control}
+\subsection{OTA2 - Start up and current bias control}
 
-Referent voltage should be set and controlled around 400 mV. Problem with OTA2 loop is amplifying noise into the tail bias current. So the new problem arises as noise shaping in LOOP2 is needed. If a OTA of low uGBW is used than start up is too slow.
+Referent voltage should be set and controlled around 400 mV. Problem with OTA2 loop is amplifying noise into the tail bias current. So the new problem arises as noise shaping in LOOP2 is needed. If a OTA of low uGBW (unity Gain BandWidth) is used than start up is too slow. \\
+
+Removing this loop from the schematic shows improvement in phase noise that so the performance is similar as the original IMEC Scaldio design.
 
 
 %----------------------------------------------------------------------------------------
 \section{Full LO Range and Frequency Recentering}
 
 % TODO Setup the lb vco, and also setup different testbenches for the highest and the lowest frequency available. Add corner analysis PVT.
+
+Expecting LO Range to not be centered comes from plot of Q and L comparisons shown in Fig. \ref{fig:Comparison_between_EMX_model_and_HFSS}.
+
+\begin{figure}[!ht]
+	\includegraphics[width=\linewidth]{Figures/Comparison_between_EMX_model_and_HFSS.png}
+	\caption{Comparison between EMX and HFSS model}
+	\label{fig:Comparison_between_EMX_model_and_HFSS}
+\end{figure}
 
 TODO Add corners for \textbf{fs sf} and similar. Because the LO range is split on two cores, ideally halved. Results are simulated for process and temperature corners: 
 
@@ -514,6 +551,14 @@ The worst available frequency digital controlled range is $6092 + 3730 - 1660 = 
 
 NOTE: Analog varactor 0-Vt-1 change does not work so it wasn't included. Further frequency recentering after extraction will be needed.
 
+\subsection{Frequency Tuning Range (FTR)}
+
+Frequency tuning range is calculated:
+%----------------------------------------------------------------------
+
+UHF channel radio 380 MHz - 512 MHz. TOCHECK
+Why does it matter for the phase noise.
+
 %----------------------------------------------------------------------------------------
 \section{Pulling testbench and design of VCO buffer}
 
@@ -523,21 +568,43 @@ By adding two buffers from \verb c LO_FDDQ_v6c, \verb c LO_FDDQ_INHB_v5_JCx_scal
 
 So this specification looks fine, testbench shown:
 
-
-How does portAdapter work?
-
+\begin{question}[\itshape How does portAdapter work?]
+\end{question}
 
 Frequency pulling mentions coupling (crosstalk) between different blocks on chip and the VCO.
 %----------------------------------------------------------------------------------------
-\section{PTAT and CTAT, the temperature independant Vbias for cascode}
+\section{Bandgap - PTAT and CTAT, the temperature independant Vbias for cascode}
+
+AC noise results of the bandgap is shown in Fig. \ref{fig:ac_noise_Bandgap}.
+
+\begin{figure}[!ht]
+	\includegraphics[width=\linewidth]{Figures/ac_noise_Bandgap.jpg}
+	\caption{AC Noise result of bandgap}
+	\label{fig:ac_noise_Bandgap}
+\end{figure}
+
+\ref{fig:phase_noise_Bandgap_pBias_LNeq0&1}
+
+\begin{figure}[!ht]
+	\includegraphics[width=\linewidth]{Figures/phase_noise_Bandgap_pBias_LNeq0&1.jpg}
+	\caption{Phase Noise of the Bandgap with PMOS bias when LN is set to 0 or 1}
+	\label{fig:phase_noise_Bandgap_pBias_LNeq0&1}
+\end{figure}
+
 
 % \verb c c
 
-TODO Simulate and show results of temperature sweep.
-
+TODO Simulate and show results of temperature sweep. (probably done maybe plot)
 
 %----------------------------------------------------------------------------------------
-\section{Effect of too high tail capacitance}
+
+\section{Design of tail transistors}
+
+Tail transistors need to be designed carefully because of their effect on the phase noise performance of VCO.
+
+If the inductor is resonating at double the oscillation frequency with the parasitic capacitance at the common nMOS-pair source, this technique greatly reduces both and white noise from the tail bias transistor [12]. It is, however, associated with two momentous drawbacks: it is narrowband in nature
+
+\subsection{Effect of too high tail capacitance}
 
 \begin{figure}[!ht]
 	\includegraphics[width=\linewidth]{Figures/squegging.png}
@@ -549,6 +616,7 @@ Instability Low frequency amplitude modulation squegging. This was the issue wit
 
 TODO simulate for high and for low frequency. How to simulate envelope? 
 
+
 \section{PLL theory - PLL Lock Detect and calibration}
 
 About PLL Lock Detect:
@@ -559,8 +627,7 @@ About PLL Lock Detect:
 
 PLL VCO calibration usually goes as amplitude frequency and then amplitude calibration, or the other way?
 
-Divide and Conquer algorithm
-
+Divide and Conquer algorithm is used to find the lock.
 
 \begin{figure}[!ht]
 	\includegraphics[width=\linewidth]{Figures/PLL_basics_regarding_VCO.png}
@@ -571,6 +638,23 @@ Divide and Conquer algorithm
 \begin{info}
 	For the VCO, the noise is suppressed below the loop bandwidth frequency and unshaped above the loop bandwidth.
 \end{info}
+
+PLL must implement shutdown mode.
+
+\subsection{Definition of PLL}
+
+PLL is an automatic control system that adjusts the frequency /phase of the controlled voltage generator (VCO). The type of frequency division is integer (1/N) + fractional (1/224).  The PLL unit includes:  an integer unit of the reference frequency divider R, a frequency-phase detector PFD and a charge pump CP circuit, integer and fractional dividers N + F of the VCO frequency (fractional circuit controls the divider c sigma-delta modulator with programmable order from 1 to 4. The denominator of the divisor fraction has a bit depth of 24 bits), loop filter Loop Filter.
+
+\section{FDDQ block}
+
+FDDQ block is connected to the PLL and VCO output, as VCO output buffer. The block LO25 which is located close to mixers generates 25\% duty cycle.
+
+\begin{question}[\itshape What is considered VCO buffer ?]
+	Whole FDDQ or just inhb and inlb?
+\end{question}
+
+
+
 
 
 % 50 or 100 ns for the SAW filter
