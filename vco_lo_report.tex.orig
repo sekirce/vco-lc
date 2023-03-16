@@ -134,7 +134,31 @@ Currently Full LO range is split between two cores so the requirement should loo
 	Didn't get answer for this. It's probably also typical and a value that is expected by the PLL design.
 \end{question}
 
+\subsection{Definition of VCO}
+
+A VCO, a voltage-controlled signal generator, is a sine-like signal source consisting of two switchable LC circuits with varicaps, frequency tuning banks, and an output buffer. The VCO must have a shutdown mode. The VCO parameters are shown in Table X. Figure Y shows a block diagram of the VCO.
+
+% Should drow a block diagram for VCO.
+
 % Footnotes do not work.
+
+Types of VCO LC:
+
+\begin{itemize}
+	\item Selective feedback (L, C, Transformer)
+	\item Colpitts (2C + 1L)
+	\item Clapp (2C+1LC)
+	\item Armstrong (1C + xfmr)
+	\item Hartley (1C + 2L)
+	\item Negative gm or cross-coupled with tuned amplifier and unity feedback.
+\end{itemize}
+
+
+\subsection{Introduction for Hartley VCO LC}
+
+Among the building blocks of a radio frequency (RF) transceiver, the voltage controlled oscillator (VCO) is an important block since it affects the system performances of the transceiver to a large extent. In the past, many approaches have been taken to design integrated VCOs. Cross-coupled oscillators have been preferred over other topologies due to their ease of implementation and differential operation. The Colpitts oscillator [1] can potentially achieve lower phase noise due to superior cyclostationary noise properties. Hartley tapped inductors were considered more difficult to integrate than Colpitts tapped capacitors, therefore fully-integrated Hartley oscillator is rarely implemented in CMOS technology. Nowdays fully-integrated tapped inductors are easy to design like other passive RF components, and Hartley oscillator may have good cyclostationary noise properties just like its Colpitts counterpart. In addition, the tapped inductor provides both dc and ac path, while the tapped capacitor provides only ac path, this will result in a simpler circuit in certain VCO topology [2]. Thus it is important to have a fully-integrated CMOS Hartley VCO with high performance for future application. 
+
+\subsection{File for the old technology}
 
 Process corners can be found at:
 
@@ -142,6 +166,8 @@ Process corners can be found at:
 /tech/tsmc/tsmc40/models/spectre/crn40lp_2d5_v2d0_2_shrink0d9_embedded_usage.scs
 \end{verbatim}
 % Seems that 
+
+
 
 \section{Scaldio Design Review}
 
@@ -171,7 +197,7 @@ Is it done for whole PLL?
 
 
 Lowest bit of digital varactor (L0\_PLL\_hbVCO\_Cdig\_SC2B\_VCOS\_SC2C\_PLL) doesn't do anything, isn't even monotonous. Maybe makes more sense when simulating extracted cells. Digital varactor needs to be redesigned, it could lower the Q factor.
-Main difference between class B and class C can be observed by investigating their drain currents.
+Main difference between class B and class C can be observed by investigating their drain currents. Because of this there is a difference in filtering the flicker noise coming from the bias providing tail current. 
 
 \begin{figure}[ht!]
 	\includegraphics[width=\linewidth]{Figures/drainCurrent_classB_vs_classC.png}
@@ -400,7 +426,6 @@ However, if non-negligible parasitic capacitances are found at the tank outputs,
 
 More on the $\frac{1}{f^2}$ Phase Noise Performance of CMOS Differential-Pair LC-Tank Oscillators in \href{https://backend.orbit.dtu.dk/ws/files/3913656/Andreani.pdf}{\textbf{paper}} by Pietro Andreani.
 
-
 \subsection{Hybrid class C and class B}
 
 \begin{info}
@@ -436,7 +461,7 @@ This is from \href{https://www.semanticscholar.org/paper/Dual-Core-High-Swing-Cl
 \end{itemize}
 
 
-\subsection{Questions about new double feedback}
+\section{Questions about new double feedback}
 
 
 Amplitude Control Feedback and Voltage bias control for Robust start up. 
@@ -450,15 +475,25 @@ Amplitude Control Feedback and Voltage bias control for Robust start up.
 
 Referent voltage should be set and controlled around 800 mV. Need tests for OTAs inside for VCO, currently simulated only PM and DC gain, should test different $V_{ref}$ levels.
 
-\subsection{OTA2 - Start up and bias control}
+\subsection{OTA2 - Start up and current bias control}
 
-Referent voltage should be set and controlled around 400 mV. Problem with OTA2 loop is amplifying noise into the tail bias current. So the new problem arises as noise shaping in LOOP2 is needed. If a OTA of low uGBW is used than start up is too slow.
+Referent voltage should be set and controlled around 400 mV. Problem with OTA2 loop is amplifying noise into the tail bias current. So the new problem arises as noise shaping in LOOP2 is needed. If a OTA of low uGBW (unity Gain BandWidth) is used than start up is too slow. \\
+
+Removing this loop from the schematic shows improvement in phase noise that so the performance is similar as the original IMEC Scaldio design.
 
 
 %----------------------------------------------------------------------------------------
 \section{Full LO Range and Frequency Recentering}
 
 % TODO Setup the lb vco, and also setup different testbenches for the highest and the lowest frequency available. Add corner analysis PVT.
+
+Expecting LO Range to not be centered comes from plot of Q and L comparisons shown in Fig. \ref{fig:Comparison_between_EMX_model_and_HFSS}.
+
+\begin{figure}[!ht]
+	\includegraphics[width=\linewidth]{Figures/Comparison_between_EMX_model_and_HFSS.png}
+	\caption{Comparison between EMX and HFSS model}
+	\label{fig:Comparison_between_EMX_model_and_HFSS}
+\end{figure}
 
 TODO Add corners for \textbf{fs sf} and similar. Because the LO range is split on two cores, ideally halved. Results are simulated for process and temperature corners: 
 
@@ -538,6 +573,32 @@ So this specification looks fine, testbench shown:
 
 Frequency pulling mentions coupling (crosstalk) between different blocks on chip and the VCO.
 %----------------------------------------------------------------------------------------
+<<<<<<< HEAD
+\section{Bandgap Voltage}
+
+Bangap voltage source has LN (low noise) control for $V_{bn}$ shown in left of Fig. ~\ref{fig:ac_noise_Bandgap}, for lower voltage reference DAC-s $V_{bp}$ is used without low noise control. Added low noise control at the pmos output is shown on the right side of the Fig ~\ref{fig:ac_noise_Bandgap}. Roll-off frequency of the output noise is determined by the resistence of the native NMOS and loading capacitor. And the lower this frequency is set the larger area or more error is presented to the bandgap voltage. 
+
+\begin{figure}[!ht]
+	\includegraphics[width=\linewidth]{Figures/ac_noise_Bandgap.jpg}
+	\caption{AC Noise of BandGap}
+	\label{fig:ac_noise_Bandgap}
+\end{figure}
+
+
+Effect of LN control change is shown as phase noise of pmos biased VCO around 14 GHz. 
+
+\begin{figure}[!ht]
+	\includegraphics[width=\linewidth]{Figures/phase_noise_Bandgap_pBias_LNeq0&1.jpg}
+	\caption{Resulting noise}
+	\label{fig:phase_noise_Bandgap_pBias_LNeq0&1}
+\end{figure}
+
+TODO Maybe add some results over PVT for Bandgap
+
+TODO Use this info on the original NMOS VCO Scaldio design.
+
+\subsection{PTAT and CTAT, the temperature independant Vbias for cascode}
+=======
 \section{Bandgap - PTAT and CTAT, the temperature independant Vbias for cascode}
 
 AC noise results of the bandgap is shown in Fig. \ref{fig:ac_noise_Bandgap}.
@@ -556,11 +617,7 @@ AC noise results of the bandgap is shown in Fig. \ref{fig:ac_noise_Bandgap}.
 	\label{fig:phase_noise_Bandgap_pBias_LNeq0&1}
 \end{figure}
 
-TODO Maybe add some results over PVT for Bandgap
-
-TODO Use this info on the original NMOS VCO Scaldio design.
-
-\subsection{PTAT and CTAT, the temperature independant Vbias for cascode}
+>>>>>>> bdca96a063a938a0c3941834acde2b700c4f1559
 
 % \verb c c
 
