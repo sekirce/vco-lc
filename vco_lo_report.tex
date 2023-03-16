@@ -529,7 +529,30 @@ How does portAdapter work?
 
 Frequency pulling mentions coupling (crosstalk) between different blocks on chip and the VCO.
 %----------------------------------------------------------------------------------------
-\section{PTAT and CTAT, the temperature independant Vbias for cascode}
+\section{Bandgap Voltage}
+
+Bangap voltage source has LN (low noise) control for $V_{bn}$ shown in left of Fig. ~\ref{fig:ac_noise_Bandgap}, for lower voltage reference DAC-s $V_{bp}$ is used without low noise control. Added low noise control at the pmos output is shown on the right side of the Fig ~\ref{fig:ac_noise_Bandgap}. Roll-off frequency of the output noise is determined by the resistence of the native NMOS and loading capacitor. And the lower this frequency is set the larger area or more error is presented to the bandgap voltage. 
+
+\begin{figure}[!ht]
+	\includegraphics[width=\linewidth]{Figures/ac_noise_Bandgap.jpg}
+	\caption{AC Noise of BandGap}
+	\label{fig:ac_noise_Bandgap}
+\end{figure}
+
+
+Effect of LN control change is shown as phase noise of pmos biased VCO around 14 GHz. 
+
+\begin{figure}[!ht]
+	\includegraphics[width=\linewidth]{Figures/phase_noise_Bandgap_pBias_LNeq0&1.jpg}
+	\caption{Resulting noise}
+	\label{fig:phase_noise_Bandgap_pBias_LNeq0&1}
+\end{figure}
+
+TODO Maybe add some results over PVT for Bandgap
+
+TODO Use this info on the original NMOS VCO Scaldio design.
+
+\subsection{PTAT and CTAT, the temperature independant Vbias for cascode}
 
 % \verb c c
 

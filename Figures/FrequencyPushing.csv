@@ -1,0 +1,62 @@
+,Parameter,Nominal,,,,,,Temp_and_Process_0,Temp_and_Process_1,Temp_and_Process_2,Temp_and_Process_3
+,D_control,32,,,,,,16,16,30,32
+,Kvco_control,5,,,,,,5,5,5,5
+,crn40lp_2d5_v2d0_2_shrink0d9_embedded_usage.scs,top_tt,,,,,,top_ss,top_ss,top_ff,top_ff
+,temperature,27,,,,,,-40,125,-40,125
+
+Test,Output,Nominal,Spec,Weight,Pass/Fail,Min,Max,Temp_and_Process_0,Temp_and_Process_1,Temp_and_Process_2,Temp_and_Process_3
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,V01_dB20_V_pss,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Output_Noise_dBcHz,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Frequency_PSS_harmonics_Vout1_Hz,14.6e9,> 14.2G,,pass,14.6e9,15.83e9,15.54e9,15.48e9,15.83e9,15.59e9
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Vout_peak2peak_V,881.9e-3,> 800m,,pass,848.7e-3,931.9e-3,848.7e-3,884.7e-3,885.1e-3,931.9e-3
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Output_Noise_Vt0p55@300KHz_dBcHz,-102.1,< -101,,near,-102.1,-91.33,-101.5,-91.33,-101.9,-99.45
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Frequency_Pushing_HzV_supply_Hz,43.93e6,< 2M,,fail,43.93e6,100.1e6,100.1e6,64.36e6,75.48e6,64.09e6
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Frequency_Pushing_HzV_supply_%,301e-3,,,,301e-3,644.3e-3,644.3e-3,415.7e-3,476.8e-3,411.1e-3
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Freq_change_Hz,175.7e3,,,,175.7e3,400.5e3,400.5e3,257.4e3,301.9e3,256.4e3
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Output_Noise_Vt1p0@300KHz_dBcHz,-102.1,< -101,,near,-102.1,-91.36,-101.5,-91.36,-101.8,-99.45
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Output_Noise_Vt0p1@300KHz_dBcHz,-102.1,< -101,,near,-102.1,-91.31,-101.5,-91.31,-101.9,-99.45
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Pnoise_onlyNominalVdd_dBcHz,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Output_Noise_Vdd1p102@20MHz_dBcHz,-138.2,< -140,,,-139,-132.4,-134.8,-132.4,-139,-134.7
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Output_Noise_Vdd1p098@20MHz_dBcHz,-138.2,< -140,,,-139,-132.3,-134.6,-132.3,-139,-134.7
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Output_Noise_Vdd1p1@20MHz_dBcHz,-138.2,< -140,,,-139,-132.3,-134.7,-132.3,-139,-134.7
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Second_Harmonic_suppression_dBc,-27.86,< -15,,pass,-29.4,-26.3,-26.3,-26.54,-28.63,-29.4
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Second_Harmonic_suppression_Vo2_dBc,-27.86,,,,-29.38,-26.31,-26.31,-26.54,-28.61,-29.38
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,"Phase Noise; dBc/Hz, Relative Harmonic = 1",,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,v_Vo2_tstab_V,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,v_Vo1_tstab_V,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Drain_current_M0_A,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Drain_current_M1_A,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Vbgias_dcOp_V,519.5e-3,,,,410.7e-3,616.1e-3,616.1e-3,501.8e-3,513.5e-3,410.7e-3
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Ivdd_dcOp_A,6.357e-3,,,,5.28e-3,6.721e-3,6.173e-3,5.28e-3,6.496e-3,6.721e-3
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Ivdd_stedayState_pssTran_woOTAs_A,2.762e-3,< 8m,,pass,590.4e-6,3.094e-3,590.4e-6,3.094e-3,2.121e-3,2.653e-3
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Current_core_dcOp_A,4.197e-3,,,,3.439e-3,4.642e-3,4.29e-3,3.439e-3,4.642e-3,4.121e-3
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,OTA2n_VadLPF_tstab_V,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,OTA2o_Vbpcac_tstab_V,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,OTA2p_Vref2_tstab_V,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,OTA1n_Vtop_tstab_V,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,OTA1p_Vref1_tstab_V,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,OTA1o_Vgbias_tstab_V,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Vo1_tstab_V,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,I_ind_tstab_A,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Core_tran_A,eval err,,,,,,eval err,eval err,eval err,eval err
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,output_minus,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,output_plus,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,drain_current_M1,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,drain_current_M0,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Vgbias_V,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Bandgap_pmos_Output_V,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Bandgap_nmos_Output_V,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,signal IVDD,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Vdd_ccurent_intoL_A,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,/DUT/M2/D,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,/DUT/M3/D,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,/DUT/Vad,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,/DUT/Vbpcac,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,/DUT/Vad_lpf,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,/Vref2,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,/Vref1,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,/DUT/top,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Loop Gain dB20,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Loop Gain Phase,,,,,,,,,,
+testLib_aleksandarv_TB_SCaldio_hbVCO_Test_1,Phase Margin,70.89,,,,66.96,70.89,67.02,68.5,66.96,69.44
+
