@@ -184,11 +184,11 @@ I searched relevant papers for VCO 130 nm BiCMOS or similar technologies and fre
 \end{question}
 
 \begin{question}[\itshape What is the input reference frequency of PLL? Are there any dividers in PLL?]
-	-
+	Reference frequency is from 1 GHz to 8 GHz.
 \end{question}
 
 \begin{question}[\itshape Is the input from loop filter single ended or differential?]
-	-
+	It's differential. How to implement charge pump - don't know.
 \end{question}
 
 \begin{question}[\itshape Any estimate for specified VCO output swing?]
@@ -196,43 +196,71 @@ I searched relevant papers for VCO 130 nm BiCMOS or similar technologies and fre
 \end{question}
 
 \begin{question}[\itshape What additional techniques need to be explored to improve the above?]
-	-
+	Local backside etching (LBE) to improve quality (Q) factor of inductor. 
 \end{question}
 
-From what I have seen in papers  most promising topology in terms of phase noise is cross-coupled LC VCO class C with potential additional technique of subharmnic injection locking.
-This is what I plan to try first if no better solutions are provided.
+\begin{info}
+	From what I have seen in papers  most promising topology in terms of phase noise is cross-coupled LC VCO class C with potential additional technique of subharmnic injection locking. This is what I plan to try first if no better solutions are provided. \\
+	Subharmonic injection lockign might be too narrowband.
+\end{info}
 
-I just realize that BSE should be called LBE (localized backside etch).
+% I just realize that BSE should be called LBE (localized backside etch).
 
-a)
-another question to the customer regarding the overall system. 8 is a great number for a divider, but maybe a bad choice for a multiplier? I don't know how it is currently implemented, but thinking of diodes/BJT with exponential characteristics we get odd harmonics, using MOS we may get even ones, at least a good 2nd. But 8=2*2*2 and 9 is just 3*3 .. one stage less, and in differential design only 9 seems feasible. In that case I tend to say that a non-sinusoidal output would even help to reduce gain in the multipliers (which also adds noise on top of the multiplication itself). Assuming that the mixer needs amplification, each *2 stage should add more than 6dB PN, leading to about 20dB or more degradation. If they want to have options on that multiplication factor, we could more easily do that in the PLL with dividers (which reduce PN). Ideally we reduce the VCO range to just more than an octave in the highest band of interest and divide the rest?
+\begin{itemize}
 
-I just want to ensure that we're not rebuilding something 1:1 that would benefit from a different structure (thinking about Bosch's wall scanner .. they asked us to turn their discrete circuit 1:1 into an ASIC ... but the central component was a tunnel diode O:-) ).
+	\item [A] another question to the customer regarding the overall system. 8 is a great number for a divider, but maybe a bad choice for a multiplier? I don't know how it is currently implemented, but thinking of diodes/BJT with exponential characteristics we get odd harmonics, using MOS we may get even ones, at least a good 2nd. But 8=2*2*2 and 9 is just 3*3 .. one stage less, and in differential design only 9 seems feasible. In that case I tend to say that a non-sinusoidal output would even help to reduce gain in the multipliers (which also adds noise on top of the multiplication itself). Assuming that the mixer needs amplification, each *2 stage should add more than 6dB PN, leading to about 20dB or more degradation. If they want to have options on that multiplication factor, we could more easily do that in the PLL with dividers (which reduce PN). Ideally we reduce the VCO range to just more than an octave in the highest band of interest and divide the rest?
 
-b)
-Regarding VCO phase limit tests:
-Since noise expresses both in amplitude and phase we could use amplitude regulation to generate the tail current (e.g. using a bipolar current mirror). The problem will then be to minimize noise in the current generator. That could be done with the help of a chopper amplifier. Undesired frequency content may be a new issue, but for a differential design I believe it's solvable. For first tests, an ideal amplifier should come close to that. Maybe a bipolar amplifier doesn't even need that. 
+	\item [B] I just want to ensure that we're not rebuilding something 1:1 that would benefit from a different structure (thinking about Bosch's wall scanner .. they asked us to turn their discrete circuit 1:1 into an ASIC ... but the central component was a tunnel diode).
 
-Make two chips
+\end{itemize}
 
+% tunnel diode
+\begin{info}
+	The resonant tunneling diode (RTD) has been investigated in many high frequency applications, including 712 GHz oscillators [1], voltage controlled oscillators (VCOs) with low power consumption [2], high output power oscillators [3], and also analog-to-digital converters [4].
+\end{info}
+
+A tunnel diode is a special type characterized by its ability to exhibit negative resistance. Unlike conventional diodes, which show positive resistance, tunnel diodes can conduct in the reverse bias region under certain conditions. This property makes them invaluable in various electronic applications, especially high-frequency circuits.
+
+
+
+\begin{itemize}
+	\item Mats Ärlelid, Mikael Nilsson, Gvidas Astromskas, Erik Lind, and Lars-Erik Wernersson, “\href{https://confit.atlas.jp/guide/event-img/ssdm2007/G-5-4/public/pdf_archive?type=in}{High Tuning-Range VCO Using a Gated Tunnel Diode},” Extended Abstracts of the 2007 International Conference on Solid State Devices and Materials, Tsukuba, 2007,-798-G-5-4pp. 798-799
+\end{itemize}
+-
+\begin{itemize}
+	\item [C] Regarding VCO phase limit tests: Since noise expresses both in amplitude and phase we could use amplitude regulation to generate the tail current (e.g. using a bipolar current mirror). The problem will then be to minimize noise in the current generator. That could be done with the help of a chopper amplifier. Undesired frequency content may be a new issue, but for a differential design I believe it's solvable. For first tests, an ideal amplifier should come close to that. Maybe a bipolar amplifier doesn't even need that. 
+\end{itemize}
+
+-
+\\
+Make two chips (probably for different options for VCO)
+\\
 Testbench to lock PLL, PFD loop filter and VCO.
+\\
 
 PFD is CML.
+\\
 
 pdk does not support detail inductor modeling.
+\\
 
 harmonic filter is not included
+\\
 
 loop bandwidth reallistic that can be achieved internally is from 3 MHz to 100 MHz.
+\\
 
 up to you if it is 2nd or third order.
+\\
 
 spec Review
+\\
 
-Prelimiary Design Review PDR
-and Critical Design Review CDR
+Prelimiary Design Review PDR and Critical Design Review CDR
+\\
 
-70 Mhz below 50 Mhz Kvco?
+70 Mhz below 50 Mhz Kvco? is expected from existing commercial parts.
+\\
 
 \subsection{List of reference papers} % collected by Anthony
 
@@ -280,13 +308,16 @@ Ying paper has a similar idea calls it class F23 and also ok results which makes
 
 \subsection{Frequency scaling and frequency plan}
 
-Formula for scaling phase noise to fundamental (output) frequency:
+Formula for normalizing (scaling) phase noise to fundamental (output) frequency:
 
-=AA21-20*LOG10(AC21/7)-20*LOG10(1/AB21)
+$PN_{norm}=PN_{meas}-20*log_{10}(\dfrac{freq_{meas}}{freq_{norm}})-20*log_{10}(\dfrac{1}{PNoffset}[MHz])$
+
+Scaling for phase noise in DIV+PFD+CP is different.
+
 
 \subsection{Using different models for HBT}
 
-BSIM4 and pss (not psp), sometimes pss gives better performance
+BSIM4 and psp* (not pss), sometimes psp* gives better performance
 % TOSEARCH for how "psp" models are really called?
 
 BSIM4, as the extension of BSIM3 model, addresses the MOSFET physical effects into sub-100nm regime. The continuous scaling of minimum feature size brought challenges to compact modeling in two ways: One is that to push the barriers in making transistors with shorter gate length, advanced process technologies are used such as non-uniform substrate doping. The second is its opportunities to RF applications.
@@ -365,6 +396,14 @@ VCO core
 Differential Varactor (Varactor)
 \\
 Capacitor bank (unit)
+\\
+Current and voltage bias - emmiter and source degeneration
+
+\subsection{Emmiter vs Source degneration}
+
+source capacitive degeneration
+
+
 
 \subsection{Differential Varactor}
 %
@@ -372,16 +411,16 @@ Capacitor bank (unit)
 %----------------------------------------------------------------------------------------
 \newpage
 
-\section*{LO block VCO and VCO Buffer}
+\section{LO block VCO and VCO Buffer - old project}
 
-Old project
+Old project for topcon INSERTDATE % or time frame
 
-\section*{Introduction} % Unnumbered section
+\subsection{Introduction} % Unnumbered section
 
 LO block is LC VCO with internal inductor and fully differential output buffer. Its schematic shall ensure differential connection to the mixer LO input and PLL RF input. LO block should have the characteristics given in Table \ref{table-spec}. Due to wide frequency range it is necessary to use switchable capacitor banks.  
 
 %----------------------------------------------------------------------------------------
-\section{Technical Requirements}
+\subsection{Technical Requirements}
 
 
 \begin{table}[ht]
@@ -470,7 +509,7 @@ Process corners can be found at:
 \end{verbatim}
 % Seems that 
 
-\section{Scaldio Design Review}
+\subsection{Scaldio Design Review}
 
 \begin{question}[\itshape How should calibration be implemented to achieve output voltage peak to peak and minimize noise?]
 Is it done for whole PLL?
@@ -552,7 +591,7 @@ Phase noise changes a lot for different tuning voltages between -90 and -100 dBc
 \newpage
 
 %----------------------------------------------------------------------------------------
-\section{Q factor of LC tank}
+\subsection{Q factor of LC tank}
 
 Need testbenches capacitance of tank, varactors and inductor, and for different controls and also corners. Process corners for varactors are the same as MOSFET.
 
@@ -626,7 +665,7 @@ Link to \href{https://www.giangrandi.ch/electronics/ringdownq/ringdownq.shtml}{\
 
 
 %----------------------------------------------------------------------------------------
-\section{Figure of Merit different definitions}
+\subsubsection{Figure of Merit different definitions}
 
 \begin{info} % Information block
 	The theoretical maxima for the FoM of an oscillator is given by $FoM=174+20log_{10}(Q)$ dBc/Hz
@@ -661,7 +700,7 @@ can be efficiently turned into triode region while the weak pull-up transistors 
 \end{info}
 
 %----------------------------------------------------------------------------------------
-\section{Lowering frequency pushing and LDO}
+\subsection{Lowering frequency pushing and LDO}
 
 About Frequency pushing from \href{https://www.atlantis-press.com/article/6376.pdf}{\textbf{this paper}}
 
@@ -701,7 +740,7 @@ Results for class C with pmos bias, only dc change of $V_{DD}$:
 This shows some improvement from frequency pushing of 250 - 300 MHz that was observed for the nmos bias of IMEC Scaldio design.
 
 %----------------------------------------------------------------------------------------
-\section{Changing topology and lowering phase noise}
+\subsection{Changing topology and lowering phase noise}
 
 Decision on why is single sided oscillator chosen instead of double sided oscillator.
 
@@ -767,7 +806,7 @@ Referent voltage should be set and controlled around 400 mV. Problem with OTA2 l
 
 
 %----------------------------------------------------------------------------------------
-\section{Full LO Range and Frequency Recentering}
+\subsection{Full LO Range and Frequency Recentering}
 
 % TODO Setup the lb vco, and also setup different testbenches for the highest and the lowest frequency available. Add corner analysis PVT.
 
@@ -828,7 +867,7 @@ The worst available frequency digital controlled range is $6092 + 3730 - 1660 = 
 NOTE: Analog varactor 0-Vt-1 change does not work so it wasn't included. Further frequency recentering after extraction will be needed.
 
 %----------------------------------------------------------------------------------------
-\section{Pulling testbench and design of VCO buffer}
+\subsection{Pulling testbench and design of VCO buffer}
 
 Needs port at and tuning circuit to keep the reflection at -14 dB. Port of reference impedance 10 k$\Omega$ and portAdapter from rfExamples. S parameter analysis to show if the reflection really is -14 dB? Load impedance increased from 100 fF to 1000 fF. VCO buffer is also needed because of the frequency pulling. Does each core have a buffer or do they share it? first make a buffer than maybe a question.
 
@@ -842,7 +881,7 @@ How does portAdapter work?
 
 Frequency pulling mentions coupling (crosstalk) between different blocks on chip and the VCO.
 %----------------------------------------------------------------------------------------
-\section{PTAT and CTAT, the temperature independant Vbias for cascode}
+\subsection{PTAT and CTAT, the temperature independant Vbias for cascode}
 
 % \verb c c
 
@@ -850,7 +889,7 @@ TODO Simulate and show results of temperature sweep.
 
 
 %----------------------------------------------------------------------------------------
-\section{Effect of too high tail capacitance}
+\subsection{Effect of too high tail capacitance}
 
 \begin{figure}[!ht]
 	\includegraphics[width=\linewidth]{Figures/squegging.png}
@@ -860,7 +899,7 @@ TODO Simulate and show results of temperature sweep.
 
 Instability Low frequency amplitude modulation squegging. This was the issue with the original class C with tail current. Is it important for new topology where current bias is PMOS.
 
-\section{PLL theory - PLL Lock Detect and calibration}
+\subsection{PLL theory - PLL Lock Detect and calibration}
 
 About PLL Lock Detect:
 
