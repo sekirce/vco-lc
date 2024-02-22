@@ -140,6 +140,21 @@ Core devices contribution
 % Internal are given by anthony
 % \subsection{Internal milestones}
 
+\section{Problem with linearity of RF model}
+
+
+nmosHVRFmodel 
+
+error that is presented
+
+\begin{verbatim}
+WARNING (SPECTRE-16780): LTE tolerance was temporarily relaxed to step over a discontinuity
+		in the signal: i_VCO.i_VCO_core.N3:int_INT3. Check the design or use '+diagnose' 
+		to get more information.
+        Further occurrences of this warning will be suppressed
+\end{verbatim}
+
+
 
 \section{PFD topology and blind spots}
 
@@ -269,7 +284,7 @@ Prelimiary Design Review PDR and Critical Design Review CDR
 	\item A VCO with Implicit Common-Mode Resonance
 	\item A 2.3 - 5-GHz LC-VCO With Source Damping Resistors to Suppress 1/f Noise Up-Conversion
 	\item A 6.7-to-9.2GHz 55nm CMOS Hybrid Class-B/Class-C Cellular TX VCO
-	\item A 25!\% Tuning Range 7.5- 9.4 GHz Oscillator With 194 FoMT and 400 kHz 1/f3 Corner in 40nm CMOS Technology
+	\item A 25\% Tuning Range 7.5- 9.4 GHz Oscillator With 194 FoMT and 400 kHz 1/f3 Corner in 40nm CMOS Technology
 	\item A Filtering Technique to Lower LC Oscillator Phase Noise
 	\item A Low Phase Noise and High FoM Distributed-Swing-Boosting Multi-Core Oscillator Using Harmonic-Impedance-Expanding Technique
 	\item A Low Phase Noise, High Phase Accuracy Quadrature LC-VCO With Dual-Tail Current Biasing to Insert Reconfigurable Phase Delay
@@ -300,10 +315,11 @@ Ying paper has a similar idea calls it class F23 and also ok results which makes
 
 \begin{itemize}
 	\item Novelic to acquire EVB's for ADF6610, LMX2594 % EVB is an EValuation Board
-	\item Packaging, actual implementation
+	\item Packaging, actual implementation, could be different for different process nodes
 	\item Testability options within chip
 	\item VCO registers/overriding
 	\item External test requirements/definitions
+	\item 
 \end{itemize}
 
 \subsection{Frequency scaling and frequency plan}
@@ -312,7 +328,7 @@ Formula for normalizing (scaling) phase noise to fundamental (output) frequency:
 
 $PN_{norm}=PN_{meas}-20*log_{10}(\dfrac{freq_{meas}}{freq_{norm}})-20*log_{10}(\dfrac{1}{PNoffset}[MHz])$
 
-Scaling for phase noise in DIV+PFD+CP is different.
+Scaling for phase noise in DIV+PFD+CP is different its 10 times log.
 
 
 \subsection{Using different models for HBT}
@@ -325,9 +341,9 @@ BSIM4, as the extension of BSIM3 model, addresses the MOSFET physical effects in
 
 \subsection{Regarding VCO design option 2 results}
 
-I have simulated pnoise for designs and testbenches Gunther sent me and I don't get the same results.
+% I have simulated pnoise for designs and testbenches Gunther sent me and I don't get the same results.
 
-I beleive simulation using setting multiplenoise that gives phase noise perfrmance that is now being presented is not correct.
+I believe simulation using setting multiplenoise that gives phase noise perfrmance that is now being presented is not correct.
 As for multiple different nets it gives very different values, which makes little sense with the topology.
 And when I use only one output noise for pnoise simulation I get much worse results (15-20 dBs), but they are consistent.
 
@@ -382,8 +398,31 @@ Some key conclusions in terms of phase noise:
 
 Noise at output of VCO is same as at the output of buffer. Main contributors for VCO output noise is output buffer by performing modulation of VCO tank circuit. Second main contributor is noise in references used to generate VCO current bias and noise in power supply.
 
+Note that current tail bias mirror is using PTAT current.
+
+\begin{question}[\itshape Why is PTAT used?]
+	VCO outptut swing or VCO outptu freq or sth else?
+\end{question}
+
 %----------------------------------------------------------------------------------------
 \subsection{Commercial Parts}
+
+\subsubsection*{LMX2592}
+LMX2592 High Performance, Wideband PLLatinuTM RF Synthesizer With Integrated VCO
+\\
+VCO Phase Noise: –134.5 dBc/Hz at 1-MHz
+Offset for 6-GHz Output
+\\
+Applications
+\begin{itemize}
+	\item Test and Measurement Equipment
+	\item Defense and RADAR
+	\item Microwave Backhaul
+	\item High-Performance Clock Source for High-Speed
+	\item Data Converters
+	\item Satellite Communications
+\end{itemize}
+
 
 
 %----------------------------------------------------------------------------------------
@@ -398,12 +437,14 @@ Differential Varactor (Varactor)
 Capacitor bank (unit)
 \\
 Current and voltage bias - emmiter and source degeneration
+\\
+Bandgap reference generation for v gate col bias control 
 
 \subsection{Emmiter vs Source degneration}
 
 source capacitive degeneration
 
-
+% asked for a showcase no response
 
 \subsection{Differential Varactor}
 %
@@ -518,9 +559,6 @@ Is it done for whole PLL?
 \begin{question}[\itshape Difference between class-B and class-C vco? ]
 	Scaldio uses class-C, so all parasitic capacitances connected to the tail don't matter. Having trouble with observing the currents of drain so cannot check this and compare them. Scaldio looks something between class C and class B because of $V_{gbias}$ voltage and because adding inductor between tail NMOS and switching pair improves phase noise. This is attributed to class B, while class C only needs tail capacitance.
 \end{question}
-
-
-
 
 \begin{figure}[ht!]
 	\includegraphics[width=\linewidth]{Figures/class_C_vs_class_B.png}
