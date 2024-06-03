@@ -27,11 +27,15 @@
 
 \usepackage{siunitx}
 
+% need to add font encoding, used to check if it changes something
+\usepackage[T1]{fontenc}
+
+
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT INFORMATION
 %----------------------------------------------------------------------------------------
 
-\title{VCO as part of PLL} % Title of the assignment
+\title{Low Noise 6-8 GHz VCO with Differential Tuning as part of PLL} % Title of the assignment
 
 \author{Aleksandar Vuković} % Author name and email address
 
@@ -44,17 +48,25 @@
 \maketitle % Print the title
 
 %----------------------------------------------------------------------------------------
-%	INTRODUCTION
+%	INTRODUCTION - First Page
 %----------------------------------------------------------------------------------------
-
 
 \section*{Introduction}
 
 working title % TODO Maybe abstract 
 \\
 This needs to be added to body of document % razrada
-\\
-Complaints and suggestions: % add to 
+
+The open items I recorded are:
+\begin{itemize}
+	\item the effects of BSE on phase noise (i.e. is it really needed)
+	\item Packaging concerns, risks and schedule
+	\item Die quantity and meaningful sample volume
+	\item test chip content and expectations
+	\item overall schedule for the follow-on tapeout in 2025
+\end{itemize}
+% LOOKINTO BSE or LBE 
+\subsection*{Complaints and suggestions regarding VCO} % add to 
 
 \begin{itemize}
 	\item there is no point in using higher resistances than 20 - 30 k$\Omega$ in capacitor bank unit
@@ -72,19 +84,115 @@ Complaints and suggestions: % add to
 % NBTI	- Negative-Bias Temperature Instability
 % PBTI	- Positive-Bias Temperature Instability
 % TDDB	- Time Dependent Dielectric Breakdown
+% LBE 	- Localized Backsided Etching
+% FTR	- Fine Tuning Range (unit is percentage)
+% EM	- Electro Magnetic
+% CML	- Common Mode Logic
+% QFN	- Quad Flat No lead
+% MEMS	- MicroElectronical Mechanical Systems
+% SIW	- Substrate Integrated Waveguide
 
-My problems and work in progress:
+
+
+% about SIW
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+% Substrate integrated waveguide (SIW) resonators are
+% characterized by high quality (Q) factor, easy integration with
+% planer circuits, and lower conductive loss. 
+
+% Oscillators made in SIW
+
+% Samundra K. Thapa, Baichuan Chen, Adel Barakat, Kuniaki Yoshitomi, Ramesh K. Pokharel
+% Miniaturized Slot-Loaded SIW Resonator and Its
+% Application to C-band Low Phase Noise Oscillator
+
+
+% Z. Chen, W. Hong, J. Chen and J. Zhou, "Design of High-Q Tunable
+% SIW Resonator and Its Application to Low Phase Noise VCO," in IEEE
+% Microwave and Wireless Components Letters, vol. 23, no. 1, pp. 43-45,
+% Jan. 2013.
+% [6] F. F. He, K. Wu, W. Hong, L. Han and X. Chen, "A Low Phase-Noise
+% VCO Using an Electronically Tunable Substrate Integrated Waveguide
+% Resonator," in IEEE Transactions on Microwave Theory and
+% Techniques, vol. 58, no. 12, pp. 3452-3458, Dec. 2010.
+% [7] Z.Yang, B. Luo, J. Dong, T. yang and H. Jin, "Low phase noise
+% oscillator based on quarter mode substrate integrated technique," IEICE
+% Electronics Express, vol. 12, no. 6, pp. 1-6, 2015.
+% [8] C. M. Wu, T. Itoh, A. K. Poddar and U. L. Rohde, "A C-band tunable
+% oscillator based on complementary coupled resonator using substrate
+% integrated waveguide cavity," 2014 44th European Microwave
+% Conference, Rome, 2014, pp. 715-718.
+
+\subsection*{My current problems and work in progress}
 
 \begin{itemize}
-	\item hard-clipped VCO not oscillating at the frequency that is supposed to, drops down to around 1 GHz (example)
-	\item soft-clipped VCO has more frequency modes - CM and DM resonance
+	\item (OBSOLETE) hard-clipped VCO not oscillating at the frequency that is supposed to, drops down to around 1 GHz (example)
+	\item (OBSOLETE) soft-clipped VCO has more frequency modes - CM and DM resonance
+	\item Reliablity of design, breakdown voltages. TDDB is Time Dependent Dielectric Breakdown. 
+	\item making a differential varactor instead of the single-ended one
+	\item What is the name of metal stack process to be used in EM simulations?
+\end{itemize}
+
+\subsection*{Planning to do at some point}
+
+\begin{itemize}
+	\item design a 400 to 500 \unit{pH} inductor (search for a paper that has decent Q factor around 4-8 GHz range) % watch out for electromigration, find the paper that I looked at long time ago
+	\item design a PTAT bandgap voltage reference to swich the gate from cascaded NMOS to reference
+	\item make a testbench for frequency pushing and frequency pulling (look at the old VCO project)
+	\item (DOWNTHELINE) Peak Detector
 \end{itemize}
 
 % TOSEARCH for Samuel papers
 
-\section{Technical Novelic evaluation summary}
 
-Here are technical Novelic evaluation summary on provided documents (Point 3): 
+% ===============================================
+% NGSPICE + SG13G2
+% ===============================================
+
+\section{NGSPICE}
+
+Regarding open-source PDK for SG13G2, it's work in progress, but
+I think worth to consider. Even if just the simulator can be replaced
+with ngspice or xyce, it could boost productivity from not being license-bound.
+Please check this out:
+\href{https://github.com/IHP-GmbH/IHP-Open-PDK/tree/main/ihp-sg13g2}{\textbf{ihp sg13g2}}
+
+Documentation on github is sparse, some more info is here:
+\href{https://www.ihp-microelectronics.com/events-1/detail/openpdk-opentooling-and-open-source-design-an-initiative-to-push-development}{\textbf{openPDK opeentooling and open source design}}
+
+\href{https://www.ihp-microelectronics.com/services/research-and-prototyping-service/fast-design-enablement/open-source-pdk}{\textbf{open source PDK, research and prototyping}}
+
+
+
+\subsection{Required libraries - Linux Installation}
+
+libxaw7-dev and libreadline6-dev
+\\
+KiCad plus ngspice
+
+% \begin{verbatim}
+% 	/home/aleksandarvukovi/ngspice-42/examples/osdi/hicuml0/Modelcards/model-card-hicumL0V1p11_mod.lib	
+% \end{verbatim}
+
+
+
+\subsection{openEMS}
+
+openEMS is a free and open source electromagnetic field solver based on the Finite-Difference Time Domain (FDTD) method. Using an improved version of the highly-successful FDTD method (known as Equivalent-Circuit FDTD, or EC-FDTD), openEMS solves Maxwell's equations in discretized space and time to directly simulates the propagation of electromagnetic waves, in a 3D full-wave manner. It has the potential to analyze problems in important applications such as RF/microwave circuit design, antenna, radar, meta-material, and medical research.
+
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	Technical offer for the start of project
+%----------------------------------------------------------------------------------------
+
+\section{Evaluation Summary}
+
+
+\subsection{Novelic Technical Offer}
+
+Here are technical Novelic evaluation summary on provided documents:  % Point 3 
 
 \begin{itemize}
 	\item Overall conclusion is that: the provided report contains almost the same type of the architecture, like provided in Novelic \& Nirsen study. 
@@ -108,25 +216,238 @@ Here are technical Novelic evaluation summary on provided documents (Point 3):
 
 \end{itemize}
 
+\newpage
+
+\subsection{Specification and Design Review Plan} % Original plan
+
+\begin{itemize}
+	\item Prelimiary Design Review	- PDR
+	\item Critical Design Review	- CDR
+\end{itemize}
+
+Voltus or Voltera to check currents
+
+\subsection{Open points}
+
+\begin{itemize}
+	\item Novelic to acquire EVB's for ADF6610, LMX2594 % EVB is an EValuation Board
+	% \item Packaging, actual implementation, could be different for different process nodes
+	\item Testability options within chip
+	\item VCO registers/overriding
+	\item External test requirements/definitions
+\end{itemize}
+
+\subsection{List of reference papers} % collected by Anthony
+
+This is a list of papers regarding the CMOS technology similar to 130 nm collected by Anthony.
+
+\begin{enumerate}
+	\item A Stacked-Complementary 5 GHz Oscillator With Even-Only Differential Harmonic Shaping Achieving -150 dBc/Hz Phase Noise at 10-MHz Offset Using Body-Biased Thin-Oxide 22-nm FDSOI
+	\item A VCO with Implicit Common-Mode Resonance
+	\item A 2.3 - 5-GHz LC-VCO With Source Damping Resistors to Suppress 1/f Noise Up-Conversion
+	\item A 6.7-to-9.2GHz 55nm CMOS Hybrid Class-B/Class-C Cellular TX VCO
+	\item A 25\% Tuning Range 7.5- 9.4 GHz Oscillator With 194 FoMT and 400 kHz 1/f3 Corner in 40nm CMOS Technology
+	\item A Filtering Technique to Lower LC Oscillator Phase Noise
+	\item A Low Phase Noise and High FoM Distributed-Swing-Boosting Multi-Core Oscillator Using Harmonic-Impedance-Expanding Technique
+	\item A Low Phase Noise, High Phase Accuracy Quadrature LC-VCO With Dual-Tail Current Biasing to Insert Reconfigurable Phase Delay
+	\item A Low Phase Noise Oscillator Principled on Transformer-Coupled Hard Limiting
+	\item A Noise Circulating Oscillator
+	\item Ultra-Low Phase Noise X-Band BiCMOS VCOs Leveraging the Series Resonance
+	\item An Ultra-Low Phase Noise Class-F2 CMOS Oscillator With 191 dBc/Hz FoM and Long-Term Reliability
+	\item CMOS Differential LC Oscillator with Suppressed Up-Converted Flicker Noise - Aly Ismail, Asad A. Abidi
+	\item Design of LC Resonator for Low Phase Noise Oscillators
+	\item Even-Harmonic Class-E CMOS Oscillator
+	\item Implicit Common-Mode Resonance in LC Oscillators
+	\item Third-Harmonic Injection Technique Applied to a 5.87-to-7.56 GHz 65nm CMOS Class-F Oscillator with 192dBc/Hz FOM
+\end{enumerate}
+
+\newpage
+
+\subsection{A Noise Circulating Oscillator}
+
+Oscillator phase noise is a fundamental metric that governs a wide variety of design aspects in modern communication and sensing systems [1], [2]
+
+\begin{enumerate} % RF books
+	\item B. Razavi, RF Microelectronics, 2nd ed. Englewood Cliffs, NJ, USA: Prentice-Hall, 2011. 
+	\item T. H. Lee, The Design of CMOS Radio-Frequency Integrated Circuits. Cambridge, U.K.: Cambridge Univ. Press, 2004.
+\end{enumerate}
+
+% ======================================================
+% ABOUT CMOS VCO PAPERS
+% ======================================================
+
+\subsection{Mail sent after going through CMOS papers}
+
+% I went through papers that Samuel sent, used the Anthony excel formulas to get phase noise results for comparison.
+
+Franceschin paper has the best noise performance by far. It's made in SiGe 55 nm and using bipolars in core, consumes 500 mA and the output swing is clipped by diode connected bipolars which enables this much current without affecting bipolars operation.
+
+Babaie papers are made in CMOS and are more similar to current design. It utilises step up transformers with different common and differential k factors to decouple capacitor bank from the core and control its drain currents to make a clas F2. But I currently don't know how to implement this because I don't have any ideal transformer models with different k factor for differential and common modes.
+
+Ying paper has a similar idea calls it class F23 and also ok results which makes me think this it the most viable idea from all of these papers to try.
+
+% In attachment you can find excel with some extracted information.
+
+\section{Packaging Technology Options}
+
+\begin{itemize}
+	\item Flip Chip
+	\begin{itemize}
+		\item Solder balls on Nickel/Gold finish (time consuming) % time consuming in regards to time added to fabrication
+		\item Heat Spreader (Graphene-based)
+		\item Underfill materials
+		\item Redistribution layers(?)
+	\end{itemize}
+	\item Copper Pillar (flipped die)
+	\begin{itemize}
+		\item 30um min diameter, better thermal conductivity
+		\item More stable (no need for underfill)
+		\item Heat spreader most likely needed
+	\end{itemize}
+	\item Chip on board
+	\begin{itemize}
+		\item Glue chip on PCB cavity (non-conductive glue needed if BSE)
+		\item Only backside cooling available
+		\item Connect with wirebonds
+	\end{itemize}
+	\item Open cavity QFN
+	\begin{itemize}
+		\item Similar to chip on board
+		\item Extra penalty due to higher thermal resistance of package
+	\end{itemize}
+\end{itemize}
+
+On packaging from Elad:
+
+\begin{info}
+	I was asked to give my opinion regarding silicone component packaging.\\
+	Since the size of the component is (on the major axis) 3.5 and down bonds to the ground are required on both sides, you need to verify the distance of the pads of the component from the edge of the die, the closer you can use a smaller ground surface. Assuming that the pads reach the edge, it will be possible to use a ground surface in a package of  4.1 \unit{mm}, depending on the planning design rules of the Assembly house. \\
+	In light of this, I recommend considering using the RJR air cavity 6 x 6 \unit{mm} package and its lid. \\
+	Regarding the glue, since the CTE gap between the component and the packaging is large, I recommend using the glue (I think they thought of this direction) me8456lv, which has a thermal conductivity of around 6W/m \\
+	\href{https://www.rjrtechnologies.com/}{\textbf{rjrtechnologies website}}
+\end{info}
+
+QFN stands for \textbf{Q}uad \textbf{F}lat \textbf{N}o lead.
+
+Number of pins is important for packaging - keep it below 32.
+
+% List of my questions for me?
+% Is this open cavity? What are cavities used for?
+% What about the extra penalty due to higher thermal resistance (thermal conductivity)
+% What is laminate?
+
+
+\begin{figure}[ht!]
+	\centering % try to center it
+	\includegraphics[width=0.5\linewidth]{Figures/RQFN-4-mm.png}
+	\caption{RQFN packaging example }
+	\label{fig:rqfn-example}
+\end{figure}
+
+\subsection{Flip Chip as a packaging option}
+
+Flip chip, also known as controlled collapse chip connection or its abbreviation, C4, is a method for interconnecting dies such as semiconductor devices, IC chips, integrated passive devices and microelectromechanical systems (MEMS), to external circuitry with solder bumps that have been deposited onto the chip pads. This is in contrast to wire bonding, in which the chip is mounted upright and fine wires are welded onto the chip pads and lead frame contacts to interconnect the chip pads to external circuitry.
+
+% ==============================================
+% PACKAGING options
+% ==============================================
+
+\subsection{Packaging house options}
+
+Packaging house options are:
+
+\begin{itemize}
+	\item TAI PRO
+	\begin{itemize}
+		\item \href{https://www.taipro.be/production}{\textbf{Website for Production}}
+	\end{itemize}
+	\item PacTech (IHP has collaboration with them)
+	\begin{itemize}
+		\item \href{https://pactech.com/wafer-level-packaging-services/}{\textbf{Website for Wafer Level Packaging Services}}
+	\end{itemize}
+	\item IZM
+	\begin{itemize}
+		\item \href{https://www.izm.fraunhofer.de/en/abteilungen/wafer-level-system-integration/leistungsangebot/fine-pitch-bumping-for-pixel-detectors.html}{\textbf{Website for Fine Pitch Bumping for Pixel Detectors}}
+		\item \href{https://www.izm.fraunhofer.de/en/abteilungen/wafer-level-system-integration/leistungsangebot/single_chip_bumping.html}{\textbf{Website for Single Chip Bumping}}
+	\end{itemize}
+	\item RJR Technologies
+	\begin{itemize}
+		\item \href{https://www.rjrtechnologies.com/}{\textbf{Website}}
+	\end{itemize}
+\end{itemize}
+
+% Additional option is GP technologies
+
+% Belgium company is for packaging
+
+% California houses
+% QP technologies
+% spectrum semi
+
+\subsection{Packaging terms by ampleon}
+
+Packaging is an important element in RF power transistors, influencing both the cost-efficiency and performance of a given device. Since peak powers can vary widely, from as low as 5 W to more than 1 kW, a range of packages is needed to cover every application. The choice of package format (air-cavity or overmolded plastic), often depends on the design requirements, and any \textbf{trade-offs to be made between performance and cost.} \\
+
+\href{https://www.ampleon.com/packages.html}{\textbf{Source for ampleon packaging}}
+
+Types of packaging:
+
+\begin{itemize}
+	\item Air-Cavity Ceramic (ACC)
+	\item Air-Cavity Plastic (ACP)
+	\item Overmolded Plastic (OMP)
+\end{itemize}
+
+\subsection{Definition of terms regarding packaging from RJR technologies}
+
+\begin{itemize}
+	\item PRQFN - stands for RJR's thermally enhanced \textbf{P}ower ai\textbf{R}-cavity \textbf{Q}uad \textbf{F}lat \textbf{N}o-leads package
+	\item Substrate - the base material that holds the circuit and components (chips, wires, and caps) of semiconductor devices
+	\item Coupon - a square panel containing a cluster of substrates
+	\item Strip - a rectangular laminate panel containing 4 in-line coupons
+	\item Laminate - a substrate technology composed of several layers that are pressed/laminated together
+	\item Heatslug - a square or rectangular Cu-coin inserted in the middle of the laminate substrate
+	\item Via hole - a hole drilled from top to bottom of the substrate and is used for connecting the terminals on top to the corresponding soldering pads underneath
+	\item ENEPIG - stands for Electroless Nickel Electroless Palladium Immersion Gold; the die bondable and wire bondable plating on top of Cu-traces in a laminate
+	\item Terminal - metal (Cu) traces that serves as connection of the device into the outside world
+	\item Solder resist - a thin layer of polymer that is usually applied on top of Cu-traces of the laminate substrate for protection against oxidation, and around the soldering pads to prevent solder bridges from forming between closely spaced solder pads
+\end{itemize}
+
+\subsection{Die layout example}
+
+This is an example (estimation) for this PLL project die size and layout:
+
+\begin{figure}[ht!]
+	\centering % try to center it
+	\includegraphics[width=0.5\linewidth]{Figures/die-size-with-pads.png}
+	\caption{Die layout with pads }
+	\label{fig:die-size-with-pads}
+\end{figure}
+
+Also important is the pin count. Absolute minimum is 8 mm x 8 mm.
+
 \section{Identified various risks} % for project plan
 
 \begin{itemize}
 	\item VCO phase noise contributors
-	\item PFD topology and “blind spots”
+	\item PFD topology and “blind spots” % not sure how is this tackled?
 	\item Discussed design methodology to be finalized in next couple of days
-	\item Obtained PDK and discussed risk mitigation strategies
+	\item Obtained PDK and discussed risk mitigation strategies % PDK : SG13G2
 	\item Started authoring chip system specification
 	\item Started project plan with internal and external milestones
-	% \item Project collaboration ideas:
-	% \item Proposed time: 8:00 or 9:00am IST / 7:00 or 8:00am CET, Thursdays
 	\item Agenda: project progress towards milestones, technical discussion
 	\item Review \& signoff of project milestones and plan
 	\item Review system specification draft 
+	\item Packaging option
 \end{itemize}
+
+% ==========================================
+% VCO THEORY ONLY
+% ==========================================
 
 \subsection{VCO phase noise contributors}
 
-Bias % voltage and current bias, resistive bias
+Bias, current mirror vs resistor plus voltage reference % voltage and current bias, resistive bias
 \\
 Quality factor of tank % inductor, capacitor bank and varactor
 \\
@@ -134,89 +455,156 @@ Quality factor of inductor
 \\
 Localized Backside Etching (LBE)
 \\
-Core devices contribution 
+Core devices contribution - The noise sources in a MOS transistor are: thermal noise in the channel, 1/f noise, Noise in the resistive poly gate, noise due to the distributed substrate resistance, shot noise associated with the leakage current of the drain source reverse.
+
+PFD is CML. Has prebuffers, charge pump.
+
+\subsubsection*{Phase noise characterisatiom}
+
+Should it be characterized near DC like current noise or at higher frequency (att 8 \unit{GHz})
+
+\subsection*{Leeson equation}
+
+According to Leeson's Formula, the phase noise in the $\frac{1}{f^2}$ region at an offset frequency $\Delta \omega$ from an oscillation frequency of $\omega_{OSC}$, is given in equation:
+
+\begin{equation}
+	PNw(\Delta \omega) = kTR \dfrac{F}{{V_o}^2} {(\dfrac{\omega_{OSC}}{Q \Delta \omega})}^2
+\end{equation}
+
+where k, T, R, $V_0$, Q and F are the Boltzmann's constant, the absolute temperature, the equivalent tank parallel resistance, the peak oscillation amplitude, the tank quality factor, and the noise factor, respectively.
+
+% how to calculate the eq tank Rpar
 
 % \section{External and internal milestones}
 % Internal are given by anthony
 % \subsection{Internal milestones}
 
-\section{Problem with linearity of RF model}
+% fixed by modifying model files
 
+\section{Blocks needed} 
 
-nmosHVRFmodel 
+\begin{itemize}
+	\item Bandgap PTAT (CTAT?)
+	\item Digital: State Machines, fuses are not available
+	\item Digital: Register Bank for VCO bands, cores
+\end{itemize}
 
-error that is presented
+% what does fuses not available mean?
 
-\begin{verbatim}
-WARNING (SPECTRE-16780): LTE tolerance was temporarily relaxed to step over a discontinuity
-		in the signal: i_VCO.i_VCO_core.N3:int_INT3. Check the design or use '+diagnose' 
-		to get more information.
-        Further occurrences of this warning will be suppressed
-\end{verbatim}
+%===================================================================================================================================================================================================
+% Only about VCO BELOW, RESULTS
+%===================================================================================================================================================================================================
+\newpage
 
+\section{VCO Design methodology}
 
+Only VCO design inquiries
 
-\section{PFD topology and blind spots}
+% \begin{question}[\itshape How did we address problems from 2020 feasibility study?]
+	% - We did not.
+% \end{question}
 
-% Question for Anthony and Anthimos
+% Technical Requirements
 
-Reset path delay is needed because of dead zone and that is why blind zone much worse than expected. % so this is a tradeoff
+\subsection*{Technical requirements}
 
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{|c|l|c|c|c|c|c|}
+		\hline
+		& LO Requirements & Note & min & typ & max & Units \\
+		\hline
+		& \multicolumn{6}{|c|}{\textbf{VCO Requirements}} \\
+		\hline
+		1 & Full LO range &  & 4000  &  & 8000 & MHz \\ 
+		\hline
+		1a & Number of cores &  &   & 2 & 4 & / \\ 
+		\hline
+		2 & Phase Noise at 1 MHz &  &  &  & <-135 & dBc/Hz \\ 
+		\hline
+		3 & differential Vtune &  & 0.1 &  & Vdd-x & V  \\ % differential
+		\hline
+		4 & Tuning Sensitivity $K_{VCO}$ &  & ?<30 &  & ?< 50 & MHz/V  \\ 
+		\hline
+		5 & Pushing & TBD &  &  & 2 & MHz/V  \\ 
+		\hline
+		6 & Output Voltage p-p & TBD & 0.8 &  & & $V_{p-p}$  \\ 
+		\hline
+		7 & Load Impedance &  &  &  & 100 & fF  \\ 
+		\hline
+		& \multicolumn{6}{|c|}{\textbf{VCO and output Buffer}} \\
+		\hline
+		8 & Output Voltage & TBD & ?0.8  &  &  & $V_{p-p}$ \\ 
+		\hline
+		9 & Load Impedance & TBD &  &  & ?1000 & fF  \\ 
+		\hline
+		10 & Harmonic suppression ($2_{nd}$, typ) &  & -15 &  &  & dBc  \\ 
+		\hline
+		11 & Pulling (14 dB Return Loss, Any Phase) & TBD &  &  & 2 & MHz  \\ 
+		\hline
+		& \multicolumn{6}{|c|}{\textbf{General Specifications}} \\
+		\hline
+		12 & Operating Temperature Range &  & -40 &  & 105 & °C  \\ 
+		\hline
+		13 & Supply Voltage ($\pm 5\%$) &  & 2.375 & 2.5 & 2.625 & V  \\ 
+		\hline
+		14 & Supply Current &  &  &  & ?20 & mA  \\ 
+		\hline
+		15 & Shutdown Current &  &  &  & ?10 & $\mu$A  \\ 
+		\hline
+		16 & Time to Switch Between Cores  &  &  & ?3 & ?5 & ms  \\ 
+		\hline
+	\end{tabular}
+	\label{table-spec-ultra-low-noise}
+	\caption{Specification Requirements} 
 
-\section{Discuss design methodology}
+\end{table}
 
-Probably VCO design methodology
-
-\begin{question}[\itshape How did we address problems from 2020 feasibility study?]
-	-
-\end{question}
-
-
-Reference project is LMX 2592 texas instruments
-\\
--135 dBc at  1 MHz % normalized to 7 GHz
-\\
-8 GHz
-\\
-IHP 130 nm SiGe
-\\
-FTR - fine tuning range in percentage
+% FTR - fine tuning range in percentage
 
 \begin{itemize}
 
 	\item What is minimum phase noise that can be obtained with perfect supply, typ process, 25 degC, measured at the VCO output with ideal termination and no buffer
 	\item What is the maximum  tuning sensitivity that can be used to obtain the above
 	\item What additional techniques need to be explored to improve the above
-	\item Perform noise sensitivity analysis 
-	\item Discuss CML buffer concept and LDO topologies
+	\item Perform noise sensitivity analysis like ISF
+	\item Discuss CML buffer concept and LDO topologies % LDO will be external
 	
 \end{itemize}
 
-I searched relevant papers for VCO 130 nm BiCMOS or similar technologies and frequency range, and haven't found performance even close to 130 dBc @ 1 Mhz offset. 
+% I searched relevant papers for VCO 130 nm BiCMOS or similar technologies and frequency range, and haven't found performance even close to 130 dBc @ 1 Mhz offset. 
 
 \begin{question}[\itshape Based on what was this technology picked for this specification?]
-	-
+	Based on previous feasibility study.
 \end{question}
 
 \begin{question}[\itshape What is the input reference frequency of PLL? Are there any dividers in PLL?]
-	Reference frequency is from 1 GHz to 8 GHz.
+	Input reference frequency is from 1 GHz to 8 GHz. There are for sure even if the VCO is (4-8 GHz), 2 and 3 dividers are needed.
 \end{question}
 
 \begin{question}[\itshape Is the input from loop filter single ended or differential?]
-	It's differential. How to implement charge pump - don't know.
+	It's differential. It also makes more sense for phase noise performance ?!
 \end{question}
 
-\begin{question}[\itshape Any estimate for specified VCO output swing?]
+\begin{question}[\itshape How will the PLL lock be detected?]
 	-
 \end{question}
 
+% Deadbit control is a novel technique to lower settling time.
+
+% Moved to table with technical specifications 
+
+% \begin{question}[\itshape Any estimate for specified VCO output swing?]
+% 	-
+% \end{question}
+
 \begin{question}[\itshape What additional techniques need to be explored to improve the above?]
-	Local backside etching (LBE) to improve quality (Q) factor of inductor. 
+	Local backside etching (LBE) to improve quality (Q) factor of inductor. Affect around 1 kHz offset is 3-4 dBs, and around 0.6 - 1 dB at 1 MHz .
 \end{question}
 
 \begin{info}
 	From what I have seen in papers  most promising topology in terms of phase noise is cross-coupled LC VCO class C with potential additional technique of subharmnic injection locking. This is what I plan to try first if no better solutions are provided. \\
-	Subharmonic injection lockign might be too narrowband.
+	Subharmonic injection lockign might be too narrowband. % why this became OBSOLETE
 \end{info}
 
 % I just realize that BSE should be called LBE (localized backside etch).
@@ -236,24 +624,14 @@ I searched relevant papers for VCO 130 nm BiCMOS or similar technologies and fre
 
 A tunnel diode is a special type characterized by its ability to exhibit negative resistance. Unlike conventional diodes, which show positive resistance, tunnel diodes can conduct in the reverse bias region under certain conditions. This property makes them invaluable in various electronic applications, especially high-frequency circuits.
 
-
-
 \begin{itemize}
 	\item Mats Ärlelid, Mikael Nilsson, Gvidas Astromskas, Erik Lind, and Lars-Erik Wernersson, “\href{https://confit.atlas.jp/guide/event-img/ssdm2007/G-5-4/public/pdf_archive?type=in}{High Tuning-Range VCO Using a Gated Tunnel Diode},” Extended Abstracts of the 2007 International Conference on Solid State Devices and Materials, Tsukuba, 2007,-798-G-5-4pp. 798-799
-\end{itemize}
--
-\begin{itemize}
 	\item [C] Regarding VCO phase limit tests: Since noise expresses both in amplitude and phase we could use amplitude regulation to generate the tail current (e.g. using a bipolar current mirror). The problem will then be to minimize noise in the current generator. That could be done with the help of a chopper amplifier. Undesired frequency content may be a new issue, but for a differential design I believe it's solvable. For first tests, an ideal amplifier should come close to that. Maybe a bipolar amplifier doesn't even need that. 
 \end{itemize}
 
--
-\\
 Make two chips (probably for different options for VCO)
 \\
 Testbench to lock PLL, PFD loop filter and VCO.
-\\
-
-PFD is CML.
 \\
 
 pdk does not support detail inductor modeling.
@@ -268,59 +646,21 @@ loop bandwidth reallistic that can be achieved internally is from 3 MHz to 100 M
 up to you if it is 2nd or third order.
 \\
 
-spec Review
-\\
 
-Prelimiary Design Review PDR and Critical Design Review CDR
-\\
 
-70 Mhz below 50 Mhz Kvco? is expected from existing commercial parts.
-\\
+From CMOS Differential LC Oscillator with Suppressed Up-Converted Flicker Noise - Aly Ismail, Asad A. Abidi
 
-\subsection{List of reference papers} % collected by Anthony
+\begin{info}
+	Flicker noise can upconvert around the carrier frequency in many ways, but in practical oscillators two are most important. We illustrate them at work in the conventional differential LC oscillator.
+\end{info}
 
-\begin{itemize}
-	\item A Stacked-Complementary 5 GHz Oscillator With Even-Only Differential Harmonic Shaping Achieving -150 dBc/Hz Phase Noise at 10-MHz Offset Using Body-Biased Thin-Oxide 22-nm FDSOI
-	\item A VCO with Implicit Common-Mode Resonance
-	\item A 2.3 - 5-GHz LC-VCO With Source Damping Resistors to Suppress 1/f Noise Up-Conversion
-	\item A 6.7-to-9.2GHz 55nm CMOS Hybrid Class-B/Class-C Cellular TX VCO
-	\item A 25\% Tuning Range 7.5- 9.4 GHz Oscillator With 194 FoMT and 400 kHz 1/f3 Corner in 40nm CMOS Technology
-	\item A Filtering Technique to Lower LC Oscillator Phase Noise
-	\item A Low Phase Noise and High FoM Distributed-Swing-Boosting Multi-Core Oscillator Using Harmonic-Impedance-Expanding Technique
-	\item A Low Phase Noise, High Phase Accuracy Quadrature LC-VCO With Dual-Tail Current Biasing to Insert Reconfigurable Phase Delay
-	\item A Low Phase Noise Oscillator Principled on Transformer-Coupled Hard Limiting
-	\item A Noise Circulating Oscillator
-	\item Ultra-Low Phase Noise X-Band BiCMOS VCOs Leveraging the Series Resonance
-	\item An Ultra-Low Phase Noise Class-F2 CMOS Oscillator With 191 dBc/Hz FoM and Long-Term Reliability
-	\item CMOS Differential LC Oscillator with Suppressed Up-Converted Flicker Noise
-	\item Design of LC Resonator for Low Phase Noise Oscillators
-	\item Even-Harmonic Class-E CMOS Oscillator
-	\item Implicit Common-Mode Resonance in LC Oscillators
-	\item Third-Harmonic Injection Technique Applied to a 5.87-to-7.56GHz 65nm CMOS Class-F Oscillator with 192dBc/Hz FOM
-\end{itemize}
+\begin{info}
+	1. In the current-limited regime, the tail current governs the steady-state oscillation amplitude. Therefore, 1/f fluctuations in the tail current source (M3) produce low frequency random AM. The random AM envelope modulates the effective capacitance of the tuning varactor, converting AM into FM. The FM sidebands appear as close-in phase noise. 
+\end{info}
 
-\subsection{Mail sent after going through papers}
-
-% I went through papers that Samuel sent, used the Anthony excel formulas to get phase noise results for comparison.
-
-And Franceschin paper has the best noise performance by far. It's made in SiGe 55 nm and using bipolars in core, consumes 500 mA and the output swing is clipped by diode connected bipolars which enables this much current without affecting bipolars operation.
-
-Babaie papers are made in CMOS and are more similar to current design. It utilises step up transformers with different common and differential k factors to decouple capacitor bank from the core and control its drain currents to make a clas F2. But I currently don't know how to implement this because I don't have any ideal transformer models with different k factor for differential and common modes.
-
-Ying paper has a similar idea calls it class F23 and also ok results which makes me think this it the most viable idea from all of these papers to try.
-
-% In attachment you can find excel with some extracted information.
-
-\subsection{Open points}
-
-\begin{itemize}
-	\item Novelic to acquire EVB's for ADF6610, LMX2594 % EVB is an EValuation Board
-	\item Packaging, actual implementation, could be different for different process nodes
-	\item Testability options within chip
-	\item VCO registers/overriding
-	\item External test requirements/definitions
-	\item 
-\end{itemize}
+\begin{info}
+	2. Flicker noise in the differential pair (M1, M2), modeled by an equivalent noise voltage associated with one transistor in the pair, is injected into the LC resonator as current noise at baseband and at the 2nd harmonic. This cannot account for close-in phase noise. However, the flicker noise also modulates the 2nd harmonic voltage waveform at the tail every half period, inducing a noisy current in Ctail. After commutation through M1, M2, this current mixes down to the oscillation frequency and presents a fluctuating capacitance across the LC resonator. The resulting random FM upconverts 1/f noise into close-in phase noise.
+\end{info}
 
 \subsection{Frequency scaling and frequency plan}
 
@@ -349,26 +689,50 @@ And when I use only one output noise for pnoise simulation I get much worse resu
 
 Sorry to bring other people into this, I thought this is important and I wanted to remove myself from these results presented since I also spent some time simulating this design this past week.
 
-Also for the design Gunther sent me today. The results I got with his testbench:
+% Also for the design Gunther sent me today. The results I got with his testbench:
 
-These are not normalized results so they are 5-6 dBs lower, but still far from what was expected.
+% These are not normalized results so they are 5-6 dBs lower, but still far from what was expected.
 
-rfOutputNoise("dBc/Hz" ?result "pnoise")
+% rfOutputNoise("dBc/Hz" ?result "pnoise")
 
 
-\subsection{Tasks regarding the VCO option 2}
+\subsection{Tasks regarding the VCO option 2 and 1}
 
 option 2
 
-Review VCO option 2 BJT and CMOS options
-Review PFD latest results and CP status
-Review approach going forward and schedule proposals
+Review VCO option 2 BJT and CMOS options \\
+Review PFD latest results and CP status \\
+Review approach going forward and schedule proposals \\
 
+Guenter/Aleksandar/Anthime, can we have for each of the blocks (VCO1a, VCO1b, PFD/CP) a status page showing: \\
+performance summary (if different than the VCO comparison table) \\
+any special needs (supply, BSE etc) \\
+projected area \\
+risks so far
+
+\subsection{Problem with discontinuity of RF model}
+
+When simulating design with nmosHVRF models this error appears:
+
+\begin{verbatim}
+WARNING (SPECTRE-16780): LTE tolerance was temporarily relaxed to step over a 
+		discontinuity in the signal: i_VCO.i_VCO_core.N3:int_INT3. Check the design 
+		or use '+diagnose' to get more information.
+        Further occurrences of this warning will be suppressed
+\end{verbatim}
+
+I changed the model parameter:
+\begin{verbatim}
+	+ swnqs         =  0.0 * rfmode * 5.0
+	In section of sg13g2_moshv_psp_parm.scs/ 
+	sg13g2_hv_nmos / model sg13g2_hv_nmos_psp pspnqs103.		
+\end{verbatim}
 
 \subsection{30 GHz VCO design}
 
-with divider by 4
+% with divider by 4 
 
+Performance summary:
 \begin{table}[ht]
 	\centering
 	\begin{tabular}{|c|c|}
@@ -401,19 +765,163 @@ Noise at output of VCO is same as at the output of buffer. Main contributors for
 Note that current tail bias mirror is using PTAT current.
 
 \begin{question}[\itshape Why is PTAT used?]
-	VCO outptut swing or VCO outptu freq or sth else?
+	VCO output swing or VCO output freq or sth else?
 \end{question}
 
+
+\subsection{Parts of interest of VCO}
+
+List of parts:
+\\
+VCO core
+\\
+Differential Varactor (Varactor) %  Is it a must?
+\\
+Capacitor bank (unit)
+\\
+Current and voltage bias - emmiter and source degeneration
+\\
+Bandgap reference generation for v gate col bias control 
+\\
+
+\subsubsection{Balun is external}
+
+Balun is off chip
+Multiplexer is high frequency up to 80 GHz - differntial amplifier structure.
+
+\subsection{Emmiter vs Source degneration}
+
+source capacitive degeneration
+
+% asked for a showcase - response, that it does not actually help
+
+\subsubsection{Paper on YIG VCO}
+
+A Low-Noise Transmission-Type Yttrium Iron Garnet Tuned Oscillator Based on a SiGe MMIC and Bond-Coupling Operating up to 48 GHz Marcel van Delden , Student Member, IEEE, Nils Pohl , Senior Member, IEEE, Klaus Aufinger , Member, IEEE, Christoph Baer , Member, IEEE, and Thomas Musch, Member, IEEE
+
+
+\begin{info}
+	Second, tunable opto-electronic oscillators (TOEO) use sophisticated optical resonators to tune the output frequency in the microwave range. They offer a high bandwidth of up to more than one octave and low phase noise at the same time [19], [20]. However, TOEOs require at least a laser, an optical resonator, an electrooptic phase or amplitude modulator, a fast photodiode, a delay line as well as a filter, and an amplifier for microwave frequencies. High-performance TOEOs like [19], [20] require even more and sophisticated components. Thus, TOEOs are expensive and complex.
+\end{info}
+
 %----------------------------------------------------------------------------------------
-\subsection{Commercial Parts}
+%	DESIGN OF VCO TANK
+%----------------------------------------------------------------------------------------
+
+\section{Design of VCO Tank}
+
+% TOLOOK Design of transformer based tank - Noise Circulating VCO 
+
+\subsection{Differential Varactor}
+%
+2 papers \\
+
+Option 1 is referencing \href{https://ieeexplore.ieee.org/document/1494046?arnumber=1494046}{\textbf{paper}} A 44 \unit{GHz} Differentially Tuned VCO with 4GHz Tuning Range in 0.12 \unit{um} SOI CMOS
+
+
+\begin{figure}[ht!]
+	\includegraphics[width=0.5\linewidth]{Figures/diff-var1.png}
+	% \caption{Difference between class C and class B}
+	\label{fig:diff-var1}
+\end{figure}
+
+Option 2 is referencing \href{https://ieeexplore.ieee.org/document/9056968}{\textbf{paper}} A 23-mW 60-GHz Differential Sub-Sampling PLL with an NMOS-Only Differential-Inductively-Tuned VCO
+\begin{figure}[ht!]
+	\includegraphics[width=0.5\linewidth]{Figures/diff-var2.png}
+	% \caption{Difference between class C and class B}
+	\label{fig:diff-var2}
+\end{figure}
+
+low Q part of Varactor tuning range: % don't know what i wanted to write
+
+\begin{info}
+	
+\end{info}
+
+Q factor is worse for differential tuning vs single-edned tuning.
+
+\subsection{Design of Capacitor Bank} % or Banks  
+
+2 Single-ended banks vs Differential capacitor banks
+
+\subsection{Design of Inductor}
+
+Electro-Magnetic simulator is needed. Technology Parameters if calculations are to be done. Look up the metal stack and info % where to find this
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Parameter & Value & Unit \\
+		\hline
+		\hline
+		Substrate resistivity & X & $\Omega$-\unit{cm}\\
+		\hline
+		Substrate thickness & ? & $um$ \\
+		\hline
+		Silicon dielectric constant & ? & no unit \\
+		\hline
+		Oxide thickness (M3-Sub) & ? & $um$ \\
+		\hline
+		Oxide thickness (M3-M2) & ? & $um$ \\
+		\hline
+		$SiO_2$ dielectric constant & ? & no unit \\
+		\hline
+		Metal resistivity & ? & $\Omega$-\unit{um} \\
+		\hline
+		Top Metal (M?) thickness & ? & $um$ \\
+		\hline
+		Other metal thickness& ? & $um$ \\
+		\hline
+	\end{tabular}
+	\label{tech-param}
+	\caption{Technology Parameters} 
+
+\end{table}
+
+Inductor can be also switchable, 
+
+%----------------------------------------------------------------------------------------
+%	NON VCO PARTS OF PLL
+%----------------------------------------------------------------------------------------
+
+
+\section{Non VCO parts of PLL}
+%----------------------------------------------------------------------------------------
+
+
+\subsection{PFD topology and blind zone } % called "blind spots"
+
+% Question for Anthony and Anthimos
+
+Reset path delay is needed because of dead zone and that is why blind zone was much worse than expected. % so this is a trade-off
+\\
+
+\subsection{Loop Filter}
+
+differential
+
+%----------------------------------------------------------------------------------------
+\section{Commercial Parts}
+
+Commercial parts used as alternative or to augment the design.
 
 \subsubsection*{LMX2592}
 LMX2592 High Performance, Wideband PLLatinuTM RF Synthesizer With Integrated VCO
 \\
 VCO Phase Noise: –134.5 dBc/Hz at 1-MHz
+\\
 Offset for 6-GHz Output
 \\
-Applications
+Industry Leading Phase Noise Performance 
+\\
+VCO Phase Noise: –134.5 dBc/Hz at 1-MHz Offset for 6-GHz Output
+\\
+Normalized PLL Noise Floor: –231 dBc/Hz 
+\\
+Normalized PLL Flicker Noise: –126 dBc/Hz – 49-\unit[]{\fs} RMS Jitter (12 kHz to 20 MHz) for 6 GHz Output
+\\
+Applications: 
 \begin{itemize}
 	\item Test and Measurement Equipment
 	\item Defense and RADAR
@@ -423,32 +931,23 @@ Applications
 	\item Satellite Communications
 \end{itemize}
 
+% Find the commercial part for LDO (Low-dropout regulator)
+
+\subsubsection*{TPS7A8300}
+
+Texas Instruments: TPS7A8300 2-A,6-\unit{\micro\volt} RMS,RF,LDOVoltage Regulator
+
+\begin{figure}[ht!]
+	\includegraphics[width=0.5\linewidth]{Figures/LDO-noise-characteristic.png}
+	% \caption{Difference between class C and class B}
+	\label{fig:ldo-noise-documntation}
+\end{figure}
+
 
 
 %----------------------------------------------------------------------------------------
-\section{Parts of interest of VCO}
-
-List of parts:
-\\
-VCO core
-\\
-Differential Varactor (Varactor)
-\\
-Capacitor bank (unit)
-\\
-Current and voltage bias - emmiter and source degeneration
-\\
-Bandgap reference generation for v gate col bias control 
-
-\subsection{Emmiter vs Source degneration}
-
-source capacitive degeneration
-
-% asked for a showcase no response
-
-\subsection{Differential Varactor}
-%
-
+%----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
 %----------------------------------------------------------------------------------------
 \newpage
 
