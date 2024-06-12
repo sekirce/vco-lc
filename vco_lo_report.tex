@@ -23,13 +23,15 @@
 
 \input{structure.tex} % Include the file specifying the document structure and custom commands
 
-\usepackage{hyperref}
-
+\usepackage[colorlinks]{hyperref}
 \usepackage{siunitx}
 
 % need to add font encoding, used to check if it changes something
 \usepackage[T1]{fontenc}
 
+% added for two figures next to each other
+\usepackage{caption}
+\usepackage{subcaption}
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT INFORMATION
@@ -59,23 +61,25 @@ This needs to be added to body of document % razrada
 
 The open items I recorded are:
 \begin{itemize}
-	\item the effects of BSE on phase noise (i.e. is it really needed)
 	\item Packaging concerns, risks and schedule
 	\item Die quantity and meaningful sample volume
 	\item test chip content and expectations
-	\item overall schedule for the follow-on tapeout in 2025
+	\item overall schedule for the follow-on tape out in 2025
 \end{itemize}
-% LOOKINTO BSE or LBE 
-\subsection*{Complaints and suggestions regarding VCO} % add to 
+
+Planning per core:
 
 \begin{itemize}
-	\item there is no point in using higher resistances than 20 - 30 k$\Omega$ in capacitor bank unit
-	\item test voltage and current for HV\_MOSFETs, to test breakdown of mosfets, use software called \textbf{Real Expert} 
-	% has to do with SOA (Safe operating area) not being a rectangle
-	% find SOA graph in Grujic slides
-	\item estimate for drop in phase noise with supply noise and layout and its generous is -120 dBc/Hz % estimate donw by Samuel
-	\item to further help needs to review design
+	\item Design -- 10 days
+	\item Layout -- 10 days
+	\item Verification -- 0 day
 \end{itemize}
+
+
+% LOOKINTO BSE or LBE 
+
+% \subsection*{Complaints and suggestions regarding VCO} % add to 
+% MOVED TO VCO
 
 % TODO: make a python script to turn csv or xlcsv file into a latex table 
 
@@ -91,8 +95,8 @@ The open items I recorded are:
 % QFN	- Quad Flat No lead
 % MEMS	- MicroElectronical Mechanical Systems
 % SIW	- Substrate Integrated Waveguide
-
-
+% PSD	- Power Spectral Density
+% Q		- Quality (factor usually)
 
 % about SIW
 % ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -123,24 +127,8 @@ The open items I recorded are:
 % integrated waveguide cavity," 2014 44th European Microwave
 % Conference, Rome, 2014, pp. 715-718.
 
-\subsection*{My current problems and work in progress}
-
-\begin{itemize}
-	\item (OBSOLETE) hard-clipped VCO not oscillating at the frequency that is supposed to, drops down to around 1 GHz (example)
-	\item (OBSOLETE) soft-clipped VCO has more frequency modes - CM and DM resonance
-	\item Reliablity of design, breakdown voltages. TDDB is Time Dependent Dielectric Breakdown. 
-	\item making a differential varactor instead of the single-ended one
-	\item What is the name of metal stack process to be used in EM simulations?
-\end{itemize}
-
-\subsection*{Planning to do at some point}
-
-\begin{itemize}
-	\item design a 400 to 500 \unit{pH} inductor (search for a paper that has decent Q factor around 4-8 GHz range) % watch out for electromigration, find the paper that I looked at long time ago
-	\item design a PTAT bandgap voltage reference to swich the gate from cascaded NMOS to reference
-	\item make a testbench for frequency pushing and frequency pulling (look at the old VCO project)
-	\item (DOWNTHELINE) Peak Detector
-\end{itemize}
+% \subsection*{My current problems and work in progress}
+% MOVED TO VCO
 
 % TOSEARCH for Samuel papers
 
@@ -149,7 +137,12 @@ The open items I recorded are:
 % NGSPICE + SG13G2
 % ===============================================
 
-\section{NGSPICE}
+\section{Quality of Life - software tools}
+
+\subsection{Open Source Software}
+
+\subsubsection{NGSPICE}
+
 
 Regarding open-source PDK for SG13G2, it's work in progress, but
 I think worth to consider. Even if just the simulator can be replaced
@@ -164,7 +157,7 @@ Documentation on github is sparse, some more info is here:
 
 
 
-\subsection{Required libraries - Linux Installation}
+\subsubsection{Required libraries - Linux Installation}
 
 libxaw7-dev and libreadline6-dev
 \\
@@ -176,12 +169,124 @@ KiCad plus ngspice
 
 
 
-\subsection{openEMS}
+\subsubsection{openEMS}
 
 openEMS is a free and open source electromagnetic field solver based on the Finite-Difference Time Domain (FDTD) method. Using an improved version of the highly-successful FDTD method (known as Equivalent-Circuit FDTD, or EC-FDTD), openEMS solves Maxwell's equations in discretized space and time to directly simulates the propagation of electromagnetic waves, in a 3D full-wave manner. It has the potential to analyze problems in important applications such as RF/microwave circuit design, antenna, radar, meta-material, and medical research.
 
+\subsection{Commercial software}
+
+\subsubsection{EMX and Momentum}
+
 
 \newpage
+
+\subsection{Change font in Visualisation Cadence}
+
+Example:
+
+\begin{verbatim}
+	myFont = "Roboto Mono Medium,14,-1,5,75,0,0,0,0,0"
+	envSetVal("viva.horizMarker" "font" 'string myFont)
+	envSetVal("viva.referenceLineMarker" "font" 'string myFont)
+	envSetVal("viva.vertMarker" "font" 'string myFont)
+	envSetVal("viva.pointMarker" "font" 'string myFont)
+	envSetVal("viva.refPointMarker" "font" 'string myFont)
+	envSetVal("viva.specMarker" "font" 'string myFont)
+	envSetVal("viva.interceptMarker" "font" 'string myFont)
+	envSetVal("viva.circleMarker" "font" 'string myFont)
+	envSetVal("viva.interceptMarker" "font" 'string myFont)
+	envSetVal("viva.multiDeltaMarker" "font" 'string myFont)
+	envSetVal("viva.transEdgeMarker" "font" 'string myFont)
+
+	envSetVal("viva.trace" "lineThickness" 'string "thick")
+	envSetVal("viva.trace" "lineStyle" 'string "solid")
+	envSetVal("viva.trace" "symbolsOn" 'string "true")
+	envSetVal("viva.trace" "symbolStyle" 'string "Diamond")
+\end{verbatim}
+
+
+
+\subsection{VerilogA Decoder Code}
+
+\begin{file}[Example of 15 bit decoder]
+	\begin{lstlisting}
+	`include "disciplines.vams"
+	module Decoder_15bit_va(L);
+	output     [14:0] L;
+	electrical [14:0] L;
+
+	parameter real 	tdel 	= 20.0p,
+			trise	= 40p,
+			tfall	= 40p,
+			VDD 	= 1.1;
+	parameter integer select = 0;
+	integer   out[14:0], mask, i, j;
+
+	analog begin
+	
+	@(initial_step) begin
+		for(i=14; i>=0; i=i-1) begin
+		mask=1;
+		for(j=1; j<=i; j=j+1) mask=mask*2;
+		out[i]=(select & mask) >> i;
+		end
+	end
+
+	V(L[0]) <+ transition(VDD * out[0],
+	 tdel, trise, tfall);
+	V(L[1]) <+ transition(VDD * out[1],
+	 tdel, trise, tfall);
+	V(L[2]) <+ transition(VDD * out[2],
+	 tdel, trise, tfall);
+	V(L[3]) <+ transition(VDD * out[3],
+	 tdel, trise, tfall);
+	V(L[4]) <+ transition(VDD * out[4],
+	 tdel, trise, tfall);
+	V(L[5]) <+ transition(VDD * out[5],
+	 tdel, trise, tfall);
+	V(L[6]) <+ transition(VDD * out[6],
+	 tdel, trise, tfall);
+	V(L[7]) <+ transition(VDD * out[7],
+	 tdel, trise, tfall);
+	V(L[8]) <+ transition(VDD * out[8],
+	 tdel, trise, tfall);
+	V(L[9]) <+ transition(VDD * out[9],
+	 tdel, trise, tfall);
+	V(L[10]) <+ transition(VDD * out[10],
+	 tdel, trise, tfall);
+	V(L[11]) <+ transition(VDD * out[11],
+	 tdel, trise, tfall);
+	V(L[12]) <+ transition(VDD * out[12],
+	 tdel, trise, tfall);
+	V(L[13]) <+ transition(VDD * out[13],
+	 tdel, trise, tfall);
+	V(L[14]) <+ transition(VDD * out[14],
+	 tdel, trise, tfall);
+
+	end  
+	endmodule
+	\end{lstlisting}
+\end{file}
+
+\newpage
+
+\subsubsection*{Saving Histories in ADE explorer}
+
+\href{https://community.cadence.com/cadence_blogs_8/b/cic/posts/virtuosity-exploring-histories}{Virtuosity: Exploring Histories}
+\begin{verbatim}
+envSetVal("maestro.explorer" "onHistoryNameCollision" 'cyclic "Overwrite")
+envSetVal("adexl.historyNamePrefix" "showNameHistoryForm" 'boolean t)
+envSetVal("maestro.explorer" "onHistoryNameCollision" 'cyclic "IncrementAsNew")
+\end{verbatim}
+
+\subsubsection*{PVS Design Flow}
+
+\begin{itemize}
+	\item PVS DRC 
+	\item PVS LVS - you can setup Quantus from here
+	\item Quantus PVS 
+\end{itemize}
+
 
 %----------------------------------------------------------------------------------------
 %	Technical offer for the start of project
@@ -192,7 +297,7 @@ openEMS is a free and open source electromagnetic field solver based on the Fini
 
 \subsection{Novelic Technical Offer}
 
-Here are technical Novelic evaluation summary on provided documents:  % Point 3 
+Document before the start of the project. Here are technical Novelic evaluation summary on provided documents:  % Point 3 
 
 \begin{itemize}
 	\item Overall conclusion is that: the provided report contains almost the same type of the architecture, like provided in Novelic \& Nirsen study. 
@@ -220,22 +325,20 @@ Here are technical Novelic evaluation summary on provided documents:  % Point 3
 
 \subsection{Specification and Design Review Plan} % Original plan
 
+Suggestion on how to review and specify chip and comparable options:
+
 \begin{itemize}
-	\item Prelimiary Design Review	- PDR
+	\item Preliminary Design Review	- PDR
 	\item Critical Design Review	- CDR
-\end{itemize}
-
-Voltus or Voltera to check currents
-
-\subsection{Open points}
-
-\begin{itemize}
-	\item Novelic to acquire EVB's for ADF6610, LMX2594 % EVB is an EValuation Board
+	\item Voltus or Voltera to check currents
+	\item acquire evaluation boards (EVB) for ADF6610, LMX2594
 	% \item Packaging, actual implementation, could be different for different process nodes
 	\item Testability options within chip
 	\item VCO registers/overriding
 	\item External test requirements/definitions
 \end{itemize}
+
+% Collection of reference papers to read when bored
 
 \subsection{List of reference papers} % collected by Anthony
 
@@ -261,7 +364,7 @@ This is a list of papers regarding the CMOS technology similar to 130 nm collect
 	\item Third-Harmonic Injection Technique Applied to a 5.87-to-7.56 GHz 65nm CMOS Class-F Oscillator with 192dBc/Hz FOM
 \end{enumerate}
 
-\newpage
+% \newpage
 
 \subsection{A Noise Circulating Oscillator}
 
@@ -276,17 +379,26 @@ Oscillator phase noise is a fundamental metric that governs a wide variety of de
 % ABOUT CMOS VCO PAPERS
 % ======================================================
 
-\subsection{Mail sent after going through CMOS papers}
+\subsection{About CMOS papers}
 
 % I went through papers that Samuel sent, used the Anthony excel formulas to get phase noise results for comparison.
 
-Franceschin paper has the best noise performance by far. It's made in SiGe 55 nm and using bipolars in core, consumes 500 mA and the output swing is clipped by diode connected bipolars which enables this much current without affecting bipolars operation.
+Franceschin paper has the best noise performance by far. It's made in SiGe 55 nm and using bipolar transistors in core, consumes 500 mA and the output swing is clipped by diode connected bipolars which enables this much current without affecting bipolars operation.
 
-Babaie papers are made in CMOS and are more similar to current design. It utilises step up transformers with different common and differential k factors to decouple capacitor bank from the core and control its drain currents to make a clas F2. But I currently don't know how to implement this because I don't have any ideal transformer models with different k factor for differential and common modes.
+Babaie papers are made in CMOS and are more similar to current design. It utilises step up transformers with different common and differential k factors to decouple capacitor bank from the core and control its drain currents to make a class F2. But I currently don't know how to implement this because I don't have any ideal transformer models with different k factor for differential and common modes.
 
 Ying paper has a similar idea calls it class F23 and also ok results which makes me think this it the most viable idea from all of these papers to try.
 
 % In attachment you can find excel with some extracted information.
+
+\subsubsection{Paper on YIG VCO}
+
+A Low-Noise Transmission-Type Yttrium Iron Garnet Tuned Oscillator Based on a SiGe MMIC and Bond-Coupling Operating up to 48 GHz Marcel van Delden , Student Member, IEEE, Nils Pohl , Senior Member, IEEE, Klaus Aufinger , Member, IEEE, Christoph Baer , Member, IEEE, and Thomas Musch, Member, IEEE
+
+
+\begin{info}
+	Second, tuneable opto-electronic oscillators (TOEO) use sophisticated optical resonators to tune the output frequency in the microwave range. They offer a high bandwidth of up to more than one octave and low phase noise at the same time [19], [20]. However, TOEOs require at least a laser, an optical resonator, an electrooptic phase or amplitude modulator, a fast photodiode, a delay line as well as a filter, and an amplifier for microwave frequencies. High-performance TOEOs like [19], [20] require even more and sophisticated components. Thus, TOEOs are expensive and complex.
+\end{info}
 
 \section{Packaging Technology Options}
 
@@ -338,7 +450,7 @@ Number of pins is important for packaging - keep it below 32.
 
 
 \begin{figure}[ht!]
-	\centering % try to center it
+	\centering % try to centre it
 	\includegraphics[width=0.5\linewidth]{Figures/RQFN-4-mm.png}
 	\caption{RQFN packaging example }
 	\label{fig:rqfn-example}
@@ -384,7 +496,7 @@ Packaging house options are:
 % QP technologies
 % spectrum semi
 
-\subsection{Packaging terms by ampleon}
+\subsection{Packaging terms by AMPLEON}
 
 Packaging is an important element in RF power transistors, influencing both the cost-efficiency and performance of a given device. Since peak powers can vary widely, from as low as 5 W to more than 1 kW, a range of packages is needed to cover every application. The choice of package format (air-cavity or overmolded plastic), often depends on the design requirements, and any \textbf{trade-offs to be made between performance and cost.} \\
 
@@ -426,7 +538,61 @@ This is an example (estimation) for this PLL project die size and layout:
 
 Also important is the pin count. Absolute minimum is 8 mm x 8 mm.
 
-\section{Identified various risks} % for project plan
+\begin{figure}[ht!]
+	\centering % try to center it
+	\includegraphics[width=0.5\linewidth]{Figures/powerpoint-toplevel-packaging.png}
+	\caption{Top layout and packaging choice}
+	\label{fig:powerpoint-toplevel-packaging}
+\end{figure}
+
+% \begin{figure}
+% \centering
+% \begin{subfigure}{.5\textwidth}
+% 	\centering
+% 	\includegraphics[width=.4\linewidth]{image1}
+% 	\caption{A subfigure}
+% 	\label{fig:sub1}
+% \end{subfigure}%
+% \begin{subfigure}{.5\textwidth}
+% 	\centering
+% 	\includegraphics[width=.4\linewidth]{image1}
+% 	\caption{A subfigure}
+% 	\label{fig:sub2}
+% \end{subfigure}
+% \caption{A figure with two subfigures}
+% \label{fig:test}
+% \end{figure}
+
+% \begin{figure}
+% \centering
+% \begin{minipage}{.5\textwidth}
+% 	\centering
+% 	\includegraphics[width=.4\linewidth]{image1}
+% 	\captionof{figure}{A figure}
+% 	\label{fig:test1}
+% \end{minipage}%
+% \begin{minipage}{.5\textwidth}
+% 	\centering
+% 	\includegraphics[width=.4\linewidth]{image1}
+% 	\captionof{figure}{Another figure}
+% 	\label{fig:test2}
+% \end{minipage}
+% \end{figure}
+
+
+\section{Test Chip Architecture}
+
+Removed CMOS VCO design.
+
+\begin{figure}[ht!]
+	\centering % try to center it
+	\includegraphics[width=0.5\linewidth]{Figures/test-chip-arch.png}
+	\caption{Test Chip Architecture Block Scheme}
+	\label{fig:test-chip-arch}
+\end{figure}
+
+
+\subsection*{Identified various risks} % for project plan
 
 \begin{itemize}
 	\item VCO phase noise contributors
@@ -441,38 +607,6 @@ Also important is the pin count. Absolute minimum is 8 mm x 8 mm.
 	\item Packaging option
 \end{itemize}
 
-% ==========================================
-% VCO THEORY ONLY
-% ==========================================
-
-\subsection{VCO phase noise contributors}
-
-Bias, current mirror vs resistor plus voltage reference % voltage and current bias, resistive bias
-\\
-Quality factor of tank % inductor, capacitor bank and varactor
-\\
-Quality factor of inductor
-\\
-Localized Backside Etching (LBE)
-\\
-Core devices contribution - The noise sources in a MOS transistor are: thermal noise in the channel, 1/f noise, Noise in the resistive poly gate, noise due to the distributed substrate resistance, shot noise associated with the leakage current of the drain source reverse.
-
-PFD is CML. Has prebuffers, charge pump.
-
-\subsubsection*{Phase noise characterisatiom}
-
-Should it be characterized near DC like current noise or at higher frequency (att 8 \unit{GHz})
-
-\subsection*{Leeson equation}
-
-According to Leeson's Formula, the phase noise in the $\frac{1}{f^2}$ region at an offset frequency $\Delta \omega$ from an oscillation frequency of $\omega_{OSC}$, is given in equation:
-
-\begin{equation}
-	PNw(\Delta \omega) = kTR \dfrac{F}{{V_o}^2} {(\dfrac{\omega_{OSC}}{Q \Delta \omega})}^2
-\end{equation}
-
-where k, T, R, $V_0$, Q and F are the Boltzmann's constant, the absolute temperature, the equivalent tank parallel resistance, the peak oscillation amplitude, the tank quality factor, and the noise factor, respectively.
-
 % how to calculate the eq tank Rpar
 
 % \section{External and internal milestones}
@@ -481,405 +615,18 @@ where k, T, R, $V_0$, Q and F are the Boltzmann's constant, the absolute tempera
 
 % fixed by modifying model files
 
-\section{Blocks needed} 
+% \section{Blocks needed} 
+% MOVED AFTER VCO
 
-\begin{itemize}
-	\item Bandgap PTAT (CTAT?)
-	\item Digital: State Machines, fuses are not available
-	\item Digital: Register Bank for VCO bands, cores
-\end{itemize}
 
 % what does fuses not available mean?
 
 %===================================================================================================================================================================================================
-% Only about VCO BELOW, RESULTS
+% VCO THEORY, DESIGN, RESULTS
 %===================================================================================================================================================================================================
 \newpage
 
-\section{VCO Design methodology}
-
-Only VCO design inquiries
-
-% \begin{question}[\itshape How did we address problems from 2020 feasibility study?]
-	% - We did not.
-% \end{question}
-
-% Technical Requirements
-
-\subsection*{Technical requirements}
-
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{|c|l|c|c|c|c|c|}
-		\hline
-		& LO Requirements & Note & min & typ & max & Units \\
-		\hline
-		& \multicolumn{6}{|c|}{\textbf{VCO Requirements}} \\
-		\hline
-		1 & Full LO range &  & 4000  &  & 8000 & MHz \\ 
-		\hline
-		1a & Number of cores &  &   & 2 & 4 & / \\ 
-		\hline
-		2 & Phase Noise at 1 MHz &  &  &  & <-135 & dBc/Hz \\ 
-		\hline
-		3 & differential Vtune &  & 0.1 &  & Vdd-x & V  \\ % differential
-		\hline
-		4 & Tuning Sensitivity $K_{VCO}$ &  & ?<30 &  & ?< 50 & MHz/V  \\ 
-		\hline
-		5 & Pushing & TBD &  &  & 2 & MHz/V  \\ 
-		\hline
-		6 & Output Voltage p-p & TBD & 0.8 &  & & $V_{p-p}$  \\ 
-		\hline
-		7 & Load Impedance &  &  &  & 100 & fF  \\ 
-		\hline
-		& \multicolumn{6}{|c|}{\textbf{VCO and output Buffer}} \\
-		\hline
-		8 & Output Voltage & TBD & ?0.8  &  &  & $V_{p-p}$ \\ 
-		\hline
-		9 & Load Impedance & TBD &  &  & ?1000 & fF  \\ 
-		\hline
-		10 & Harmonic suppression ($2_{nd}$, typ) &  & -15 &  &  & dBc  \\ 
-		\hline
-		11 & Pulling (14 dB Return Loss, Any Phase) & TBD &  &  & 2 & MHz  \\ 
-		\hline
-		& \multicolumn{6}{|c|}{\textbf{General Specifications}} \\
-		\hline
-		12 & Operating Temperature Range &  & -40 &  & 105 & °C  \\ 
-		\hline
-		13 & Supply Voltage ($\pm 5\%$) &  & 2.375 & 2.5 & 2.625 & V  \\ 
-		\hline
-		14 & Supply Current &  &  &  & ?20 & mA  \\ 
-		\hline
-		15 & Shutdown Current &  &  &  & ?10 & $\mu$A  \\ 
-		\hline
-		16 & Time to Switch Between Cores  &  &  & ?3 & ?5 & ms  \\ 
-		\hline
-	\end{tabular}
-	\label{table-spec-ultra-low-noise}
-	\caption{Specification Requirements} 
-
-\end{table}
-
-% FTR - fine tuning range in percentage
-
-\begin{itemize}
-
-	\item What is minimum phase noise that can be obtained with perfect supply, typ process, 25 degC, measured at the VCO output with ideal termination and no buffer
-	\item What is the maximum  tuning sensitivity that can be used to obtain the above
-	\item What additional techniques need to be explored to improve the above
-	\item Perform noise sensitivity analysis like ISF
-	\item Discuss CML buffer concept and LDO topologies % LDO will be external
-	
-\end{itemize}
-
-% I searched relevant papers for VCO 130 nm BiCMOS or similar technologies and frequency range, and haven't found performance even close to 130 dBc @ 1 Mhz offset. 
-
-\begin{question}[\itshape Based on what was this technology picked for this specification?]
-	Based on previous feasibility study.
-\end{question}
-
-\begin{question}[\itshape What is the input reference frequency of PLL? Are there any dividers in PLL?]
-	Input reference frequency is from 1 GHz to 8 GHz. There are for sure even if the VCO is (4-8 GHz), 2 and 3 dividers are needed.
-\end{question}
-
-\begin{question}[\itshape Is the input from loop filter single ended or differential?]
-	It's differential. It also makes more sense for phase noise performance ?!
-\end{question}
-
-\begin{question}[\itshape How will the PLL lock be detected?]
-	-
-\end{question}
-
-% Deadbit control is a novel technique to lower settling time.
-
-% Moved to table with technical specifications 
-
-% \begin{question}[\itshape Any estimate for specified VCO output swing?]
-% 	-
-% \end{question}
-
-\begin{question}[\itshape What additional techniques need to be explored to improve the above?]
-	Local backside etching (LBE) to improve quality (Q) factor of inductor. Affect around 1 kHz offset is 3-4 dBs, and around 0.6 - 1 dB at 1 MHz .
-\end{question}
-
-\begin{info}
-	From what I have seen in papers  most promising topology in terms of phase noise is cross-coupled LC VCO class C with potential additional technique of subharmnic injection locking. This is what I plan to try first if no better solutions are provided. \\
-	Subharmonic injection lockign might be too narrowband. % why this became OBSOLETE
-\end{info}
-
-% I just realize that BSE should be called LBE (localized backside etch).
-
-\begin{itemize}
-
-	\item [A] another question to the customer regarding the overall system. 8 is a great number for a divider, but maybe a bad choice for a multiplier? I don't know how it is currently implemented, but thinking of diodes/BJT with exponential characteristics we get odd harmonics, using MOS we may get even ones, at least a good 2nd. But 8=2*2*2 and 9 is just 3*3 .. one stage less, and in differential design only 9 seems feasible. In that case I tend to say that a non-sinusoidal output would even help to reduce gain in the multipliers (which also adds noise on top of the multiplication itself). Assuming that the mixer needs amplification, each *2 stage should add more than 6dB PN, leading to about 20dB or more degradation. If they want to have options on that multiplication factor, we could more easily do that in the PLL with dividers (which reduce PN). Ideally we reduce the VCO range to just more than an octave in the highest band of interest and divide the rest?
-
-	\item [B] I just want to ensure that we're not rebuilding something 1:1 that would benefit from a different structure (thinking about Bosch's wall scanner .. they asked us to turn their discrete circuit 1:1 into an ASIC ... but the central component was a tunnel diode).
-
-\end{itemize}
-
-% tunnel diode
-\begin{info}
-	The resonant tunneling diode (RTD) has been investigated in many high frequency applications, including 712 GHz oscillators [1], voltage controlled oscillators (VCOs) with low power consumption [2], high output power oscillators [3], and also analog-to-digital converters [4].
-\end{info}
-
-A tunnel diode is a special type characterized by its ability to exhibit negative resistance. Unlike conventional diodes, which show positive resistance, tunnel diodes can conduct in the reverse bias region under certain conditions. This property makes them invaluable in various electronic applications, especially high-frequency circuits.
-
-\begin{itemize}
-	\item Mats Ärlelid, Mikael Nilsson, Gvidas Astromskas, Erik Lind, and Lars-Erik Wernersson, “\href{https://confit.atlas.jp/guide/event-img/ssdm2007/G-5-4/public/pdf_archive?type=in}{High Tuning-Range VCO Using a Gated Tunnel Diode},” Extended Abstracts of the 2007 International Conference on Solid State Devices and Materials, Tsukuba, 2007,-798-G-5-4pp. 798-799
-	\item [C] Regarding VCO phase limit tests: Since noise expresses both in amplitude and phase we could use amplitude regulation to generate the tail current (e.g. using a bipolar current mirror). The problem will then be to minimize noise in the current generator. That could be done with the help of a chopper amplifier. Undesired frequency content may be a new issue, but for a differential design I believe it's solvable. For first tests, an ideal amplifier should come close to that. Maybe a bipolar amplifier doesn't even need that. 
-\end{itemize}
-
-Make two chips (probably for different options for VCO)
-\\
-Testbench to lock PLL, PFD loop filter and VCO.
-\\
-
-pdk does not support detail inductor modeling.
-\\
-
-harmonic filter is not included
-\\
-
-loop bandwidth reallistic that can be achieved internally is from 3 MHz to 100 MHz.
-\\
-
-up to you if it is 2nd or third order.
-\\
-
-
-
-From CMOS Differential LC Oscillator with Suppressed Up-Converted Flicker Noise - Aly Ismail, Asad A. Abidi
-
-\begin{info}
-	Flicker noise can upconvert around the carrier frequency in many ways, but in practical oscillators two are most important. We illustrate them at work in the conventional differential LC oscillator.
-\end{info}
-
-\begin{info}
-	1. In the current-limited regime, the tail current governs the steady-state oscillation amplitude. Therefore, 1/f fluctuations in the tail current source (M3) produce low frequency random AM. The random AM envelope modulates the effective capacitance of the tuning varactor, converting AM into FM. The FM sidebands appear as close-in phase noise. 
-\end{info}
-
-\begin{info}
-	2. Flicker noise in the differential pair (M1, M2), modeled by an equivalent noise voltage associated with one transistor in the pair, is injected into the LC resonator as current noise at baseband and at the 2nd harmonic. This cannot account for close-in phase noise. However, the flicker noise also modulates the 2nd harmonic voltage waveform at the tail every half period, inducing a noisy current in Ctail. After commutation through M1, M2, this current mixes down to the oscillation frequency and presents a fluctuating capacitance across the LC resonator. The resulting random FM upconverts 1/f noise into close-in phase noise.
-\end{info}
-
-\subsection{Frequency scaling and frequency plan}
-
-Formula for normalizing (scaling) phase noise to fundamental (output) frequency:
-
-$PN_{norm}=PN_{meas}-20*log_{10}(\dfrac{freq_{meas}}{freq_{norm}})-20*log_{10}(\dfrac{1}{PNoffset}[MHz])$
-
-Scaling for phase noise in DIV+PFD+CP is different its 10 times log.
-
-
-\subsection{Using different models for HBT}
-
-BSIM4 and psp* (not pss), sometimes psp* gives better performance
-% TOSEARCH for how "psp" models are really called?
-
-BSIM4, as the extension of BSIM3 model, addresses the MOSFET physical effects into sub-100nm regime. The continuous scaling of minimum feature size brought challenges to compact modeling in two ways: One is that to push the barriers in making transistors with shorter gate length, advanced process technologies are used such as non-uniform substrate doping. The second is its opportunities to RF applications.
-
-
-\subsection{Regarding VCO design option 2 results}
-
-% I have simulated pnoise for designs and testbenches Gunther sent me and I don't get the same results.
-
-I believe simulation using setting multiplenoise that gives phase noise perfrmance that is now being presented is not correct.
-As for multiple different nets it gives very different values, which makes little sense with the topology.
-And when I use only one output noise for pnoise simulation I get much worse results (15-20 dBs), but they are consistent.
-
-Sorry to bring other people into this, I thought this is important and I wanted to remove myself from these results presented since I also spent some time simulating this design this past week.
-
-% Also for the design Gunther sent me today. The results I got with his testbench:
-
-% These are not normalized results so they are 5-6 dBs lower, but still far from what was expected.
-
-% rfOutputNoise("dBc/Hz" ?result "pnoise")
-
-
-\subsection{Tasks regarding the VCO option 2 and 1}
-
-option 2
-
-Review VCO option 2 BJT and CMOS options \\
-Review PFD latest results and CP status \\
-Review approach going forward and schedule proposals \\
-
-Guenter/Aleksandar/Anthime, can we have for each of the blocks (VCO1a, VCO1b, PFD/CP) a status page showing: \\
-performance summary (if different than the VCO comparison table) \\
-any special needs (supply, BSE etc) \\
-projected area \\
-risks so far
-
-\subsection{Problem with discontinuity of RF model}
-
-When simulating design with nmosHVRF models this error appears:
-
-\begin{verbatim}
-WARNING (SPECTRE-16780): LTE tolerance was temporarily relaxed to step over a 
-		discontinuity in the signal: i_VCO.i_VCO_core.N3:int_INT3. Check the design 
-		or use '+diagnose' to get more information.
-        Further occurrences of this warning will be suppressed
-\end{verbatim}
-
-I changed the model parameter:
-\begin{verbatim}
-	+ swnqs         =  0.0 * rfmode * 5.0
-	In section of sg13g2_moshv_psp_parm.scs/ 
-	sg13g2_hv_nmos / model sg13g2_hv_nmos_psp pspnqs103.		
-\end{verbatim}
-
-\subsection{30 GHz VCO design}
-
-% with divider by 4 
-
-Performance summary:
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{|c|c|}
-		\hline
-		Parametar & Typical value \\
-		\hline
-		Corner & Typical \\
-		\hline
-		Temperature & 50 °C \\
-		\hline
-		Amplitude & ~ 550 mVpp \\
-		\hline
-		Centre Frequency & ~ 30.25 GHz \\
-		\hline
-		Tuning Range & ~ 0.72 GHz \\
-		\hline
-		$K_{VCO}$ & ~ 1.45 GHz/V \\
-		\hline
-		Tuning range voltage & 0.2 V - 0.7 V \\
-		\hline
-	\end{tabular}
-	\label{30GHz-VCO-design}
-	\caption{Specification Requirements} 
-\end{table}
-
-Some key conclusions in terms of phase noise:
-
-Noise at output of VCO is same as at the output of buffer. Main contributors for VCO output noise is output buffer by performing modulation of VCO tank circuit. Second main contributor is noise in references used to generate VCO current bias and noise in power supply.
-
-Note that current tail bias mirror is using PTAT current.
-
-\begin{question}[\itshape Why is PTAT used?]
-	VCO output swing or VCO output freq or sth else?
-\end{question}
-
-
-\subsection{Parts of interest of VCO}
-
-List of parts:
-\\
-VCO core
-\\
-Differential Varactor (Varactor) %  Is it a must?
-\\
-Capacitor bank (unit)
-\\
-Current and voltage bias - emmiter and source degeneration
-\\
-Bandgap reference generation for v gate col bias control 
-\\
-
-\subsubsection{Balun is external}
-
-Balun is off chip
-Multiplexer is high frequency up to 80 GHz - differntial amplifier structure.
-
-\subsection{Emmiter vs Source degneration}
-
-source capacitive degeneration
-
-% asked for a showcase - response, that it does not actually help
-
-\subsubsection{Paper on YIG VCO}
-
-A Low-Noise Transmission-Type Yttrium Iron Garnet Tuned Oscillator Based on a SiGe MMIC and Bond-Coupling Operating up to 48 GHz Marcel van Delden , Student Member, IEEE, Nils Pohl , Senior Member, IEEE, Klaus Aufinger , Member, IEEE, Christoph Baer , Member, IEEE, and Thomas Musch, Member, IEEE
-
-
-\begin{info}
-	Second, tunable opto-electronic oscillators (TOEO) use sophisticated optical resonators to tune the output frequency in the microwave range. They offer a high bandwidth of up to more than one octave and low phase noise at the same time [19], [20]. However, TOEOs require at least a laser, an optical resonator, an electrooptic phase or amplitude modulator, a fast photodiode, a delay line as well as a filter, and an amplifier for microwave frequencies. High-performance TOEOs like [19], [20] require even more and sophisticated components. Thus, TOEOs are expensive and complex.
-\end{info}
-
-%----------------------------------------------------------------------------------------
-%	DESIGN OF VCO TANK
-%----------------------------------------------------------------------------------------
-
-\section{Design of VCO Tank}
-
-% TOLOOK Design of transformer based tank - Noise Circulating VCO 
-
-\subsection{Differential Varactor}
-%
-2 papers \\
-
-Option 1 is referencing \href{https://ieeexplore.ieee.org/document/1494046?arnumber=1494046}{\textbf{paper}} A 44 \unit{GHz} Differentially Tuned VCO with 4GHz Tuning Range in 0.12 \unit{um} SOI CMOS
-
-
-\begin{figure}[ht!]
-	\includegraphics[width=0.5\linewidth]{Figures/diff-var1.png}
-	% \caption{Difference between class C and class B}
-	\label{fig:diff-var1}
-\end{figure}
-
-Option 2 is referencing \href{https://ieeexplore.ieee.org/document/9056968}{\textbf{paper}} A 23-mW 60-GHz Differential Sub-Sampling PLL with an NMOS-Only Differential-Inductively-Tuned VCO
-\begin{figure}[ht!]
-	\includegraphics[width=0.5\linewidth]{Figures/diff-var2.png}
-	% \caption{Difference between class C and class B}
-	\label{fig:diff-var2}
-\end{figure}
-
-low Q part of Varactor tuning range: % don't know what i wanted to write
-
-\begin{info}
-	
-\end{info}
-
-Q factor is worse for differential tuning vs single-edned tuning.
-
-\subsection{Design of Capacitor Bank} % or Banks  
-
-2 Single-ended banks vs Differential capacitor banks
-
-\subsection{Design of Inductor}
-
-Electro-Magnetic simulator is needed. Technology Parameters if calculations are to be done. Look up the metal stack and info % where to find this
-
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{|c|c|c|}
-		\hline
-		Parameter & Value & Unit \\
-		\hline
-		\hline
-		Substrate resistivity & X & $\Omega$-\unit{cm}\\
-		\hline
-		Substrate thickness & ? & $um$ \\
-		\hline
-		Silicon dielectric constant & ? & no unit \\
-		\hline
-		Oxide thickness (M3-Sub) & ? & $um$ \\
-		\hline
-		Oxide thickness (M3-M2) & ? & $um$ \\
-		\hline
-		$SiO_2$ dielectric constant & ? & no unit \\
-		\hline
-		Metal resistivity & ? & $\Omega$-\unit{um} \\
-		\hline
-		Top Metal (M?) thickness & ? & $um$ \\
-		\hline
-		Other metal thickness& ? & $um$ \\
-		\hline
-	\end{tabular}
-	\label{tech-param}
-	\caption{Technology Parameters} 
-
-\end{table}
-
-Inductor can be also switchable, 
+\include{vco-design-and-theory}
 
 %----------------------------------------------------------------------------------------
 %	NON VCO PARTS OF PLL
@@ -890,6 +637,17 @@ Inductor can be also switchable,
 %----------------------------------------------------------------------------------------
 
 
+\begin{itemize}
+	\item Bandgap PTAT (CTAT?)  % used for
+	\item Digital: State Machines, fuses are not available
+	\item Digital: Register Bank for VCO bands, cores
+	\item DAC, not necessary
+	\item PFD + CP
+	\item Passive Differential Loop Filter
+	\item Balun is off chip. Multiplexer is high frequency up to 80 GHz - differential amplifier structure.
+	\item PLL lock circuit
+\end{itemize}
+
 \subsection{PFD topology and blind zone } % called "blind spots"
 
 % Question for Anthony and Anthimos
@@ -899,8 +657,53 @@ Reset path delay is needed because of dead zone and that is why blind zone was m
 
 \subsection{Loop Filter}
 
-differential
+Two options are:
 
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|}
+    \hline
+		option 1 & option 2 \\ \hline
+        active & passive \\ \hline
+        External OpAmp & Diff Charge Pump \\ \hline
+        Single-ended Tuning & Differential Tuning \\ \hline
+    \end{tabular}
+\end{table}
+
+Passive loop filter is chosen because of better phase noise performance.
+
+
+
+
+\subsubsection*{Active Loop Filter Operational Amplifier}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|p{100mm}|}
+    \hline
+        OA Characteristic & Impact/Considerations \\ \hline
+        Supply Voltage & The op amp needs to allow the supply range needed for rail-to-rail i/o operation. No obligation to use negative supply rail. \\ \hline
+        I/O Common mode range & Output common mode range should allow the VCO to cover the entire tuning range and the input also needs to be rail to rail.* \\ \hline
+        Noise Voltage ($nV/\sqrt{Hz}$) & The voltage noise causes phase noise degradation, especially near the loop bandwidth. Smaller is better. \\ \hline
+        Minimum Stable Gain & Unity gain stable is preferred. \\ \hline
+        Input Bias Currents & This parameter will affect phase detector spurs. Smaller is better. \\ \hline
+        Gain Bandwidth Product & As a rough rule of thumb, one would want the gain bandwidth product to be at least 50 times the loop bandwidth. 
+		\\ \hline
+    \end{tabular}
+\end{table}
+
+\begin{itemize}
+	\item [*] This is important even in fixed bias topologies as the input voltage connected to the PLL charge pump output will start at the lower rail on power-up.
+\end{itemize}
+
+Some commercial part examples to look into:
+\begin{itemize}
+	\item OP184
+	\item AD820
+	\item AD8661 
+\end{itemize}
+
+\include{spi}
 %----------------------------------------------------------------------------------------
 \section{Commercial Parts}
 
@@ -924,7 +727,7 @@ Normalized PLL Flicker Noise: –126 dBc/Hz – 49-\unit[]{\fs} RMS Jitter (12 k
 Applications: 
 \begin{itemize}
 	\item Test and Measurement Equipment
-	\item Defense and RADAR
+	\item Defence and RADAR
 	\item Microwave Backhaul
 	\item High-Performance Clock Source for High-Speed
 	\item Data Converters
@@ -944,532 +747,11 @@ Texas Instruments: TPS7A8300 2-A,6-\unit{\micro\volt} RMS,RF,LDOVoltage Regulato
 \end{figure}
 
 
+\subsubsection*{HP4352S}
 
-%----------------------------------------------------------------------------------------
-%----------------------------------------------------------------------------------------
-%----------------------------------------------------------------------------------------
-%----------------------------------------------------------------------------------------
-\newpage
+powerful VCO/PLL test system, the HP4352S
 
-\section{LO block VCO and VCO Buffer - old project}
-
-Old project for topcon INSERTDATE % or time frame
-
-\subsection{Introduction} % Unnumbered section
-
-LO block is LC VCO with internal inductor and fully differential output buffer. Its schematic shall ensure differential connection to the mixer LO input and PLL RF input. LO block should have the characteristics given in Table \ref{table-spec}. Due to wide frequency range it is necessary to use switchable capacitor banks.  
-
-%----------------------------------------------------------------------------------------
-\subsection{Technical Requirements}
-
-
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{|c|l|c|c|c|c|c|}
-		\hline
-		& LO Requirements & Note & min & typ & max & Units \\
-		\hline
-		& \multicolumn{6}{|c|}{VCO Requirements} \\
-		\hline
-		1 & Full LO range &  & 6300  &  & 13700 & MHz \\ 
-		\hline
-		2 & Phase Noise at 300 kHz &  &  &  & <-101 & dBc/Hz \\ 
-		\hline
-		3 & Vtune &  & 0.1 &  & 1 & V  \\ 
-		\hline
-		4 & Tuning Sensitivity $K_{VCO}$ &  &  &  & 100 & MHz/V  \\ 
-		\hline
-		5 & Pushing & TBD &  &  & 2 & MHz/V  \\ 
-		\hline
-		6 & Output Voltage & TBD & 0.8 &  & & $V_{p-p}$  \\ 
-		\hline
-		7 & Load Impedance &  &  &  & 100 & fF  \\ 
-		\hline
-		& \multicolumn{6}{|c|}{VCO and output Buffer} \\
-		\hline
-		8 & Output Voltage & TBD & 0.8  &  &  & V  \\ 
-		\hline
-		9 & Load Impedance & TBD &  &  & 1000 & fF  \\ 
-		\hline
-		10 & Harmonic suppression ($2_{nd}$, typ) &  & -15 &  &  & dBc  \\ 
-		\hline
-		11 & Pulling (14 dB Return Loss, Any Phase) & TBD &  &  & 2 & MHz  \\ 
-		\hline
-		& \multicolumn{6}{|c|}{General Specifications} \\
-		\hline
-		12 & Operating Temperature Range &  & -40 &  & 125 & °C  \\ 
-		\hline
-		13 & Supply Voltage &  & 1 & 1.1 & 1.2 & V  \\ 
-		\hline
-		14 & Supply Current &  &  &  & 20 & mA  \\ 
-		\hline
-		15 & Shutdown Current &  &  &  & 10 & $\mu$A  \\ 
-		\hline
-		16 & Time to Switch Between Cores  &  &  & 3 & 5 & ms  \\ 
-		\hline
-	\end{tabular}
-	\label{table-spec}
-	\caption{Specification Requirements} 
-
-\end{table}
-
-Min and max for supply voltage are not defined in the original document, and time for switching between two cores was defined during the meeting.
-
-Currently Full LO range is split between two cores so the requirement should look like this:
-
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{|c|l|c|c|c|c|c|}
-		\hline
-		& LO range requirements & Note & min & typ & max & Units \\
-		\hline
-		1 & High Band core LO range &  & 10000  &  & 13700 & MHz \\ 
-		\hline
-		2 & Low Band core LO range &  & 6300 &  & 10000 & MHz \\ 
-		\hline
-	\end{tabular}
-	\caption{LO Range Two Core Specification Requirements} 
-\end{table}
-
-\begin{question}[\itshape What's the variation for supply voltage?]
-	Not defined probably will be the same as the rest of the 
-\end{question}
-
-
-\begin{question}[\itshape $K_{VCO}$ Why is it in the max column? ]
-	Didn't get answer for this. It's probably also typical and a value that is expected by the PLL design.
-\end{question}
-
-% Footnotes do not work.
-
-Process corners can be found at:
-
-\begin{verbatim}
-/tech/tsmc/tsmc40/models/spectre/crn40lp_2d5_v2d0_2_shrink0d9_embedded_usage.scs
-\end{verbatim}
-% Seems that 
-
-\subsection{Scaldio Design Review}
-
-\begin{question}[\itshape How should calibration be implemented to achieve output voltage peak to peak and minimize noise?]
-Is it done for whole PLL?
-\end{question}
-
-\begin{question}[\itshape Difference between class-B and class-C vco? ]
-	Scaldio uses class-C, so all parasitic capacitances connected to the tail don't matter. Having trouble with observing the currents of drain so cannot check this and compare them. Scaldio looks something between class C and class B because of $V_{gbias}$ voltage and because adding inductor between tail NMOS and switching pair improves phase noise. This is attributed to class B, while class C only needs tail capacitance.
-\end{question}
-
-\begin{figure}[ht!]
-	\includegraphics[width=\linewidth]{Figures/class_C_vs_class_B.png}
-	% \caption{Difference between class C and class B}
-	\label{fig:classC_classB}
-\end{figure}
-
-Lowest bit of digital varactor (L0\_PLL\_hbVCO\_Cdig\_SC2B\_VCOS\_SC2C\_PLL) doesn't do anything, isn't even monotonous. Maybe makes more sense when simulating extracted cells. Digital varactor needs to be redesigned, it could lower the Q factor.
-Main difference between class B and class C can be observed by investigating their drain currents.
-
-\begin{figure}[ht!]
-	\includegraphics[width=\linewidth]{Figures/drainCurrent_classB_vs_classC.png}
-	% \caption{Difference between class C and class B}
-	\label{fig:drainCurrent_classB_vs_classC}
-\end{figure}
-
-\subsection{Main testbench}
-
-Main testbench covers everything except for frequency pulling and full LO range. The simulation results are obtained at the higher end of the LO range. Phase noise is simulated by pss+pnoise.
-
-\begin{info} % Information block
-	With Noise Type=timeaverage and ALL(AM,PM,USB,LSB), you can plot the AM and PM components as well as the total noise. In addition, you can plot phase noise and FM jitter results for oscillators. Plotting is done using the Direct Plot Form.
-	\href{https://community.cadence.com/cadence_blogs_8/b/rf/posts/virtuoso-video-diary-noise-simulation-in-spectre-rf-using-improved-pnoise-hbnoise-and-direct-plot-form-options}{\textbf{External link}}
-\end{info}
-
-Function of phase noise is simulated for PM noise type.
-
-How to choose beat frequency for autonomous system from forum \href{https://community.cadence.com/cadence_technology_forums/f/custom-ic-design/2661/beat-frequency-in-spectrerf-pss-simulation}{\textbf{thread}}.
-
-\begin{info} % Information block
-In an autonomous system (e.g. an oscillator), you turn on the "oscillator" checkbox, and the beat frequency is then the estimated frequency, which gives PSS a starting point to solve for the oscillator frequency. It's important when in oscillator mode to select the outputs of the circuit, which include any subharmonics. In other words, if you have an oscillator followed by a divider, point at the divider output, and give the estimated divided frequency as the beat frequency. Again, this is because you need to solve an integer number of cycles of all the frequencies in the circuit. Note, don't use oscillator mode for circuits which aren't oscillators, since you're then trying to get the simulator to solve for an unknown which is not unknown, which may lead to convergence problems.
-\end{info}
-
-Most of the $I_{bias}$ tune digital control is not used for the higher band, so by increasing the number of steps to cover even higher frequencies than the original design finer bias control is needed.
-
-
-\subsection{Simulation Results for Scaldio design}
-
-Simulated only nominal corner with change for $V_{DD}$ only for frequency pushing simulation. 
-
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{|c|l|c|c|c|c|c|c|}
-		\hline
-		& LO Requirements & Note & min & typ & max & Sim(Typ) & Units \\
-		% \hline
-		% & \multicolumn{7}{|c|}{VCO Requirements} \\
-		\hline
-		1 & Phase Noise at 300 kHz &  &  &  & <-101 & -98 & dBc/Hz  \\ 
-		\hline
-		2 & Tuning Sensitivity $K_{VCO}$ &  &  &  & 100 & over & MHz/V  \\ 
-		\hline
-		3 & Pushing & TBD &  &  & 2  & 279.7 & MHz/V  \\ 
-		\hline
-		4 & Output Voltage & TBD & 800 &  & & 809.3 & $mV_{p-p}$  \\ 
-		\hline
-		5 & Harmonic suppression ($2_{nd}$, typ) &  & -15 &  & & -26.78 & dBc  \\ 
-		\hline
-		6 & Pulling (14 dB Return Loss, Any Phase) & TBD &  &  & 2  & 19.51 & MHz  \\ 
-		\hline
-	\end{tabular}
-	\label{table-ScaldioResults}
-	\caption{Scaldio IMEC design Results}
-\end{table}
-
-Phase noise changes a lot for different tuning voltages between -90 and -100 dBc/Hz. Phase noise is probably not modeled ok because the VCO doesn't have the connection between current bias tail and the switching pair of VCO as transmission line. That inductance and $C_{tail}$ should resonate at 2$\omega_O$ (tank oscillating frequency), but only in the case of class B oscillator. Check what type is vco oscillator. %This is hard to check because pss\_tran drain currents look wierd.
-
-\newpage
-
-%----------------------------------------------------------------------------------------
-\subsection{Q factor of LC tank}
-
-Need testbenches capacitance of tank, varactors and inductor, and for different controls and also corners. Process corners for varactors are the same as MOSFET.
-
-% and of tail (to see how to make it resonate at the double of the oscillating frequency).
-
-\begin{question}[\itshape What kind of chip is it?]
-	What kind of inductance is expected to be connected on $V_{DD}$ and $V_{SS}$ pins. This may or may not change the results. Removed all together right now.
-\end{question}
-
-Testbench for differential Q and L of the inductor that is EMX simulated is shown in Figure \ref{fig:qlinductor}.
-
-\begin{figure}[ht!]
-	\includegraphics[width=\linewidth]{Figures/QL_inductor.png}
-	\caption{Q factor and inductance of L}
-	\label{fig:qlinductor}
-\end{figure}
-
-Q factor is better at the higher frequency.
-
-Simulated Q factor of both varactors and inductor. Q factor of digital varactor for lower bit controls is not much better than Q of inductor.
-
-% Differential Q factor of an inductor 
-
-% Zdiff = Z11 + Z22 - Z12 - Z21
-% Ldiff = Imag {Zdiff} / 2πf
-% Qdiff = Imag{Zdiff } / Real{Zdiff }
-
-Capacitor calculating capacitance and Q factor:
-
-\begin{equation}
-	Y_{diff} (im) = imag(ypm('sp 1 1)) + imag(ypm('sp 2 2)) - imag(ypm('sp 2 1)) - imag(ypm('sp 1 2))
-\end{equation}
-
-\begin{equation}
-	Y_{diff} (re) = real(ypm('sp 1 1)) + real(ypm('sp 2 2)) - real(ypm('sp 2 1)) - real(ypm('sp 1 2))
-\end{equation}
-
-Capacitance:
-\begin{equation}
-	C_{diff} = \dfrac{Y_{diff} (im)}{2\pi f}
-\end{equation}
-
-Q factor of capacitor:
-\begin{equation}
-	Q_C = \dfrac{Y_{diff} (im)}{ Y_{diff} (re)}
-\end{equation}
-
-\begin{figure}[h!]
-	\includegraphics[width=\linewidth]{Figures/Dvaractor.png}
-	\caption{C and Q of digital varactor through controls}
-	\label{fig:dvaracator}
-\end{figure}
-
-More info can be found in  \href{https://ieeexplore.ieee.org/abstract/document/5537949}{\textbf{paper }} A Thorough Analysis of the Tank Quality Factor in LC Oscillators with Switched Capacitor Banks.
-
-Found definitions:
-
-\begin{equation}
-	Q_{LC} = \dfrac{1}{R}\sqrt{\dfrac{L}{C}} = \frac{f_r}{\Delta f} = \frac{\omega _r}{\Delta \omega} = \dfrac{\tau _d \omega}{2}
-\end{equation}
-
-where $\tau _d$ is group delay.
-
-\begin{question}[\itshape How to calculate group delay using sparam analyis?]
-	?
-\end{question}
-
-\subsection{Calculating Q factor‚ LC tank by ringing method}
-
-Link to \href{https://www.giangrandi.ch/electronics/ringdownq/ringdownq.shtml}{\textbf{website}} that shows ring down method of calculating Q factor. Not implemented in virtuoso TODO.
-
-
-%----------------------------------------------------------------------------------------
-\subsubsection{Figure of Merit different definitions}
-
-\begin{info} % Information block
-	The theoretical maxima for the FoM of an oscillator is given by $FoM=174+20log_{10}(Q)$ dBc/Hz
-\end{info}
-
-How to calculate oscillator FoM? Is $Q_L$ factor dominant enough to just equate it with LC tank Q facor.
-
-The widely used FOM is calculated by:
-\begin{equation}
-	FoM = L\{ \Delta \omega \}( \Delta f/f_0)^2 PVCO [mW]
-\end{equation}
-
-Where $L\{\Delta \omega\}$ is the phase noise, $ \Delta \frac{f}{f_0}$ is the ratio between the offset frequency and the carrier, and $P_{VCO}$ is the power consumption of the VCO-core. There is also $FoM^T$ and $FoM_A$ 
-
-\begin{equation}
-	FoM^T = FoM - 20 \log (\dfrac{FTR}{10})
-\end{equation}
-
-and 
-
-\begin{equation}
-	FoM_A = FoM + 10 \log (A)
-\end{equation}
-
-where A is area [$mm^2$], and FTR frequency tuning range [$\%$]
-
-Information about digital varactor copied from \href{https://www.doe.carleton.ca/~ddchen/Tutorials/DCO.pdf}{\textbf{External link}}
-
-\begin{info} % Information block
-Each bit of MIM varactor contains two MIM capacitors connected differentially with a series switch, two pull-up and two pull-down transistors to effectively turn the varactor between its high and low-capacitance states. Measured intrinsic Q of the MIM capacitor is 80 at 3.6 GHz. When is turned on, i.e., high-capacitance state, the varactor Q drops to 30. When is turned off to be in low-capacitance state, the parasitic capacitance of the MIM capacitor and transistors has an effective of 50. The pull-down transistors set the DC levels for drain and source of at 0 V so that
-can be efficiently turned into triode region while the weak pull-up transistors set the DC level to VDDOSC to reduce the parasitic capacitance of thus increasing of the parasitic capacitance. The pull-up pMOS can be implemented by either resistors or transistors. The latter was chosen for silicon area efficiency. Compared to MOS varactors, MIM varactors have a much lower . However, since the differential phase-stability inductor is only 10, the impact of lower varactor is tol erable. When the MIM varactor is at its low-capacitance state, the large DCO internal signal swing and the DC level of 1.4-V supply voltage at source/drain of the pull-up transistors force the drain -nwell junction diodes of the pull-up pMOS to momentarily go into forward-bias condition resulting in a latch-up concern. However, since the forward-bias condition occurs only in 50\% of a 3–4 GHz period, the latch-up phenomenon with the parasitic BJTs can not be triggered.
-\end{info}
-
-%----------------------------------------------------------------------------------------
-\subsection{Lowering frequency pushing and LDO}
-
-About Frequency pushing from \href{https://www.atlantis-press.com/article/6376.pdf}{\textbf{this paper}}
-
-\begin{info} % Information block
-An LC-tank VCO circuit has been implemented in a standard 0.35 $\mu m$ CMOS technology. It is based on a two-transistor biasing structure that improves the performance of frequency pushing and frequency tuning range. Final measurement of proposed structure gives 516 MHz tuning range with 2.278 GHz center frequency and about 0.55$\%$/V frequency pushing in the worst case. The achieved FOM is about -180dBc/Hz, which is very close to the simulated value. This structure is proven to be particularly suitable for achieving low FOM in the VCO circuits having low Q factor LC-tank. Both, the proposed structure and the FOM optimization method, can also be applied to the VCO designs for the applications at higher frequencies, such as 5GHz VCOs for Wireless LAN applications.
-\end{info}
-
-\begin{question}[\itshape Can VCO work for lower voltage of 0.9 V?]
-	This may be needed if LDO is required because of frequency pushing?
-\end{question}
-
-\begin{question}[\itshape Does frequency only happen because of the ripple directly induced by buffers e.g.?]
-	Or could it happen because of EM crosstalk?
-\end{question}
-
-
-Is frequency pushing testbench good? Look into this paper. % which paper
-Different testbench would be to make a transient change in Vdd and check how much frequency changes.
-
-
-Results for class C with pmos bias, only dc change of $V_{DD}$:
-
-\begin{center}
-	\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|}
-		\hline
-		Parameter & typical & spec  & min & max & ss -40 & ss 125 & ff -40 & ff 125 & Units \\
-		% \hline
-		% & \multicolumn{7}{|c|}{VCO Requirements} \\
-		\hline
-		Frequency Pushing & 43.93 & < 2 &  43.93 & 100.1 & 100.1 & 64.36 & 75.48 & 64.09 & MHz \\ 
-		\hline
-		Frequency  & 14.6 & > 14.2  & 14.6 & 15.83 & 15.54 & 15.48 & 15.83 & 15.59 & GHz  \\ 
-		\hline
-	\end{tabular}
-\end{center}
-
-This shows some improvement from frequency pushing of 250 - 300 MHz that was observed for the nmos bias of IMEC Scaldio design.
-
-%----------------------------------------------------------------------------------------
-\subsection{Changing topology and lowering phase noise}
-
-Decision on why is single sided oscillator chosen instead of double sided oscillator.
-
-\begin{info}
-However, if non-negligible parasitic capacitances are found at the tank outputs, the phase-noise performance of the DS-VCO may be seriously degraded, while that of the SS-VCO remains unaffected.
-\end{info}
-
-More on the $\frac{1}{f^2}$ Phase Noise Performance of CMOS Differential-Pair LC-Tank Oscillators in \href{https://backend.orbit.dtu.dk/ws/files/3913656/Andreani.pdf}{\textbf{paper}} by Pietro Andreani.
-
-
-\subsection{Hybrid class C and class B}
-
-\begin{info}
-Further, the proposed VCO solves the issue of the hybrid mixed-signal start-up procedure exposed in [8]. The main drawback of this approach is that, if oscillation stops for some unaccountable reason, the VCO can only be restarted actuating again the whole start-up procedure.
-\end{info}
-
-Referenced paper is:
-
-\begin{itemize}
-	\item [8] J. Chen, F. Jonsson, M. Carlsson, C. Hedenas, and L.-R. Zheng, “\href{https://ieeexplore.ieee.org/document/5951800}{A low power, startup ensured and constant amplitude class-C VCO in \SI{0.18}{\micro\metre} CMOS},” IEEE Microw. Wireless Compon. Lett., vol. 21, no. 8, pp. 427–429, 2011. Dec. 2008.
-\end{itemize}
-
-
-\subsection{Enhanced Oscillation Swing}
-
-Class-C VCO With Amplitude Feedback Loop for Robust Start-Up and Enhanced Oscillation Swing in \href{https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6377236}{\textbf{this paper.}} Phase noise is lowered by lowering $V_{gbias}$, but it makes oscillations start up harder.
-
-\begin{info}
-As noted above, the phase noise improves with increasing the oscillation amplitude, which here would mean lowering the gate bias voltage, $V_{bias}$ . Unfortunately, the original class-C oscillator limits the fixed $V_{bias}$ from being set low enough, otherwise the oscillation may not start up. In [11], a high-swing class-C (HSCC) oscillator was introduced, which removed the tail current transistor of the original class-C oscillator [6]. Instead, an automatic amplitude control was introduced to stabilize the oscillation amplitude. In this work, instead of the transformer used in [11], we choose a simple RC bias circuit.
-\end{info}
-
-This is from \href{https://www.semanticscholar.org/paper/Dual-Core-High-Swing-Class-C-VCO-design-Kim-Kim/c9551af0809604f76263af49976df9efc213bb8e}{\textbf{paper}} Dual-Core High-Swing Class-C VCO design, and references 
-
-
-\begin{itemize}
-	\item [6] A. Mazzanti and P. Andreani, “\href{https://ieeexplore.ieee.org/document/4684621}{Class-C harmonic CMOS
-	VCOs, with a general result on phase noise},” IEEE J.
-	Solid-State Circuits, vol. 43, no. 12, pp. 2716–2729,
-	Dec. 2008.
-	\item [11] M. Tohidian, A. Fotowat-Ahmadi, M. Kamarei, and F.
-	Ndagijimana, “\href{https://ieeexplore.ieee.org/document/6045015}{High-swing class-C VCO},” in Proc.
-	ESSCIRC, Sep. 2011, pp. 495–498
-\end{itemize}
-
-
-\subsection{Questions about new double feedback}
-
-
-Amplitude Feedback for Robust start up
-
-% \begin{question}[\itshape What is?]
-% 	This may be needed if LDO is required because of frequency pushing?
-% \end{question}
-
-
-\subsection{OTA1 - Start up  and gate voltage bias control}
-
-Referent voltage should be set and controlled around 800 mV. Need tests for OTAs inside for VCO, currently simulated only PM and DC gain, should test different $V_{ref}$ levels.
-
-\subsection{OTA2 - Start up and bias control}
-
-Referent voltage should be set and controlled around 400 mV. Problem with OTA2 loop is amplifying noise into the tail bias current. So the new problem arises as noise shaping in LOOP2 is needed. If a OTA of low uGBW is used than start up is too slow.
-
-
-%----------------------------------------------------------------------------------------
-\subsection{Full LO Range and Frequency Recentering}
-
-% TODO Setup the lb vco, and also setup different testbenches for the highest and the lowest frequency available. Add corner analysis PVT.
-
-TODO Add corners for \textbf{fs sf} and similar. Because the LO range is split on two cores, ideally halved. Results are simulated for process and temperature corners: 
-
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{|l|c|c|c|c|c|}
-		\hline
-		Core and Specifictaion & min & max & sim(min) & sim(max) & Units \\
-		\hline
-		\multicolumn{6}{|c|}{VCO core split} \\
-		\hline
-		High Band Higher limit & 13700 &  & 15580 & 16190  &  MHz  \\ 
-		\hline
-		High Band Lower limit &  & 10000 & 10870 & 12460 &  MHz  \\ 
-		\hline
-		High Band range & 3700 &  & 4710 & 3730 &  MHz  \\ 
-		\hline
-		Low Band Higher limit & 10000 &   & 13230 & 14120 &  MHz  \\ 
-		\hline
-		Low Band Lower limit &  & 6300 & 6724 & 8028  &  MHz  \\ 
-		\hline
-		Low Band range & 3700 &  & 6506 & 6092 &  MHz  \\ 
-		\hline
-	\end{tabular}
-	\caption{LO range specification and simulation for Scaldio LC tank}
-\end{table}
-
-Expecting the drop for schematic simulated frequency range, covered range should at least be larger than needed when recentered: 
-
-\begin{equation}
-	HBFR = 13700 - 10000 = 3700 < 3730 = 16190 - 12460
-\end{equation}
-
-For lower band it's similarily calculated
-
-\begin{equation}
-	HBFR = 10000 - 6300 = 3700 < 6092 = 14120 - 8028
-\end{equation}
-
-Lower and higher band are assymetrical and they overlap for at least:
-
-\begin{equation}
-	HBLBoverlap_{high} = 13230 - 10870 = 2360
-\end{equation}
-
-\begin{equation}
-	HBLBoverlap_{low} = 14120 - 12460 = 1660
-\end{equation}
-
-The worst available frequency digital controlled range is $6092 + 3730 - 1660 = 8162$ MHz which is higher than 7400 MHz.
-
-\begin{question}[\itshape Are the two VCO-s in the same process corner at the same time?]
-	Yes. If not than the calculations are wrong.
-\end{question}
-
-NOTE: Analog varactor 0-Vt-1 change does not work so it wasn't included. Further frequency recentering after extraction will be needed.
-
-%----------------------------------------------------------------------------------------
-\subsection{Pulling testbench and design of VCO buffer}
-
-Needs port at and tuning circuit to keep the reflection at -14 dB. Port of reference impedance 10 k$\Omega$ and portAdapter from rfExamples. S parameter analysis to show if the reflection really is -14 dB? Load impedance increased from 100 fF to 1000 fF. VCO buffer is also needed because of the frequency pulling. Does each core have a buffer or do they share it? first make a buffer than maybe a question.
-
-By adding two buffers from \verb c LO_FDDQ_v6c, \verb c LO_FDDQ_INHB_v5_JCx_scaldio2b  and \verb cLO_FDDQ_BUF_X24 c, frequency pulling drops below 1 MHz. 
-
-So this specification looks fine, testbench shown:
-
-
-How does portAdapter work?
-
-
-Frequency pulling mentions coupling (crosstalk) between different blocks on chip and the VCO.
-%----------------------------------------------------------------------------------------
-\subsection{PTAT and CTAT, the temperature independant Vbias for cascode}
-
-% \verb c c
-
-TODO Simulate and show results of temperature sweep.
-
-
-%----------------------------------------------------------------------------------------
-\subsection{Effect of too high tail capacitance}
-
-\begin{figure}[!ht]
-	\includegraphics[width=\linewidth]{Figures/squegging.png}
-	\caption{Squegging}
-	\label{fig:squegging}
-\end{figure}
-
-Instability Low frequency amplitude modulation squegging. This was the issue with the original class C with tail current. Is it important for new topology where current bias is PMOS.
-
-\subsection{PLL theory - PLL Lock Detect and calibration}
-
-About PLL Lock Detect:
-
-\begin{info} % Information block
-	The ability for a PLL to reliably indicate when it is in lock is critical for many applications. An ideal lock detect circuit gives a high indication when the PLL is locked and a low indication when the PLL is unlocked. When VCO calibration finishes it can be indicative if the lock is detected. 
-\end{info}
-
-PLL VCO calibration usually goes as amplitude frequency and then amplitude calibration, or the other way?
-
-Divide and Conquer algorithm
-
-
-\begin{figure}[!ht]
-	\includegraphics[width=\linewidth]{Figures/PLL_basics_regarding_VCO.png}
-	\caption{Gain for VCO and  other blocks inside of PLL}
-	\label{fig:PLL_basics_regarding_VCO	}
-\end{figure}
-
-\begin{info}
-	For the VCO, the noise is suppressed below the loop bandwidth frequency and unshaped above the loop bandwidth.
-\end{info}
-
-
-% 50 or 100 ns for the SAW filter
-
-% differential instead of pseudo differential 
-
-% source degeneration
-
-
-% \begin{question}[\itshape What kind of output is needed ?]
-% 	s
-% \end{question}
+\include{old-project}
 
 % Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent porttitor arcu luctus, imperdiet urna iaculis, mattis eros. Pellentesque iaculis odio vel nisl ullamcorper, nec faucibus ipsum molestie. Sed dictum nisl non aliquet porttitor. Etiam vulputate arcu dignissim, finibus sem et, viverra nisl. Aenean luctus congue massa, ut laoreet metus ornare in. Nunc fermentum nisi imperdiet lectus tincidunt vestibulum at ac elit. Nulla mattis nisl eu malesuada suscipit.
 
