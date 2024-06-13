@@ -156,6 +156,89 @@ Power consumption is not a priority for this project.
 	\label{fig:vco-tradeoff}
 \end{figure}
 
+\subsubsection*{Substrate integrated waveguide resonators}
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Substrate integrated waveguide (SIW) resonators are characterized by high quality (Q) factor, easy integration with planer circuits, and lower conductive loss. \\
+
+Oscillators made in SIW :Samundra K. Thapa, Baichuan Chen, Adel Barakat, Kuniaki Yoshitomi, Ramesh K. Pokharel Miniaturized Slot-Loaded SIW Resonator and Its Application to C-band Low Phase Noise Oscillator \\
+
+Z. Chen, W. Hong, J. Chen and J. Zhou, "Design of High-Q Tunable SIW Resonator and Its Application to Low Phase Noise VCO," in IEEE Microwave and Wireless Components Letters, vol. 23, no. 1, pp. 43-45, Jan. 2013. \\
+
+More papers:
+\begin{itemize}
+
+	\item[6] F. F. He, K. Wu, W. Hong, L. Han and X. Chen, "A Low Phase-Noise VCO Using an Electronically Tunable Substrate Integrated Waveguide Resonator," in IEEE Transactions on Microwave Theory and Techniques, vol. 58, no. 12, pp. 3452-3458, Dec. 2010.
+	\item[7] Z.Yang, B. Luo, J. Dong, T. yang and H. Jin, "Low phase noise oscillator based on quarter mode substrate integrated technique," IEICE Electronics Express, vol. 12, no. 6, pp. 1-6, 2015. 
+	\item[8] C. M. Wu, T. Itoh, A. K. Poddar and U. L. Rohde, "A C-band tunable oscillator based on complementary coupled resonator using substrate integrated waveguide cavity," 2014 44th European Microwave Conference, Rome, 2014, pp. 715-718.
+
+\end{itemize}
+
+
+
+
+% \newpage
+
+\subsection{A Noise Circulating Oscillator}
+
+Oscillator phase noise is a fundamental metric that governs a wide variety of design aspects in modern communication and sensing systems [1], [2]
+
+\begin{enumerate} % RF books
+	\item B. Razavi, RF Microelectronics, 2nd ed. Englewood Cliffs, NJ, USA: Prentice-Hall, 2011. 
+	\item T. H. Lee, The Design of CMOS Radio-Frequency Integrated Circuits. Cambridge, U.K.: Cambridge Univ. Press, 2004.
+\end{enumerate}
+
+% ======================================================
+% ABOUT CMOS VCO PAPERS
+% ======================================================
+
+% Collection of reference papers to read when bored
+
+\subsubsection*{List of SiGe papers}
+
+This is a list of papers regarding the CMOS technology similar to 130 nm collected by Anthony.
+
+\begin{enumerate}
+	\item A Stacked-Complementary 5 GHz Oscillator With Even-Only Differential Harmonic Shaping Achieving -150 dBc/Hz Phase Noise at 10-MHz Offset Using Body-Biased Thin-Oxide 22-nm FDSOI
+	\item A VCO with Implicit Common-Mode Resonance
+	\item A 2.3 - 5-GHz LC-VCO With Source Damping Resistors to Suppress 1/f Noise Up-Conversion
+	\item A 6.7-to-9.2GHz 55nm CMOS Hybrid Class-B/Class-C Cellular TX VCO
+	\item A 25\% Tuning Range 7.5- 9.4 GHz Oscillator With 194 FoMT and 400 kHz 1/f3 Corner in 40nm CMOS Technology
+	\item A Filtering Technique to Lower LC Oscillator Phase Noise
+	\item A Low Phase Noise and High FoM Distributed-Swing-Boosting Multi-Core Oscillator Using Harmonic-Impedance-Expanding Technique
+	\item A Low Phase Noise, High Phase Accuracy Quadrature LC-VCO With Dual-Tail Current Biasing to Insert Reconfigurable Phase Delay
+	\item A Low Phase Noise Oscillator Principled on Transformer-Coupled Hard Limiting
+	\item A Noise Circulating Oscillator
+	\item Ultra-Low Phase Noise X-Band BiCMOS VCOs Leveraging the Series Resonance
+	\item An Ultra-Low Phase Noise Class-F2 CMOS Oscillator With 191 dBc/Hz FoM and Long-Term Reliability
+	\item CMOS Differential LC Oscillator with Suppressed Up-Converted Flicker Noise - Aly Ismail, Asad A. Abidi
+	\item Design of LC Resonator for Low Phase Noise Oscillators
+	\item Even-Harmonic Class-E CMOS Oscillator
+	\item Implicit Common-Mode Resonance in LC Oscillators
+	\item Third-Harmonic Injection Technique Applied to a 5.87-to-7.56 GHz 65nm CMOS Class-F Oscillator with 192dBc/Hz FOM
+\end{enumerate}
+
+
+\subsubsection*{List of CMOS papers}
+
+% I went through papers that Samuel sent, used the Anthony excel formulas to get phase noise results for comparison.
+
+Franceschin paper has the best noise performance by far. It's made in SiGe 55 nm and using bipolar transistors in core, consumes 500 mA and the output swing is clipped by diode connected bipolars which enables this much current without affecting bipolars operation.
+
+Babaie papers are made in CMOS and are more similar to current design. It utilises step up transformers with different common and differential k factors to decouple capacitor bank from the core and control its drain currents to make a class F2. But I currently don't know how to implement this because I don't have any ideal transformer models with different k factor for differential and common modes.
+
+Ying paper has a similar idea calls it class F23 and also ok results which makes me think this it the most viable idea from all of these papers to try.
+
+% In attachment you can find excel with some extracted information.
+
+\subsubsection*{Paper on YIG VCO}
+
+A Low-Noise Transmission-Type Yttrium Iron Garnet Tuned Oscillator Based on a SiGe MMIC and Bond-Coupling Operating up to 48 GHz Marcel van Delden , Student Member, IEEE, Nils Pohl , Senior Member, IEEE, Klaus Aufinger , Member, IEEE, Christoph Baer , Member, IEEE, and Thomas Musch, Member, IEEE
+
+
+\begin{info}
+	Second, tuneable opto-electronic oscillators (TOEO) use sophisticated optical resonators to tune the output frequency in the microwave range. They offer a high bandwidth of up to more than one octave and low phase noise at the same time [19], [20]. However, TOEOs require at least a laser, an optical resonator, an electrooptic phase or amplitude modulator, a fast photodiode, a delay line as well as a filter, and an amplifier for microwave frequencies. High-performance TOEOs like [19], [20] require even more and sophisticated components. Thus, TOEOs are expensive and complex.
+\end{info}
+
 % Only VCO design inquiries
 % \begin{itemize}
 % 	\item (OBSOLETE) hard-clipped VCO not oscillating at the frequency that is supposed to, drops down to around 1 GHz (example)
@@ -174,9 +257,6 @@ Power consumption is not a priority for this project.
 % 	\item (DOWNTHELINE) Peak Detector
 % \end{itemize}
 
-% \begin{question}[\itshape How did we address problems from 2020 feasibility study?]
-	% - We did not.
-% \end{question}
 
 % Technical Requirements
 

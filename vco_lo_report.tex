@@ -75,6 +75,9 @@ Planning per core:
 	\item Verification -- 0 day
 \end{itemize}
 
+\newpage
+
+\section*{List of Abbreviations}
 
 % LOOKINTO BSE or LBE 
 
@@ -84,48 +87,39 @@ Planning per core:
 % TODO: make a python script to turn csv or xlcsv file into a latex table 
 
 % TODO: check how to test reliability of the design. breakdown voltages
-% HCI	- Hot Carrier Injection
-% NBTI	- Negative-Bias Temperature Instability
-% PBTI	- Positive-Bias Temperature Instability
-% TDDB	- Time Dependent Dielectric Breakdown
-% LBE 	- Localized Backsided Etching
-% FTR	- Fine Tuning Range (unit is percentage)
-% EM	- Electro Magnetic
-% CML	- Common Mode Logic
-% QFN	- Quad Flat No lead
-% MEMS	- MicroElectronical Mechanical Systems
-% SIW	- Substrate Integrated Waveguide
-% PSD	- Power Spectral Density
-% Q		- Quality (factor usually)
 
-% about SIW
-% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-% Substrate integrated waveguide (SIW) resonators are
-% characterized by high quality (Q) factor, easy integration with
-% planer circuits, and lower conductive loss. 
+\begin{itemize}
 
-% Oscillators made in SIW
+	\item HCI - Hot Carrier Injection
+	\item NBTI - Negative-Bias Temperature Instability
+	\item PBTI	- Positive-Bias Temperature Instability
+	\item TDDB	- Time Dependent Dielectric Breakdown
+	\item LBE 	- Localized Backsided Etching
+	\item FTR	- Fine Tuning Range (unit is percentage)
+	\item EM	- Electro Magnetic
+	\item CML	- Common Mode Logic
+	\item QFN	- Quad Flat No lead
+	\item MEMS	- MicroElectronical Mechanical Systems
+	\item SIW	- Substrate Integrated Waveguide
+	\item PSD	- Power Spectral Density
+	\item Q		- Quality (factor usually)
+	\item PTAT	- Proportional to Absolute Temperature
+	\item CTAT	- Complementary to Absolute Temperature - usually miscontrued to represent constant 
+	\item DAC	- Digital Analog Converter
+	\item PFD	- Phase Frequency Detector
+	\item CP	- Charge Pump
+	\item FET	- Field-Effect Transistor
+	\item EVB	- Evaluation Board
+	\item EDA	- Electronic Design Automation
+	\item ECL - Emitter Coupled Logic
+	\item TOEO - tuneable opto-electronic oscillators
+	\item YIG - Yttrium Iron Garnet % 
+\end{itemize}
 
-% Samundra K. Thapa, Baichuan Chen, Adel Barakat, Kuniaki Yoshitomi, Ramesh K. Pokharel
-% Miniaturized Slot-Loaded SIW Resonator and Its
-% Application to C-band Low Phase Noise Oscillator
+TODO Sort by alphabet
 
+\newpage
 
-% Z. Chen, W. Hong, J. Chen and J. Zhou, "Design of High-Q Tunable
-% SIW Resonator and Its Application to Low Phase Noise VCO," in IEEE
-% Microwave and Wireless Components Letters, vol. 23, no. 1, pp. 43-45,
-% Jan. 2013.
-% [6] F. F. He, K. Wu, W. Hong, L. Han and X. Chen, "A Low Phase-Noise
-% VCO Using an Electronically Tunable Substrate Integrated Waveguide
-% Resonator," in IEEE Transactions on Microwave Theory and
-% Techniques, vol. 58, no. 12, pp. 3452-3458, Dec. 2010.
-% [7] Z.Yang, B. Luo, J. Dong, T. yang and H. Jin, "Low phase noise
-% oscillator based on quarter mode substrate integrated technique," IEICE
-% Electronics Express, vol. 12, no. 6, pp. 1-6, 2015.
-% [8] C. M. Wu, T. Itoh, A. K. Poddar and U. L. Rohde, "A C-band tunable
-% oscillator based on complementary coupled resonator using substrate
-% integrated waveguide cavity," 2014 44th European Microwave
-% Conference, Rome, 2014, pp. 715-718.
 
 % \subsection*{My current problems and work in progress}
 % MOVED TO VCO
@@ -176,7 +170,7 @@ openEMS is a free and open source electromagnetic field solver based on the Fini
 \subsection{Commercial software}
 
 \subsubsection{EMX and Momentum}
-
+EMX software from Cadence, Momentum from ADS
 
 \newpage
 
@@ -309,19 +303,18 @@ Document before the start of the project. Here are technical Novelic evaluation 
 	\item Robustness over supply voltage variation imposes the design risk.
 	\item Further technical explanation is following:
 	% here need to use idented itemize somehow
-	\item Reset path of this and all similar PFDs has minimum 5 logic gates in signal path.
-	
-	\item Let's assume propagation through gate is 5ps (schematic, typical, in reality and over PVT is even worse!). Period of signal is 125ps at 8GHz which means we are loosing 20\% of period just for propagation. Layout parasitics will degrade this to 40\% in typical. For reset delay > 50\% of period we cannot make a lock of PLL by design. This presents a design risk.
-	\item In the provided document SiGe solution was not simulated in closed loop scenario - PFD and CP tested separately with optimistic separation between input signals. This presents a design risk.
-	\item Mixer gm PFD is good try but followed by ideal VCO in the provided document.  So, we can confirm to get similar PFD values like in initial simulations. But provided simulation does not include any real VCO with imperfections.  By this approach PLL will work good if VCO is ideal, with possibly too optimistic phase noise profile. This presents a design risk.
-	\item If the mixer is used in PFD (like possible proposed option) basically we would have PHASE ONLY locking, while if input frequencies of the PFD are significantly apart from each other, so we will not have PLL in LOCK state. This is the most likely scenario since range of input frequencies is 1-8GHz. So most probably this approach can be followed for design.
-	\item In entire document provided by End user, Novelic do not see any VCO design, which is the most critical part besides PFD, so VCO is considered as an ideal VCO.  
-	% PLL model
-	\item Based on Novelic previous experience, and comparison to the state-of-the-art performance in journal/conference publications and/or patents we could not confirm feasibility of making VCO with required phase noise requirements, like in initial specifications. 
+	\begin{itemize}
+		\item Reset path of this and all similar PFDs has minimum 5 logic gates in signal path.
+		\item Let's assume propagation through gate is 5ps (schematic, typical, in reality and over PVT is even worse!). Period of signal is 125ps at 8GHz which means we are loosing 20\% of period just for propagation. Layout parasitics will degrade this to 40\% in typical. For reset delay > 50\% of period we cannot make a lock of PLL by design. This presents a design risk.
+		\item In the provided document SiGe solution was not simulated in closed loop scenario - PFD and CP tested separately with optimistic separation between input signals. This presents a design risk.
+		\item Mixer gm PFD is good try but followed by ideal VCO in the provided document.  So, we can confirm to get similar PFD values like in initial simulations. But provided simulation does not include any real VCO with imperfections.  By this approach PLL will work good if VCO is ideal, with possibly too optimistic phase noise profile. This presents a design risk.
+		\item If the mixer is used in PFD (like possible proposed option) basically we would have PHASE ONLY locking, while if input frequencies of the PFD are significantly apart from each other, so we will not have PLL in LOCK state. This is the most likely scenario since range of input frequencies is 1-8GHz. So most probably this approach can be followed for design.
+		\item In entire document provided by End user, Novelic do not see any VCO design, which is the most critical part besides PFD, so VCO is considered as an ideal VCO.  % PLL model
+		\item Based on Novelic previous experience, and comparison to the state-of-the-art performance in journal/conference publications and/or patents we could not confirm feasibility of making VCO with required phase noise requirements, like in initial specifications. 
+	\end{itemize}
 
 \end{itemize}
 
-\newpage
 
 \subsection{Specification and Design Review Plan} % Original plan
 
@@ -330,7 +323,7 @@ Suggestion on how to review and specify chip and comparable options:
 \begin{itemize}
 	\item Preliminary Design Review	- PDR
 	\item Critical Design Review	- CDR
-	\item Voltus or Voltera to check currents
+	\item Sign-off tools - Voltus or Voltera to check currents % meaning In the automated design of integrated circuits, signoff (also written as sign-off) checks is the collective name given to a series of verification steps that the design must pass before it can be taped out.
 	\item acquire evaluation boards (EVB) for ADF6610, LMX2594
 	% \item Packaging, actual implementation, could be different for different process nodes
 	\item Testability options within chip
@@ -338,67 +331,13 @@ Suggestion on how to review and specify chip and comparable options:
 	\item External test requirements/definitions
 \end{itemize}
 
-% Collection of reference papers to read when bored
+\href{https://en.wikipedia.org/wiki/Signoff_(electronic_design_automation)}{Signoff EDA}
 
-\subsection{List of reference papers} % collected by Anthony
+\newpage
 
-This is a list of papers regarding the CMOS technology similar to 130 nm collected by Anthony.
-
-\begin{enumerate}
-	\item A Stacked-Complementary 5 GHz Oscillator With Even-Only Differential Harmonic Shaping Achieving -150 dBc/Hz Phase Noise at 10-MHz Offset Using Body-Biased Thin-Oxide 22-nm FDSOI
-	\item A VCO with Implicit Common-Mode Resonance
-	\item A 2.3 - 5-GHz LC-VCO With Source Damping Resistors to Suppress 1/f Noise Up-Conversion
-	\item A 6.7-to-9.2GHz 55nm CMOS Hybrid Class-B/Class-C Cellular TX VCO
-	\item A 25\% Tuning Range 7.5- 9.4 GHz Oscillator With 194 FoMT and 400 kHz 1/f3 Corner in 40nm CMOS Technology
-	\item A Filtering Technique to Lower LC Oscillator Phase Noise
-	\item A Low Phase Noise and High FoM Distributed-Swing-Boosting Multi-Core Oscillator Using Harmonic-Impedance-Expanding Technique
-	\item A Low Phase Noise, High Phase Accuracy Quadrature LC-VCO With Dual-Tail Current Biasing to Insert Reconfigurable Phase Delay
-	\item A Low Phase Noise Oscillator Principled on Transformer-Coupled Hard Limiting
-	\item A Noise Circulating Oscillator
-	\item Ultra-Low Phase Noise X-Band BiCMOS VCOs Leveraging the Series Resonance
-	\item An Ultra-Low Phase Noise Class-F2 CMOS Oscillator With 191 dBc/Hz FoM and Long-Term Reliability
-	\item CMOS Differential LC Oscillator with Suppressed Up-Converted Flicker Noise - Aly Ismail, Asad A. Abidi
-	\item Design of LC Resonator for Low Phase Noise Oscillators
-	\item Even-Harmonic Class-E CMOS Oscillator
-	\item Implicit Common-Mode Resonance in LC Oscillators
-	\item Third-Harmonic Injection Technique Applied to a 5.87-to-7.56 GHz 65nm CMOS Class-F Oscillator with 192dBc/Hz FOM
-\end{enumerate}
-
-% \newpage
-
-\subsection{A Noise Circulating Oscillator}
-
-Oscillator phase noise is a fundamental metric that governs a wide variety of design aspects in modern communication and sensing systems [1], [2]
-
-\begin{enumerate} % RF books
-	\item B. Razavi, RF Microelectronics, 2nd ed. Englewood Cliffs, NJ, USA: Prentice-Hall, 2011. 
-	\item T. H. Lee, The Design of CMOS Radio-Frequency Integrated Circuits. Cambridge, U.K.: Cambridge Univ. Press, 2004.
-\end{enumerate}
-
-% ======================================================
-% ABOUT CMOS VCO PAPERS
-% ======================================================
-
-\subsection{About CMOS papers}
-
-% I went through papers that Samuel sent, used the Anthony excel formulas to get phase noise results for comparison.
-
-Franceschin paper has the best noise performance by far. It's made in SiGe 55 nm and using bipolar transistors in core, consumes 500 mA and the output swing is clipped by diode connected bipolars which enables this much current without affecting bipolars operation.
-
-Babaie papers are made in CMOS and are more similar to current design. It utilises step up transformers with different common and differential k factors to decouple capacitor bank from the core and control its drain currents to make a class F2. But I currently don't know how to implement this because I don't have any ideal transformer models with different k factor for differential and common modes.
-
-Ying paper has a similar idea calls it class F23 and also ok results which makes me think this it the most viable idea from all of these papers to try.
-
-% In attachment you can find excel with some extracted information.
-
-\subsubsection{Paper on YIG VCO}
-
-A Low-Noise Transmission-Type Yttrium Iron Garnet Tuned Oscillator Based on a SiGe MMIC and Bond-Coupling Operating up to 48 GHz Marcel van Delden , Student Member, IEEE, Nils Pohl , Senior Member, IEEE, Klaus Aufinger , Member, IEEE, Christoph Baer , Member, IEEE, and Thomas Musch, Member, IEEE
-
-
-\begin{info}
-	Second, tuneable opto-electronic oscillators (TOEO) use sophisticated optical resonators to tune the output frequency in the microwave range. They offer a high bandwidth of up to more than one octave and low phase noise at the same time [19], [20]. However, TOEOs require at least a laser, an optical resonator, an electrooptic phase or amplitude modulator, a fast photodiode, a delay line as well as a filter, and an amplifier for microwave frequencies. High-performance TOEOs like [19], [20] require even more and sophisticated components. Thus, TOEOs are expensive and complex.
-\end{info}
+% ==============================================
+% Packaging Technology options and theory
+% ==============================================
 
 \section{Packaging Technology Options}
 
@@ -461,7 +400,7 @@ Number of pins is important for packaging - keep it below 32.
 Flip chip, also known as controlled collapse chip connection or its abbreviation, C4, is a method for interconnecting dies such as semiconductor devices, IC chips, integrated passive devices and microelectromechanical systems (MEMS), to external circuitry with solder bumps that have been deposited onto the chip pads. This is in contrast to wire bonding, in which the chip is mounted upright and fine wires are welded onto the chip pads and lead frame contacts to interconnect the chip pads to external circuitry.
 
 % ==============================================
-% PACKAGING options
+% PACKAGING House options
 % ==============================================
 
 \subsection{Packaging house options}
@@ -579,7 +518,6 @@ Also important is the pin count. Absolute minimum is 8 mm x 8 mm.
 % \end{minipage}
 % \end{figure}
 
-
 \section{Test Chip Architecture}
 
 Removed CMOS VCO design.
@@ -590,7 +528,6 @@ Removed CMOS VCO design.
 	\caption{Test Chip Architecture Block Scheme}
 	\label{fig:test-chip-arch}
 \end{figure}
-
 
 \subsection*{Identified various risks} % for project plan
 
@@ -626,12 +563,11 @@ Removed CMOS VCO design.
 %===================================================================================================================================================================================================
 \newpage
 
-\include{vco-design-and-theory}
+\include{subtex-files/vco-design-and-theory}
 
 %----------------------------------------------------------------------------------------
 %	NON VCO PARTS OF PLL
 %----------------------------------------------------------------------------------------
-
 
 \section{Non VCO parts of PLL}
 %----------------------------------------------------------------------------------------
@@ -648,8 +584,19 @@ Removed CMOS VCO design.
 	\item PLL lock circuit
 \end{itemize}
 
-\subsection{PFD topology and blind zone } % called "blind spots"
+\subsection{Divider}
 
+
+\begin{itemize}
+	\item division rations needed : 1/2/3/4/12
+	\item using ecl logic same as PFD
+\end{itemize}
+
+
+\subsection{PFD} % called "blind spots"
+
+
+PFD topology and blind zone \\
 % Question for Anthony and Anthimos
 
 Reset path delay is needed because of dead zone and that is why blind zone was much worse than expected. % so this is a trade-off
@@ -671,9 +618,6 @@ Two options are:
 \end{table}
 
 Passive loop filter is chosen because of better phase noise performance.
-
-
-
 
 \subsubsection*{Active Loop Filter Operational Amplifier}
 
@@ -703,7 +647,7 @@ Some commercial part examples to look into:
 	\item AD8661 
 \end{itemize}
 
-\include{spi}
+\include{subtex-files/spi}
 %----------------------------------------------------------------------------------------
 \section{Commercial Parts}
 
@@ -751,7 +695,7 @@ Texas Instruments: TPS7A8300 2-A,6-\unit{\micro\volt} RMS,RF,LDOVoltage Regulato
 
 powerful VCO/PLL test system, the HP4352S
 
-\include{old-project}
+\include{subtex-files/old-project}
 
 % Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent porttitor arcu luctus, imperdiet urna iaculis, mattis eros. Pellentesque iaculis odio vel nisl ullamcorper, nec faucibus ipsum molestie. Sed dictum nisl non aliquet porttitor. Etiam vulputate arcu dignissim, finibus sem et, viverra nisl. Aenean luctus congue massa, ut laoreet metus ornare in. Nunc fermentum nisi imperdiet lectus tincidunt vestibulum at ac elit. Nulla mattis nisl eu malesuada suscipit.
 
