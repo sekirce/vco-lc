@@ -21,9 +21,11 @@ LO block is LC VCO with internal inductor and fully differential output buffer. 
 	\centering
 	\begin{tabular}{|c|l|c|c|c|c|c|}
 		\hline
-		& LO Requirements & Note & min & typ & max & Units \\
+		\rowcolor{DarkCyan}
+		\textbf{\textcolor{white}{\#}} & \textbf{\textcolor{white}{LO Requirements}} &\textbf{\textcolor{white}{Note}}  & \textbf{\textcolor{white}{min}} & \textbf{\textcolor{white}{typ}} & \textbf{\textcolor{white}{max}} & \textbf{\textcolor{white}{Units}} \\
 		\hline
-		& \multicolumn{6}{|c|}{VCO Requirements} \\
+		\rowcolor{LightCyan}
+		& \multicolumn{6}{c|}{VCO Requirements} \\
 		\hline
 		1 & Full LO range &  & 6300  &  & 13700 & MHz \\ 
 		\hline
@@ -39,7 +41,8 @@ LO block is LC VCO with internal inductor and fully differential output buffer. 
 		\hline
 		7 & Load Impedance &  &  &  & 100 & fF  \\ 
 		\hline
-		& \multicolumn{6}{|c|}{VCO and output Buffer} \\
+		\rowcolor{LightCyan}
+		& \multicolumn{6}{c|}{VCO and output Buffer} \\
 		\hline
 		8 & Output Voltage & TBD & 0.8  &  &  & V  \\ 
 		\hline
@@ -49,7 +52,8 @@ LO block is LC VCO with internal inductor and fully differential output buffer. 
 		\hline
 		11 & Pulling (14 dB Return Loss, Any Phase) & TBD &  &  & 2 & MHz  \\ 
 		\hline
-		& \multicolumn{6}{|c|}{General Specifications} \\
+		\rowcolor{LightCyan}
+		& \multicolumn{6}{c|}{General Specifications} \\
 		\hline
 		12 & Operating Temperature Range &  & -40 &  & 125 & °C  \\ 
 		\hline
@@ -62,17 +66,18 @@ LO block is LC VCO with internal inductor and fully differential output buffer. 
 		16 & Time to Switch Between Cores  &  &  & 3 & 5 & ms  \\ 
 		\hline
 	\end{tabular}
-	\label{table-spec}
+	\label{tab:table-spec}
 	\caption{Specification Requirements} 
 
 \end{table}
 
-LO block should have the characteristics given in Table \ref{table-spec}. Due to wide frequency range it is necessary to use switchable capacitor banks. Min and max for supply voltage are not defined in the original document, and time for switching between two cores was defined during the meeting. Currently Full LO range is split between two cores so the requirement should look like this:
+LO block should have the characteristics given in Table \ref{tab:table-spec}. Due to wide frequency range it is necessary to use switchable capacitor banks. Min and max for supply voltage are not defined in the original document, and time for switching between two cores was defined during the meeting. Currently Full LO range is split between two cores so the requirement should look like this:
 
 \begin{table}[ht]
 	\centering
 	\begin{tabular}{|c|l|c|c|c|c|c|}
 		\hline
+		\rowcolor{LightCyan}
 		& LO range requirements & Note & min & typ & max & Units \\
 		\hline
 		1 & High Band core LO range &  & 10000  &  & 13700 & MHz \\ 
@@ -154,6 +159,7 @@ Simulated only nominal corner with change for $V_{DD}$ only for frequency pushin
 	\centering
 	\begin{tabular}{|c|l|c|c|c|c|c|c|}
 		\hline
+		\rowcolor{LightCyan}
 		& LO Requirements & Note & min & typ & max & Sim(Typ) & Units \\
 		% \hline
 		% & \multicolumn{7}{|c|}{VCO Requirements} \\
@@ -190,13 +196,13 @@ Need testbenches capacitance of tank, varactors and inductor, and for different 
 	What kind of inductance is expected to be connected on $V_{DD}$ and $V_{SS}$ pins. This may or may not change the results. Removed all together right now.
 \end{question}
 
-Testbench for differential Q and L of the inductor that is EMX simulated is shown in Figure \ref{fig:qlinductor}.
 
 \begin{figure}[ht!]
 	\includegraphics[width=\linewidth]{Figures/QL_inductor.png}
 	\caption{Q factor and inductance of L}
 	\label{fig:qlinductor}
 \end{figure}
+Testbench for differential Q and L of the inductor that is EMX simulated is shown in Figure \ref{fig:qlinductor}.
 
 Q factor is better at the higher frequency.
 

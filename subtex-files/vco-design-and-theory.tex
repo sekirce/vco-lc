@@ -10,7 +10,7 @@ VCO design methodology and specification is split into theory and design.
 
 % \subsection{VCO phase noise contributors}
 
-\subsubsection*{Phase noise characterisation}
+\subsubsection*{Phase noise characterization}
 
 Phase noise represents the short term stability of the oscillator. VCO phase noise contributors listed:
 
@@ -45,13 +45,9 @@ The primary RF noise sources in a SiGe HBT are the noises associated with the dc
 
 Lmin is used for HBTs in these low noise applications. 
 
-% non-vco
-%=======================================================================================================
-% PFD is CML. Has prebuffers, charge pump.
-% Should it be characterized near DC like current noise or at higher frequency (att 8 \unit{GHz})
-% this was a question for the PFD+CP noise characteristic
-%=======================================================================================================
-
+% ==========================================
+% Leeson Equation
+% ==========================================
 
 \subsubsection*{Leeson equation}
 
@@ -107,13 +103,14 @@ From CMOS Differential LC Oscillator with Suppressed Up-Converted Flicker Noise 
 	\end{itemize}
 \end{info}
 
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 \subsubsection*{OBSOLETE}
 
-Explored theoretical solutions that are now abandoned.
+Explored theoretical solutions that are now abandoned:
 
 \subsubsection*{Localized Backside Etching}
 
-Local backside etching (LBE) is a post operation on chip to improve quality (Q) factor of inductor. Affect around 1 kHz offset is 3-4 dBs, and around 0.6 - 1 dB at 1 MHz.
+Local backside etching (LBE) is a post operation on chip to improve quality (Q) factor of inductor. Affect around 1 kHz offset is 3-4 dB, and around 0.6 - 1 dB at 1 MHz.
 
 \subsubsection*{Subharmonic Injection Locking}
 From what I have seen in papers most promising topology in terms of phase noise is cross-coupled LC VCO class C with potential additional technique of subharmonic injection locking. This is what I plan to try first if no better solutions are provided. Subharmonic injection locking might be too narrowband. % why this became OBSOLETE
@@ -174,11 +171,7 @@ More papers:
 \end{itemize}
 
 
-
-
-% \newpage
-
-\subsection{A Noise Circulating Oscillator}
+\subsubsection*{A Noise Circulating Oscillator}
 
 Oscillator phase noise is a fundamental metric that governs a wide variety of design aspects in modern communication and sensing systems [1], [2]
 
@@ -280,33 +273,40 @@ About modern method: HP has recently introduced a powerful VCO/PLL test system, 
 
 \newpage
 
-\subsection{Technical requirements}
+\subsection{Technical requirements for VCO}
 
 \begin{table}[ht]
 	\centering
 	\begin{tabular}{|c|l|c|c|c|c|c|}
 		\hline
-		& LO Requirements & Note & min & typ & max & Units \\
+		\rowcolor{DarkCyan}
+		\textbf{\textcolor{white}{\#}} & \textbf{\textcolor{white}{LO Requirements}}  & \textbf{\textcolor{white}{Note}} &\textbf{\textcolor{white}{Lmin}}  & \textbf{\textcolor{white}{typ}} & \textbf{\textcolor{white}{max}} & \textbf{\textcolor{white}{Units}}  \\
 		\hline
-		& \multicolumn{6}{|c|}{\textbf{VCO Requirements}} \\
+		\rowcolor{LightCyan}
+		& \multicolumn{6}{c|}{\textbf{VCO Requirements}} \\
 		\hline
-		1 & Full LO range &  & 4000  &  & 8000 & MHz \\ 
+		1 & Full LO range &  & 7000  &  & 12000 & MHz \\ 
 		\hline
-		1a & Number of cores &  &   & 2 & 4 & / \\ 
+		1a & Number of cores &  &   & 8 & 16 & / \\ 
 		\hline
 		2 & Phase Noise at 1 MHz &  &  &  & <-135 & dBc/Hz \\ 
 		\hline
-		3 & differential Vtune &  & 0.1 &  & Vdd-x & V  \\ % differential
+		3 & differential Vtune &  & 1.92 &  & 3.6 & V  \\ % differential
 		\hline
-		4 & Tuning Sensitivity $K_{VCO}$ &  & ?<30 &  & ?< 50 & MHz/V  \\ 
+		4 & Tuning Sensitivity $K_{VCO}$ &  & ?<30 &  & ?< 50 & MHz/V  \\ % is much lower 
+		\hline
+		4a & Type of Tuning  &  &  & diff  &  & /  \\ 
 		\hline
 		5 & Pushing & TBD &  &  & 2 & MHz/V  \\ 
 		\hline
-		6 & Output Voltage p-p & TBD & 0.8 &  & & $V_{p-p}$  \\ 
+		6 & Output Voltage p-p & TBD & 0.8 &  & & $V_{p-p}$  \\  % depends on output buffer 
+		\hline
+		6 & Output CM range & TBD &  &  & $V_{DD}$ &   \\  % depends on output buffer 
 		\hline
 		7 & Load Impedance &  &  &  & 100 & fF  \\ 
 		\hline
-		& \multicolumn{6}{|c|}{\textbf{VCO and output Buffer}} \\
+		\rowcolor{LightCyan}
+		& \multicolumn{6}{c|}{\textbf{VCO and output Buffer}} \\
 		\hline
 		8 & Output Voltage & TBD & ?0.8  &  &  & $V_{p-p}$ \\ 
 		\hline
@@ -316,11 +316,19 @@ About modern method: HP has recently introduced a powerful VCO/PLL test system, 
 		\hline
 		11 & Pulling (14 dB Return Loss, Any Phase) & TBD &  &  & 2 & MHz  \\ 
 		\hline
-		& \multicolumn{6}{|c|}{\textbf{General Specifications}} \\
+		\rowcolor{LightCyan}
+		& \multicolumn{6}{c|}{\textbf{General Specifications}} \\
 		\hline
 		12 & Operating Temperature Range &  & -40 &  & 105 & °C  \\ 
 		\hline
-		13 & Supply Voltage ($\pm 5\%$) &  & 2.375 & 2.5 & 2.625 & V  \\ 
+		13 & Supply Voltage VCO ($\pm 5\%$) &  & 4.75 & 5 & 5.25 & V  \\ 
+		 & Supply Voltage VCO ($\pm 10\%$) &  & 4.5 & 5 & 5.5 & V  \\ 
+		\hline
+		13a & Supply Voltage ANA ($\pm 5\%$) &  & 3.42 & 3.6 & 3.78 & V  \\ 
+		 & Supply Voltage ANA ($\pm 10\%$) &  & 3.24 & 3.6 & 3.96 & V  \\ 
+		\hline
+		13b & Supply Voltage DIG ($\pm 5\%$) &  & 1.14 & 1.2 & 1.26 & V  \\ 
+		 & Supply Voltage DIG ($\pm 10\%$) &  & 1.08 & 1.2 & 1.32 & V  \\ 
 		\hline
 		14 & Supply Current &  &  &  & ?20 & mA  \\ 
 		\hline
@@ -414,10 +422,6 @@ Previous open points on VCO:
 % \\
 
 
-
-
-
-
 \subsection{Using different models for HBT}
 
 BSIM4 and psp* (not pss), sometimes psp* gives better performance
@@ -483,7 +487,7 @@ Performance summary:
 \begin{table}[ht]
 	\centering
 	\begin{tabular}{|c|c|}
-		\hline
+		\hline \rowcolor{LightCyan}
 		Parameter & Typical value \\
 		\hline
 		Corner & Typical \\
@@ -544,7 +548,7 @@ List of sub blocks:
 %
 2 papers \\
 
-Option 1 is referencing \href{https://ieeexplore.ieee.org/document/1494046?arnumber=1494046}{\textbf{paper}} A 44 \unit{GHz} Differentially Tuned VCO with 4GHz Tuning Range in 0.12 \unit{um} SOI CMOS
+Option 1 is referencing \href{https://ieeexplore.ieee.org/document/1494046?arnumber=1494046}{\textbf{paper}} A 44 \unit{\GHz} Differentially Tuned VCO with 4GHz Tuning Range in 0.12 \unit{\um} SOI CMOS
 
 
 \begin{figure}[ht!]
@@ -592,13 +596,6 @@ This is the schematic for the yellow $C_{34}$ one $vtune_{cm}$ is connected to s
 
 Red plot represents this differential "varactor" without cm voltage C12.
 
-
-
-
-% \begin{info}
-	
-% \end{info}
-
 Q factor is worse for differential tuning vs single-edned tuning.
 
 \subsubsection{Design of Capacitor Bank and CB Unit} % or Banks  
@@ -613,26 +610,27 @@ Electro-magnetic simulator is needed. Technology Parameters if calculations are 
 	\centering
 	\begin{tabular}{|c|c|c|}
 		\hline
+		\rowcolor{LightCyan}
 		Parameter & Value & Unit \\
-		\hline
+		% \hline
 		\hline
 		Substrate resistivity & X & $\Omega$-\unit{cm}\\
 		\hline
-		Substrate thickness & ? & $um$ \\
+		Substrate thickness & ? & \unit{um} \\
 		\hline
 		Silicon dielectric constant & ? & no unit \\
 		\hline
-		Oxide thickness (M3-Sub) & ? & $um$ \\
+		Oxide thickness (M3-Sub) & ? &  \unit{um} \\
 		\hline
-		Oxide thickness (M3-M2) & ? & $um$ \\
+		Oxide thickness (M3-M2) & ? &  \unit{um} \\
 		\hline
 		$SiO_2$ dielectric constant & ? & no unit \\
 		\hline
 		Metal resistivity & ? & $\Omega$-\unit{um} \\
 		\hline
-		Top Metal (M?) thickness & ? & $um$ \\
+		Top Metal (M?) thickness & ? &  \unit{um} \\
 		\hline
-		Other metal thickness& ? & $um$ \\
+		Other metal thickness& ? &  \unit{um} \\
 		\hline
 	\end{tabular}
 	\label{tech-param}
@@ -641,4 +639,11 @@ Electro-magnetic simulator is needed. Technology Parameters if calculations are 
 \end{table}
 
 Inductor can be also switchable, if we need to improve the crude tuning range.
+
+\subsubsection{Comments and Problems July Design vco10}
+
+I ran simulations on vco10 schematic level and with ideal bias (for base of hbt cascode in vco core)
+
+LSB of fine capacitor bank is 16 fF. 
+
 

@@ -68,6 +68,7 @@ In this case we should change the command format to: 3 MSB bits - don't care; AD
     \centering
     \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
     \hline
+    \rowcolor{LightCyan}
         CMD format & CMD Byte 1 & ~ & ~ & ~ & ~ & ~ & ~ & ~ & CMD Byte 2 \\ \hline
         ~ & 7 & 6 & 5 & 4 & 3 & 2 & 1 & 0 & 7 \\ \hline
         option 1 & x & x & x & A3 & A2 & A1 & A0 & RW & D7 \\ \hline
@@ -81,11 +82,11 @@ We can use addressing according to your proposed command format. So, we will use
 In this case we should change existing memory allocation table. This is the example:
 
 
-
 \begin{table}[!ht]
     \centering
     \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
     \hline
+    \rowcolor{LightCyan}
         Block & Function & R/W & Type & Bits & \#Bit & \#Word  & ~ & ~ & CMD Byte 2 \\ \hline
         VCO & VCO Enable & W & EN & 1 & 0 & 0 & 1 & 0 & 7 \\ \hline
         VCO & Test Input (Bypass) & W & EN & 1 & 1 & ~ & A0 & RW & D7 \\ \hline
@@ -118,7 +119,31 @@ Regarding the clock:
 I would prefer not to have an external dedicated clock and also I am a bit worried about an internal clock that may not be fully synchronous to the SPI clock. This leaves the option of using the SPI clock as my preferred solution. 
 
 Regarding the register bank:
-I do like your option 1, i.e. using 4 addressing bits. Is everyone else OK with this?
+I do like your option 1, i.e. using 4 addressing bits.% Is everyone else OK with this?
 
-Regarding the 1.2V supply, yes we do not have an internal LDO so we have to rely only to external supplies. Given the very low power consumption at 1.2V I am wondering if we can try any low effort/low cost regulation techniques
+Regarding the 1.2 \unit{\volt} supply, yes we do not have an internal LDO so we have to rely only to external supplies. Given the very low power consumption at 1.2V I am wondering if we can try any low effort/low cost regulation techniques
+
+
+\subsubsection{Synchronizer Design} 
+
+Synchronization Hierarchy: \href{http://cva.stanford.edu/books/dig_sys_engr/lectures/l14.pdf}{source}
+
+\begin{itemize} % nested list
+    \item Mesochronous Synchronizers
+    \begin{itemize}
+        \item delay-line synchronizer
+        \item two-register synchronizer
+        \item FIFO synchronizer
+    \end{itemize}
+    \item Plesiochronous Synchronizers
+    \begin{itemize}
+        \item phase slip and flow control
+    \end{itemize}
+    \item Periodic Synchronizers
+    \begin{itemize}
+        \item clock prediction - looking
+    \end{itemize}
+    \item into the future
+\end{itemize}
+
 

@@ -1,0 +1,270 @@
+%----------------------------------------------------------------------------------------
+% Quality of Life
+%----------------------------------------------------------------------------------------
+
+\section{Quality of Life - software tools}
+
+Quality of life regarding LaTex for this document, commercial/proprietary EDA software for this and previous projects and potential open source EDA software for future projects.
+
+%----------------------------------------------------------------------------------------
+% LaTeX QoL
+%----------------------------------------------------------------------------------------
+
+\subsection{QoL \LaTeX }
+
+
+\subsubsection{Colored rows and columns}
+
+\href{https://tex.stackexchange.com/questions/94799/how-do-i-color-table-columns}{Coloring inside of table}
+
+% \documentclass{article}
+% \usepackage{xcolor,colortbl}
+
+% \newcommand{\mc}[2]{\multicolumn{#1}{c}{#2}}
+% \definecolor{Gray}{gray}{0.85}
+% \definecolor{LightCyan}{rgb}{0.88,1,1}
+
+% \newcolumntype{a}{>{\columncolor{Gray}}c}
+% \newcolumntype{b}{>{\columncolor{white}}c}
+
+% \begin{document} 
+
+
+\begin{table}[ht!]
+    \begin{tabular}{l | a | b | a | b}
+        \hline
+        \rowcolor{LightCyan}
+        \mc{1}{}  & \mc{1}{x} & \mc{1}{y} & \mc{1}{w} & \mc{1}{z} \\
+        \hline
+        variable 1 & a & b & c & d \\
+        variable 2 & a & b & c & d \\ \hline
+    \end{tabular}
+\end{table}
+
+% \end{document}
+
+
+Subfigures examples in comments
+
+% \begin{figure}
+% \centering
+% \begin{subfigure}{.5\textwidth}
+% 	\centering
+% 	\includegraphics[width=.4\linewidth]{image1}
+% 	\caption{A subfigure}
+% 	\label{fig:sub1}
+% \end{subfigure}%
+% \begin{subfigure}{.5\textwidth}
+% 	\centering
+% 	\includegraphics[width=.4\linewidth]{image1}
+% 	\caption{A subfigure}
+% 	\label{fig:sub2}
+% \end{subfigure}
+% \caption{A figure with two subfigures}
+% \label{fig:test}
+% \end{figure}
+
+% \begin{figure}
+% \centering
+% \begin{minipage}{.5\textwidth}
+% 	\centering
+% 	\includegraphics[width=.4\linewidth]{image1}
+% 	\captionof{figure}{A figure}
+% 	\label{fig:test1}
+% \end{minipage}%
+% \begin{minipage}{.5\textwidth}
+% 	\centering
+% 	\includegraphics[width=.4\linewidth]{image1}
+% 	\captionof{figure}{Another figure}
+% 	\label{fig:test2}
+% \end{minipage}
+% \end{figure}
+
+\subsubsection{Nested tables using tabular}
+
+\href{https://tex.stackexchange.com/questions/40561/table-with-multiple-lines-in-some-cells}{source:} You could nest a tabular within another tabular:
+
+
+\begin{tabular}{cccc}
+\rowcolor{LightCyan}
+  One & Two & Three & Four \\
+  Een & Twee & Drie & Vier \\
+  One & Two & 
+    \begin{tabular}{@{}c@{}}Three \\ Drie\end{tabular}
+  & Four
+\end{tabular}
+
+
+\subsection{Open Source EDA Software}
+
+%----------------------------------------------------------------------------------------
+% NGSPICE + SG13G2
+%----------------------------------------------------------------------------------------
+
+\subsubsection{NGSPICE}
+
+Regarding open-source PDK for SG13G2, it's work in progress, but I think worth to consider. Even if just the simulator can be replaced with ngspice or xyce, it could boost productivity from not being license-bound. Please check this out:
+
+\href{https://github.com/IHP-GmbH/IHP-Open-PDK/tree/main/ihp-sg13g2}{\textbf{ihp sg13g2}}
+
+Documentation on github is sparse, some more info is here:
+\href{https://www.ihp-microelectronics.com/events-1/detail/openpdk-opentooling-and-open-source-design-an-initiative-to-push-development}{\textbf{openPDK opeentooling and open source design}}
+
+\href{https://www.ihp-microelectronics.com/services/research-and-prototyping-service/fast-design-enablement/open-source-pdk}{\textbf{open source PDK, research and prototyping}}
+
+\subsubsection{Required libraries - Linux Installation}
+
+libxaw7-dev and libreadline6-dev
+\\
+KiCad plus ngspice
+
+% \begin{verbatim}
+% 	/home/aleksandarvukovi/ngspice-42/examples/osdi/hicuml0/Modelcards/model-card-hicumL0V1p11_mod.lib	
+% \end{verbatim}
+
+\subsubsection{openEMS}
+
+openEMS is a free and open source electromagnetic field solver based on the Finite-Difference Time Domain (FDTD) method. Using an improved version of the highly-successful FDTD method (known as Equivalent-Circuit FDTD, or EC-FDTD), openEMS solves Maxwell's equations in discretized space and time to directly simulates the propagation of electromagnetic waves, in a 3D full-wave manner. It has the potential to analyze problems in important applications such as RF/microwave circuit design, antenna, radar, meta-material, and medical research.
+
+\subsection{Commercial EDA software}
+
+\subsubsection*{EMX and Momentum}
+EMX software from Cadence, Momentum from ADS
+
+\newpage
+
+\subsubsection{Change font in Visualisation Cadence}
+
+Example:
+
+\begin{verbatim}
+	myFont = "Roboto Mono Medium,14,-1,5,75,0,0,0,0,0"
+	envSetVal("viva.horizMarker" "font" 'string myFont)
+	envSetVal("viva.referenceLineMarker" "font" 'string myFont)
+	envSetVal("viva.vertMarker" "font" 'string myFont)
+	envSetVal("viva.pointMarker" "font" 'string myFont)
+	envSetVal("viva.refPointMarker" "font" 'string myFont)
+	envSetVal("viva.specMarker" "font" 'string myFont)
+	envSetVal("viva.interceptMarker" "font" 'string myFont)
+	envSetVal("viva.circleMarker" "font" 'string myFont)
+	envSetVal("viva.interceptMarker" "font" 'string myFont)
+	envSetVal("viva.multiDeltaMarker" "font" 'string myFont)
+	envSetVal("viva.transEdgeMarker" "font" 'string myFont)
+
+	envSetVal("viva.trace" "lineThickness" 'string "thick")
+	envSetVal("viva.trace" "lineStyle" 'string "solid")
+	envSetVal("viva.trace" "symbolsOn" 'string "true")
+	envSetVal("viva.trace" "symbolStyle" 'string "Diamond")
+\end{verbatim}
+
+%----------------------------------------------------------------------------------------
+% VerilogA 14bit Decoder
+%----------------------------------------------------------------------------------------
+
+\subsubsection{VerilogA Decoder Code}
+
+\begin{file}[Example of 15 bit decoder]
+	\begin{lstlisting}
+	`include "disciplines.vams"
+	module Decoder_15bit_va(L);
+	output     [14:0] L;
+	electrical [14:0] L;
+
+	parameter real 	tdel 	= 20.0p,
+			trise	= 40p,
+			tfall	= 40p,
+			VDD 	= 1.1;
+	parameter integer select = 0;
+	integer   out[14:0], mask, i, j;
+
+	analog begin
+	
+	@(initial_step) begin
+		for(i=14; i>=0; i=i-1) begin
+		mask=1;
+		for(j=1; j<=i; j=j+1) mask=mask*2;
+		out[i]=(select & mask) >> i;
+		end
+	end
+	\end{lstlisting}
+\end{file}
+
+\begin{file}[Example of 15 bit decoder - cont.]
+	\begin{lstlisting}
+	V(L[0]) <+ transition(VDD * out[0],
+	 tdel, trise, tfall);
+	V(L[1]) <+ transition(VDD * out[1],
+	 tdel, trise, tfall);
+	V(L[2]) <+ transition(VDD * out[2],
+	 tdel, trise, tfall);
+	V(L[3]) <+ transition(VDD * out[3],
+	 tdel, trise, tfall);
+	V(L[4]) <+ transition(VDD * out[4],
+	 tdel, trise, tfall);
+	V(L[5]) <+ transition(VDD * out[5],
+	 tdel, trise, tfall);
+	V(L[6]) <+ transition(VDD * out[6],
+	 tdel, trise, tfall);
+	V(L[7]) <+ transition(VDD * out[7],
+	 tdel, trise, tfall);
+	V(L[8]) <+ transition(VDD * out[8],
+	 tdel, trise, tfall);
+	V(L[9]) <+ transition(VDD * out[9],
+	 tdel, trise, tfall);
+	V(L[10]) <+ transition(VDD * out[10],
+	 tdel, trise, tfall);
+	V(L[11]) <+ transition(VDD * out[11],
+	 tdel, trise, tfall);
+	V(L[12]) <+ transition(VDD * out[12],
+	 tdel, trise, tfall);
+	V(L[13]) <+ transition(VDD * out[13],
+	 tdel, trise, tfall);
+	V(L[14]) <+ transition(VDD * out[14],
+	 tdel, trise, tfall);
+
+	end  
+	endmodule
+	\end{lstlisting}
+\end{file}
+
+\newpage
+
+\subsubsection*{Saving Histories in ADE explorer}
+
+\href{https://community.cadence.com/cadence_blogs_8/b/cic/posts/virtuosity-exploring-histories}{Virtuosity: Exploring Histories}
+\begin{verbatim}
+envSetVal("maestro.explorer" "onHistoryNameCollision" 'cyclic "Overwrite")
+envSetVal("adexl.historyNamePrefix" "showNameHistoryForm" 'boolean t)
+envSetVal("maestro.explorer" "onHistoryNameCollision" 'cyclic "IncrementAsNew")
+\end{verbatim}
+
+%----------------------------------------------------------------------------------------
+% PVS Design Flow 
+%----------------------------------------------------------------------------------------
+
+\subsubsection*{PVS Design Flow}
+
+PVS has problems with digital circuits using global nets.
+
+\begin{itemize}
+	\item PVS DRC 
+	\item PVS LVS - you can setup Quantus from here, generates svdb file, do this after it passes LVS
+	\item Quantus PVS 
+\end{itemize}
+
+
+\subsubsection*{Curve fitting using Wolfram Alpha}
+
+\href{https://www.reddit.com/r/arduino/comments/12b7t9p/hello_everyone_im_trying_to_get_the_polynomial/}{usefull reddit post}
+\href{https://www.wolframalpha.com/input?i=curve+fitting}{Wolfram Alpha without programming}
+
+Curve fitting for Vtune input range (-1.6 ; 1.6) to calculate polynomial:
+
+\begin{verbatim}
+{{-1.6, -2.7}, {-1.1, -2.4}, {-0.5, -1.8}, {0, 0 }, {0.5, 1.8}, {1.1, 2.4}, {1.6, 2.7 }}	
+\end{verbatim}
+% {{-1.6, -2.7}, {-1.1, -2.4}, {-0.5, -1.8}, {0, 0 }, {0.5, 1.8}, {1.1, 2.4}, {1.6, 2.7 }}
+Curve fitting for Vtune input range (0 ; 3.2) to calculate polynomial:
+\begin{verbatim}
+{{0, -2.7}, {0.5, -2.4}, {1.1, -1.8}, {1.6, 0 }, {2.1, 1.8}, {2.7, 2.4}, {3.2, 2.7 }}		
+\end{verbatim}

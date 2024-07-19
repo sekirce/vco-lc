@@ -23,6 +23,7 @@
 
 \input{structure.tex} % Include the file specifying the document structure and custom commands
 
+% making hyperlinks colored
 \usepackage[colorlinks]{hyperref}
 \usepackage{siunitx}
 
@@ -32,6 +33,31 @@
 % added for two figures next to each other
 \usepackage{caption}
 \usepackage{subcaption}
+
+% added for coloring inside of tables
+\usepackage{xcolor,colortbl}
+
+%----------------------------------------------------------------------------------------
+% added to use \unit[options]{unit}
+\usepackage{siunitx}
+% The correct application of units of measurement is very important in technical applications. For this reason, carefully-crafted definitions of a coherent units system have been laid down by the Conférence Génrale des Poids et Mesures (cgpm): this has resulted in the Système International d’Unités (si). At the same time, typographic conventions for correctly displaying both numbers and units exist to ensure that no loss of meaning occurs in printed matter. The siunitx package aims to provide a unified method for LATEX users to typeset numbers and units correctly and easily. The design philosophy of siunitx is to follow the agreed rules by default, but to allow variation through option settings. In this way, users can use siunitx to follow the requirements of publishers, co-authors, universities, etc. without needing to alter the input at all.
+
+% generated from LaTeX table
+\usepackage{tabularray}
+
+
+%----------------------------------------------------------------------------------------
+% defining colors used for table
+\newcommand{\mc}[2]{\multicolumn{#1}{c}{#2}}
+\definecolor{Gray}{gray}{0.85}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+\definecolor{DarkCyan}{RGB}{0,139,139}
+
+% defining columns
+\newcolumntype{a}{>{\columncolor{Gray}}c}
+\newcolumntype{b}{>{\columncolor{white}}c}
+%  Note that the column names cannot be more than a single character! 
+%----------------------------------------------------------------------------------------
 
 %----------------------------------------------------------------------------------------
 %	ASSIGNMENT INFORMATION
@@ -53,13 +79,12 @@
 %	INTRODUCTION - First Page
 %----------------------------------------------------------------------------------------
 
-\section*{Introduction}
+\section{Introduction}
 
-working title % TODO Maybe abstract 
+Working title needs to be changed VCOs frequency range is changed probably 7-12 GHz and around 4 GHz. % TODO Maybe abstract 
 \\
-This needs to be added to body of document % razrada
+This needs to be added to body of document. The open items from last meeting minutes I recorded are:
 
-The open items I recorded are:
 \begin{itemize}
 	\item Packaging concerns, risks and schedule
 	\item Die quantity and meaningful sample volume
@@ -67,7 +92,7 @@ The open items I recorded are:
 	\item overall schedule for the follow-on tape out in 2025
 \end{itemize}
 
-Planning per core:
+Planning VCO timeframe per core:
 
 \begin{itemize}
 	\item Design -- 10 days
@@ -75,219 +100,84 @@ Planning per core:
 	\item Verification -- 0 day
 \end{itemize}
 
+% potential next projects might utilize a technology node
+
+% \href{https://gf.com/gf-partner-community/fdx-network/}{GF22FDX platform (built on 22 nm FD-SOI process technology)}
+
+% FD-SOI == Fully Depleted - Sillicon on Insulator
+
+% https://gf.com/gf-partner-community/fdx-network/
+
+
+% type in the day you received VCO design
+
 \newpage
 
-\section*{List of Abbreviations}
+%----------------------------------------------------------------------------------------
+%	List of Abbreviations
+%----------------------------------------------------------------------------------------
 
-% LOOKINTO BSE or LBE 
-
-% \subsection*{Complaints and suggestions regarding VCO} % add to 
-% MOVED TO VCO
-
-% TODO: make a python script to turn csv or xlcsv file into a latex table 
-
-% TODO: check how to test reliability of the design. breakdown voltages
+\section{List of Abbreviations} % needs to be without * to show in bookmarks
 
 \begin{itemize}
-
-	\item HCI - Hot Carrier Injection
-	\item NBTI - Negative-Bias Temperature Instability
-	\item PBTI	- Positive-Bias Temperature Instability
-	\item TDDB	- Time Dependent Dielectric Breakdown
-	\item LBE 	- Localized Backsided Etching
-	\item FTR	- Fine Tuning Range (unit is percentage)
-	\item EM	- Electro Magnetic
-	\item CML	- Common Mode Logic
-	\item QFN	- Quad Flat No lead
-	\item MEMS	- MicroElectronical Mechanical Systems
-	\item SIW	- Substrate Integrated Waveguide
-	\item PSD	- Power Spectral Density
-	\item Q		- Quality (factor usually)
-	\item PTAT	- Proportional to Absolute Temperature
-	\item CTAT	- Complementary to Absolute Temperature - usually miscontrued to represent constant 
-	\item DAC	- Digital Analog Converter
-	\item PFD	- Phase Frequency Detector
-	\item CP	- Charge Pump
-	\item FET	- Field-Effect Transistor
-	\item EVB	- Evaluation Board
-	\item EDA	- Electronic Design Automation
-	\item ECL - Emitter Coupled Logic
-	\item TOEO - tuneable opto-electronic oscillators
-	\item YIG - Yttrium Iron Garnet % 
+	\item [CML	-] Common Mode Logic
+	\item [CP	-] Charge Pump
+	\item [CTAT	-] Complementary to Absolute Temperature - usually miscontrued to represent constant 
+	\item [DAC	-] Digital Analog Converter
+	\item [ECL  -] Emitter Coupled Logic
+	\item [EDA	-] Electronic Design Automation
+	\item [EM	-] Electro Magnetic
+	\item [EVB	-] EValuation Board
+	\item [FET	-] Field-Effect Transistor
+	\item [FTR	-] Fine Tuning Range (unit is percentage)
+	\item [HCI  -] Hot Carrier Injection
+	\item [LBE 	-] Localized Backsided Etching
+	\item [MEMS	-] MicroElectronical Mechanical Systems
+	\item [NBTI -] Negative-Bias Temperature Instability
+	\item [PBTI	-] Positive-Bias Temperature Instability
+	\item [PCB  -] Printed Circuit Board
+	\item [PFD	-] Phase Frequency Detector
+	\item [PnR  -] Place and Route
+	\item [PSD	-] Power Spectral Density
+	\item [PTAT	-] Proportional to Absolute Temperature
+	\item [Q	-] Quality (factor usually)
+	\item [QFN	-] Quad Flat No lead
+	\item [SIW	-] Substrate Integrated Waveguide
+	\item [TDDB	-] Time Dependent Dielectric Breakdown
+	\item [TOEO -] Tuneable Opto-electronic Oscillators
+	\item [YIG  -] Yttrium Iron Garnet % 
+	% not sorted yot
+	\item [VCO  -] Voltage Controlled Oscillator
+	\item [PLL  -] Phase Locked Loop 
+	\item [RMS  -] Root Mean Square 
 \end{itemize}
 
-TODO Sort by alphabet
+% TODO Sort by alphabet, ctrl+shift+P then sort and choose between ascending and descending
 
 \newpage
 
+% TODO: check how to test reliability of the design. breakdown voltages
 
 % \subsection*{My current problems and work in progress}
 % MOVED TO VCO
 
 % TOSEARCH for Samuel papers
 
+%----------------------------------------------------------------------------------------
+% 	Quality of Life - Software tools - Commercial and Open Source
+%----------------------------------------------------------------------------------------
 
-% ===============================================
-% NGSPICE + SG13G2
-% ===============================================
+\include{subtex-files/qol-software-tools}
 
-\section{Quality of Life - software tools}
+%----------------------------------------------------------------------------------------
+%	Technical specification, Chip Design Plan and Signoff Plan
+%----------------------------------------------------------------------------------------
 
-\subsection{Open Source Software}
-
-\subsubsection{NGSPICE}
-
-
-Regarding open-source PDK for SG13G2, it's work in progress, but
-I think worth to consider. Even if just the simulator can be replaced
-with ngspice or xyce, it could boost productivity from not being license-bound.
-Please check this out:
-\href{https://github.com/IHP-GmbH/IHP-Open-PDK/tree/main/ihp-sg13g2}{\textbf{ihp sg13g2}}
-
-Documentation on github is sparse, some more info is here:
-\href{https://www.ihp-microelectronics.com/events-1/detail/openpdk-opentooling-and-open-source-design-an-initiative-to-push-development}{\textbf{openPDK opeentooling and open source design}}
-
-\href{https://www.ihp-microelectronics.com/services/research-and-prototyping-service/fast-design-enablement/open-source-pdk}{\textbf{open source PDK, research and prototyping}}
-
-
-
-\subsubsection{Required libraries - Linux Installation}
-
-libxaw7-dev and libreadline6-dev
-\\
-KiCad plus ngspice
-
-% \begin{verbatim}
-% 	/home/aleksandarvukovi/ngspice-42/examples/osdi/hicuml0/Modelcards/model-card-hicumL0V1p11_mod.lib	
-% \end{verbatim}
-
-
-
-\subsubsection{openEMS}
-
-openEMS is a free and open source electromagnetic field solver based on the Finite-Difference Time Domain (FDTD) method. Using an improved version of the highly-successful FDTD method (known as Equivalent-Circuit FDTD, or EC-FDTD), openEMS solves Maxwell's equations in discretized space and time to directly simulates the propagation of electromagnetic waves, in a 3D full-wave manner. It has the potential to analyze problems in important applications such as RF/microwave circuit design, antenna, radar, meta-material, and medical research.
-
-\subsection{Commercial software}
-
-\subsubsection{EMX and Momentum}
-EMX software from Cadence, Momentum from ADS
-
-\newpage
-
-\subsection{Change font in Visualisation Cadence}
-
-Example:
-
-\begin{verbatim}
-	myFont = "Roboto Mono Medium,14,-1,5,75,0,0,0,0,0"
-	envSetVal("viva.horizMarker" "font" 'string myFont)
-	envSetVal("viva.referenceLineMarker" "font" 'string myFont)
-	envSetVal("viva.vertMarker" "font" 'string myFont)
-	envSetVal("viva.pointMarker" "font" 'string myFont)
-	envSetVal("viva.refPointMarker" "font" 'string myFont)
-	envSetVal("viva.specMarker" "font" 'string myFont)
-	envSetVal("viva.interceptMarker" "font" 'string myFont)
-	envSetVal("viva.circleMarker" "font" 'string myFont)
-	envSetVal("viva.interceptMarker" "font" 'string myFont)
-	envSetVal("viva.multiDeltaMarker" "font" 'string myFont)
-	envSetVal("viva.transEdgeMarker" "font" 'string myFont)
-
-	envSetVal("viva.trace" "lineThickness" 'string "thick")
-	envSetVal("viva.trace" "lineStyle" 'string "solid")
-	envSetVal("viva.trace" "symbolsOn" 'string "true")
-	envSetVal("viva.trace" "symbolStyle" 'string "Diamond")
-\end{verbatim}
-
-
-
-\subsection{VerilogA Decoder Code}
-
-\begin{file}[Example of 15 bit decoder]
-	\begin{lstlisting}
-	`include "disciplines.vams"
-	module Decoder_15bit_va(L);
-	output     [14:0] L;
-	electrical [14:0] L;
-
-	parameter real 	tdel 	= 20.0p,
-			trise	= 40p,
-			tfall	= 40p,
-			VDD 	= 1.1;
-	parameter integer select = 0;
-	integer   out[14:0], mask, i, j;
-
-	analog begin
-	
-	@(initial_step) begin
-		for(i=14; i>=0; i=i-1) begin
-		mask=1;
-		for(j=1; j<=i; j=j+1) mask=mask*2;
-		out[i]=(select & mask) >> i;
-		end
-	end
-
-	V(L[0]) <+ transition(VDD * out[0],
-	 tdel, trise, tfall);
-	V(L[1]) <+ transition(VDD * out[1],
-	 tdel, trise, tfall);
-	V(L[2]) <+ transition(VDD * out[2],
-	 tdel, trise, tfall);
-	V(L[3]) <+ transition(VDD * out[3],
-	 tdel, trise, tfall);
-	V(L[4]) <+ transition(VDD * out[4],
-	 tdel, trise, tfall);
-	V(L[5]) <+ transition(VDD * out[5],
-	 tdel, trise, tfall);
-	V(L[6]) <+ transition(VDD * out[6],
-	 tdel, trise, tfall);
-	V(L[7]) <+ transition(VDD * out[7],
-	 tdel, trise, tfall);
-	V(L[8]) <+ transition(VDD * out[8],
-	 tdel, trise, tfall);
-	V(L[9]) <+ transition(VDD * out[9],
-	 tdel, trise, tfall);
-	V(L[10]) <+ transition(VDD * out[10],
-	 tdel, trise, tfall);
-	V(L[11]) <+ transition(VDD * out[11],
-	 tdel, trise, tfall);
-	V(L[12]) <+ transition(VDD * out[12],
-	 tdel, trise, tfall);
-	V(L[13]) <+ transition(VDD * out[13],
-	 tdel, trise, tfall);
-	V(L[14]) <+ transition(VDD * out[14],
-	 tdel, trise, tfall);
-
-	end  
-	endmodule
-	\end{lstlisting}
-\end{file}
-
-\newpage
-
-\subsubsection*{Saving Histories in ADE explorer}
-
-\href{https://community.cadence.com/cadence_blogs_8/b/cic/posts/virtuosity-exploring-histories}{Virtuosity: Exploring Histories}
-\begin{verbatim}
-envSetVal("maestro.explorer" "onHistoryNameCollision" 'cyclic "Overwrite")
-envSetVal("adexl.historyNamePrefix" "showNameHistoryForm" 'boolean t)
-envSetVal("maestro.explorer" "onHistoryNameCollision" 'cyclic "IncrementAsNew")
-\end{verbatim}
-
-\subsubsection*{PVS Design Flow}
-
-\begin{itemize}
-	\item PVS DRC 
-	\item PVS LVS - you can setup Quantus from here
-	\item Quantus PVS 
-\end{itemize}
-
+\section{Technical specification, Design and Signoff Plan}
 
 %----------------------------------------------------------------------------------------
 %	Technical offer for the start of project
 %----------------------------------------------------------------------------------------
-
-\section{Evaluation Summary}
-
 
 \subsection{Novelic Technical Offer}
 
@@ -315,6 +205,9 @@ Document before the start of the project. Here are technical Novelic evaluation 
 
 \end{itemize}
 
+%----------------------------------------------------------------------------------------
+%	General guidelines nad milestones in Specification and Design
+%----------------------------------------------------------------------------------------
 
 \subsection{Specification and Design Review Plan} % Original plan
 
@@ -324,7 +217,7 @@ Suggestion on how to review and specify chip and comparable options:
 	\item Preliminary Design Review	- PDR
 	\item Critical Design Review	- CDR
 	\item Sign-off tools - Voltus or Voltera to check currents % meaning In the automated design of integrated circuits, signoff (also written as sign-off) checks is the collective name given to a series of verification steps that the design must pass before it can be taped out.
-	\item acquire evaluation boards (EVB) for ADF6610, LMX2594
+	\item (mentioned once) acquire evaluation boards (EVB) for ADF6610, LMX2594
 	% \item Packaging, actual implementation, could be different for different process nodes
 	\item Testability options within chip
 	\item VCO registers/overriding
@@ -333,196 +226,44 @@ Suggestion on how to review and specify chip and comparable options:
 
 \href{https://en.wikipedia.org/wiki/Signoff_(electronic_design_automation)}{Signoff EDA}
 
+%----------------------------------------------------------------------------------------
+%	References from Novelic feasibility study
+%----------------------------------------------------------------------------------------
+\subsection{References from Novelic feasibility study}
+
+Papers that are referenced in the feasibility study concerning Gilbert Cell Mixer Based PD and ECL PFD:
+
+\begin{itemize}
+
+	\item [ng2006] A. W. L. Ng, G. C. T. Leung, Ka-Chun Kwok, L. L. K. Leung and H. C. Luong, "A 1-V 24-GHz 17.5-mW phase-locked loop in a 0.18-/spl mu/m CMOS process," in IEEE Journal of	Solid-State Circuits, vol. 41, no. 6, pp. 1236-1244, June 2006, doi: 10.1109/JSSC.2006.874332.
+	\item [razavi2002] B. Razavi, "Challenges in the design high-speed clock and data recovery circuits," in IEEE Communications Magazine, vol. 40, no. 8, pp. 94-101, Aug. 2002, doi: 10.1109/MCOM.2002.1024421.
+	\item [Pottbacker1992] A. Pottbacker, U. Langmann and H. -. Schreiber, "A Si bipolar phase and frequency detector IC for clock extraction up to 8 Gb/s," in IEEE Journal of Solid-State Circuits, vol. 27, no. 12, pp. 1747-1751, Dec. 1992, doi: 10.1109/4.173101. 
+	\item [park2008] Park, Hyun \& Kim, Kang \& Lim, Sang-Kyu \& Ko, Jesoo. (2008). "A 40 Gb/s Clock and Data Recovery Module with Improved Phase-Locked Loop Circuits". Etri Journal - ETRI J. 30. 275-281. 10.4218/etrij.08.1107.0043.
+	\item [pantoli2016] L. Pantoli, L. N. Di Muccio, G. Leuzzi, A. Barigelli and F. Vitulli, "Wideband high-linearity low-phase-noise VCO for space communication systems," 2016 11th European Microwave Integrated Circuits Conference (EuMIC), London, 2016, pp. 205-208, doi: 10.1109/EuMIC.2016.7777526.
+	\item [florian2017] C. Florian, S. D'Angelo, D. Resca and F. Scappaviva, "A chip set of low phase noise MMIC VCOs at C, X and Ku band in InGaP-GaAs HBT technology for satellite telecommunications," 2017 IEEE MTT-S International Microwave Symposium (IMS), Honololu, HI, 2017, pp. 1148-1151, doi: 10.1109/ MWSYM.2017.8058802.
+	\item [hyvert2015] J. Hyvert, D. Cordeau, J. Paillot, P. Philippe and B. Fahs, "A new class-C very low phase-noise Ku-band VCO in 0.25 µm SiGe:C BiCMOS technology," 2015 IEEE MTT-S International Microwave Symposium, Phoenix, AZ, 2015, pp. 1-4, doi: 10.1109/MWSYM.2015.7166964.
+	\item [hyvert2016] J. Hyvert, D. Cordeau, J. Paillot and P. Philippe, "A very low phase-noise ku-band resistively coupled VCO array in 0.25 $\mu$ m SiGe:C BiCMOS," 2016 46th European Microwave Conference (EuMC), London, 2016, pp. 501-504, doi: 10.1109/EuMC.2016.7824389.
+
+\end{itemize}
+
+
 \newpage
 
 % ==============================================
 % Packaging Technology options and theory
 % ==============================================
 
-\section{Packaging Technology Options}
-
-\begin{itemize}
-	\item Flip Chip
-	\begin{itemize}
-		\item Solder balls on Nickel/Gold finish (time consuming) % time consuming in regards to time added to fabrication
-		\item Heat Spreader (Graphene-based)
-		\item Underfill materials
-		\item Redistribution layers(?)
-	\end{itemize}
-	\item Copper Pillar (flipped die)
-	\begin{itemize}
-		\item 30um min diameter, better thermal conductivity
-		\item More stable (no need for underfill)
-		\item Heat spreader most likely needed
-	\end{itemize}
-	\item Chip on board
-	\begin{itemize}
-		\item Glue chip on PCB cavity (non-conductive glue needed if BSE)
-		\item Only backside cooling available
-		\item Connect with wirebonds
-	\end{itemize}
-	\item Open cavity QFN
-	\begin{itemize}
-		\item Similar to chip on board
-		\item Extra penalty due to higher thermal resistance of package
-	\end{itemize}
-\end{itemize}
-
-On packaging from Elad:
-
-\begin{info}
-	I was asked to give my opinion regarding silicone component packaging.\\
-	Since the size of the component is (on the major axis) 3.5 and down bonds to the ground are required on both sides, you need to verify the distance of the pads of the component from the edge of the die, the closer you can use a smaller ground surface. Assuming that the pads reach the edge, it will be possible to use a ground surface in a package of  4.1 \unit{mm}, depending on the planning design rules of the Assembly house. \\
-	In light of this, I recommend considering using the RJR air cavity 6 x 6 \unit{mm} package and its lid. \\
-	Regarding the glue, since the CTE gap between the component and the packaging is large, I recommend using the glue (I think they thought of this direction) me8456lv, which has a thermal conductivity of around 6W/m \\
-	\href{https://www.rjrtechnologies.com/}{\textbf{rjrtechnologies website}}
-\end{info}
-
-QFN stands for \textbf{Q}uad \textbf{F}lat \textbf{N}o lead.
-
-Number of pins is important for packaging - keep it below 32.
-
-% List of my questions for me?
-% Is this open cavity? What are cavities used for?
-% What about the extra penalty due to higher thermal resistance (thermal conductivity)
-% What is laminate?
-
-
-\begin{figure}[ht!]
-	\centering % try to centre it
-	\includegraphics[width=0.5\linewidth]{Figures/RQFN-4-mm.png}
-	\caption{RQFN packaging example }
-	\label{fig:rqfn-example}
-\end{figure}
-
-\subsection{Flip Chip as a packaging option}
-
-Flip chip, also known as controlled collapse chip connection or its abbreviation, C4, is a method for interconnecting dies such as semiconductor devices, IC chips, integrated passive devices and microelectromechanical systems (MEMS), to external circuitry with solder bumps that have been deposited onto the chip pads. This is in contrast to wire bonding, in which the chip is mounted upright and fine wires are welded onto the chip pads and lead frame contacts to interconnect the chip pads to external circuitry.
+\include{subtex-files/packaging-tech}
 
 % ==============================================
-% PACKAGING House options
+% Test Chiup Architecture
 % ==============================================
-
-\subsection{Packaging house options}
-
-Packaging house options are:
-
-\begin{itemize}
-	\item TAI PRO
-	\begin{itemize}
-		\item \href{https://www.taipro.be/production}{\textbf{Website for Production}}
-	\end{itemize}
-	\item PacTech (IHP has collaboration with them)
-	\begin{itemize}
-		\item \href{https://pactech.com/wafer-level-packaging-services/}{\textbf{Website for Wafer Level Packaging Services}}
-	\end{itemize}
-	\item IZM
-	\begin{itemize}
-		\item \href{https://www.izm.fraunhofer.de/en/abteilungen/wafer-level-system-integration/leistungsangebot/fine-pitch-bumping-for-pixel-detectors.html}{\textbf{Website for Fine Pitch Bumping for Pixel Detectors}}
-		\item \href{https://www.izm.fraunhofer.de/en/abteilungen/wafer-level-system-integration/leistungsangebot/single_chip_bumping.html}{\textbf{Website for Single Chip Bumping}}
-	\end{itemize}
-	\item RJR Technologies
-	\begin{itemize}
-		\item \href{https://www.rjrtechnologies.com/}{\textbf{Website}}
-	\end{itemize}
-\end{itemize}
-
-% Additional option is GP technologies
-
-% Belgium company is for packaging
-
-% California houses
-% QP technologies
-% spectrum semi
-
-\subsection{Packaging terms by AMPLEON}
-
-Packaging is an important element in RF power transistors, influencing both the cost-efficiency and performance of a given device. Since peak powers can vary widely, from as low as 5 W to more than 1 kW, a range of packages is needed to cover every application. The choice of package format (air-cavity or overmolded plastic), often depends on the design requirements, and any \textbf{trade-offs to be made between performance and cost.} \\
-
-\href{https://www.ampleon.com/packages.html}{\textbf{Source for ampleon packaging}}
-
-Types of packaging:
-
-\begin{itemize}
-	\item Air-Cavity Ceramic (ACC)
-	\item Air-Cavity Plastic (ACP)
-	\item Overmolded Plastic (OMP)
-\end{itemize}
-
-\subsection{Definition of terms regarding packaging from RJR technologies}
-
-\begin{itemize}
-	\item PRQFN - stands for RJR's thermally enhanced \textbf{P}ower ai\textbf{R}-cavity \textbf{Q}uad \textbf{F}lat \textbf{N}o-leads package
-	\item Substrate - the base material that holds the circuit and components (chips, wires, and caps) of semiconductor devices
-	\item Coupon - a square panel containing a cluster of substrates
-	\item Strip - a rectangular laminate panel containing 4 in-line coupons
-	\item Laminate - a substrate technology composed of several layers that are pressed/laminated together
-	\item Heatslug - a square or rectangular Cu-coin inserted in the middle of the laminate substrate
-	\item Via hole - a hole drilled from top to bottom of the substrate and is used for connecting the terminals on top to the corresponding soldering pads underneath
-	\item ENEPIG - stands for Electroless Nickel Electroless Palladium Immersion Gold; the die bondable and wire bondable plating on top of Cu-traces in a laminate
-	\item Terminal - metal (Cu) traces that serves as connection of the device into the outside world
-	\item Solder resist - a thin layer of polymer that is usually applied on top of Cu-traces of the laminate substrate for protection against oxidation, and around the soldering pads to prevent solder bridges from forming between closely spaced solder pads
-\end{itemize}
-
-\subsection{Die layout example}
-
-This is an example (estimation) for this PLL project die size and layout:
-
-\begin{figure}[ht!]
-	\centering % try to center it
-	\includegraphics[width=0.5\linewidth]{Figures/die-size-with-pads.png}
-	\caption{Die layout with pads }
-	\label{fig:die-size-with-pads}
-\end{figure}
-
-Also important is the pin count. Absolute minimum is 8 mm x 8 mm.
-
-\begin{figure}[ht!]
-	\centering % try to center it
-	\includegraphics[width=0.5\linewidth]{Figures/powerpoint-toplevel-packaging.png}
-	\caption{Top layout and packaging choice}
-	\label{fig:powerpoint-toplevel-packaging}
-\end{figure}
-
-% \begin{figure}
-% \centering
-% \begin{subfigure}{.5\textwidth}
-% 	\centering
-% 	\includegraphics[width=.4\linewidth]{image1}
-% 	\caption{A subfigure}
-% 	\label{fig:sub1}
-% \end{subfigure}%
-% \begin{subfigure}{.5\textwidth}
-% 	\centering
-% 	\includegraphics[width=.4\linewidth]{image1}
-% 	\caption{A subfigure}
-% 	\label{fig:sub2}
-% \end{subfigure}
-% \caption{A figure with two subfigures}
-% \label{fig:test}
-% \end{figure}
-
-% \begin{figure}
-% \centering
-% \begin{minipage}{.5\textwidth}
-% 	\centering
-% 	\includegraphics[width=.4\linewidth]{image1}
-% 	\captionof{figure}{A figure}
-% 	\label{fig:test1}
-% \end{minipage}%
-% \begin{minipage}{.5\textwidth}
-% 	\centering
-% 	\includegraphics[width=.4\linewidth]{image1}
-% 	\captionof{figure}{Another figure}
-% 	\label{fig:test2}
-% \end{minipage}
-% \end{figure}
 
 \section{Test Chip Architecture}
 
 Removed CMOS VCO design.
 
-\begin{figure}[ht!]
+\begin{figure}[ht!] % from Anthony
 	\centering % try to center it
 	\includegraphics[width=0.5\linewidth]{Figures/test-chip-arch.png}
 	\caption{Test Chip Architecture Block Scheme}
@@ -544,6 +285,60 @@ Removed CMOS VCO design.
 	\item Packaging option
 \end{itemize}
 
+% ==============================================
+% Specification Table
+% ==============================================
+\newpage
+\subsection{PLL overall performance table}
+
+PLL overall performance table:
+
+\begin{table}
+	\centering
+	\begin{tblr}{
+	  row{1}     = {bg = LightCyan},
+	  cell{3}{2} = {r=2}{},
+	  cell{3}{7} = {r=2}{},
+	  cell{5}{2} = {r=2}{},
+	  cell{5}{6} = {r=2}{},
+	  cell{10}{2} = {r=3}{},
+	  cell{10}{6} = {r=3}{},
+	  cell{13}{2} = {r=3}{},
+	  cell{13}{6} = {r=3}{},
+	  cell{17}{2} = {r=4}{},
+	  cell{17}{6} = {r=4}{},
+	  vlines,
+	  hline{1-3,5,7-10,13,16-17,21-23} = {-}{},
+	  hline{4} = {1,3-6}{},
+	  hline{6,11-12,14-15,18-20} = {1,3-5,7}{},
+	}
+	\# & Description                                                 & Min  & Typ         & Max  & Units  & Conditions                                        \\
+	   & Input Frequency                                             & 1    &             & 8    & GHz    & From Reference generator                          \\
+	   & Input Level                                                 &      &             &      & mVppd  & {Accommodating -10..7dBm \\with
+	  external BALUN} \\
+	   &                                                             &      &             &      &        &                                                   \\
+	   & Output Frequency                                            & 1    &             & 8    & GHz    & (range)                                           \\
+	   &                                                             &      &             &      &        & (VCO2 range)                                      \\
+	   & Output Level                                                &      &             &      & mVppd  & TBD – prefer differential                         \\
+	   & Comparison Frequency                                        & 1    &             & 8    & GHz    &                                                   \\
+	   & Loop Bandwidth                                              & 1000 &             & 3000 & kHz    & TBD for given configuration                       \\
+	   & {VCO noise \\(open loop at 7GHz)}                           &      & -133        &      & dBc/Hz & At 1MHz                                           \\
+	   &                                                             &      & -153        &      &        & At 10MHz                                          \\
+	   &                                                             &      &             &      &        & At 100MHz                                         \\
+	   & REF noise (Test at 7GHz)                                    &      &             &      & dBc/Hz & At 1MHz                                           \\
+	   &                                                             &      &             &      &        & At 10MHz                                          \\
+	   &                                                             &      &             &      &        & At 100MHz                                         \\
+	   & Frequency Division Ratio                                    &      & 1,2,3,4,6,8 &      & -      &                                                   \\
+	   & {PLL residual noise\\(Relative to 1GHz,
+	  \\excluding VCO)} &      &             &      & dBc/Hz & At 1kHz                                           \\
+	   &                                                             &      &             &      &        & At 10kHz                                          \\
+	   &                                                             &      &             &      &        & At 100kHz                                         \\
+	   &                                                             &      &             &      &        & At 1MHz                                           \\
+	   & Settling Time                                               &      &             & 40   & usec   & Target                                            \\
+	   & Spurious Rejection                                          & 70   &             &      & dBc    & TBD                                               
+	\end{tblr}
+\end{table}
+
 % how to calculate the eq tank Rpar
 
 % \section{External and internal milestones}
@@ -558,9 +353,10 @@ Removed CMOS VCO design.
 
 % what does fuses not available mean?
 
-%===================================================================================================================================================================================================
+%=======================================================================================================
 % VCO THEORY, DESIGN, RESULTS
-%===================================================================================================================================================================================================
+%=======================================================================================================
+
 \newpage
 
 \include{subtex-files/vco-design-and-theory}
@@ -572,12 +368,18 @@ Removed CMOS VCO design.
 \section{Non VCO parts of PLL}
 %----------------------------------------------------------------------------------------
 
+% non-vco
+%=======================================================================================================
+% PFD is CML. Has prebuffers, charge pump.
+% Should it be characterized near DC like current noise or at higher frequency (att 8 \unit{GHz})
+% this was a question for the PFD+CP noise characteristic
+%=======================================================================================================
 
 \begin{itemize}
 	\item Bandgap PTAT (CTAT?)  % used for
 	\item Digital: State Machines, fuses are not available
 	\item Digital: Register Bank for VCO bands, cores
-	\item DAC, not necessary
+	\item DAC, not necessary, could use external
 	\item PFD + CP
 	\item Passive Differential Loop Filter
 	\item Balun is off chip. Multiplexer is high frequency up to 80 GHz - differential amplifier structure.
@@ -586,6 +388,7 @@ Removed CMOS VCO design.
 
 \subsection{Divider}
 
+% Divider probably ratio 12 is not needed.
 
 \begin{itemize}
 	\item division rations needed : 1/2/3/4/12
@@ -594,7 +397,6 @@ Removed CMOS VCO design.
 
 
 \subsection{PFD} % called "blind spots"
-
 
 PFD topology and blind zone \\
 % Question for Anthony and Anthimos
@@ -610,6 +412,7 @@ Two options are:
     \centering
     \begin{tabular}{|l|l|}
     \hline
+		\rowcolor{LightCyan}
 		option 1 & option 2 \\ \hline
         active & passive \\ \hline
         External OpAmp & Diff Charge Pump \\ \hline
@@ -625,6 +428,7 @@ Passive loop filter is chosen because of better phase noise performance.
     \centering
     \begin{tabular}{|l|p{100mm}|}
     \hline
+		\rowcolor{LightCyan}
         OA Characteristic & Impact/Considerations \\ \hline
         Supply Voltage & The op amp needs to allow the supply range needed for rail-to-rail i/o operation. No obligation to use negative supply rail. \\ \hline
         I/O Common mode range & Output common mode range should allow the VCO to cover the entire tuning range and the input also needs to be rail to rail.* \\ \hline
@@ -647,6 +451,91 @@ Some commercial part examples to look into:
 	\item AD8661 
 \end{itemize}
 
+\subsection{OTA}
+
+Example of specification:
+
+\begin{table}[ht!]
+	\begin{tabular}{|l|l|l|l|l|}
+		\rowcolor{LightCyan}\hline
+		Parameter                        & \multicolumn{3}{l|}{Value}                & Unit\\ \hline
+			                        & Min & Nom & Max              & \\ \hline
+		Supply Voltage $V_{DD}$                 & & 3.3 & & \unit{\volt} \\ \hline
+		Supply Ground   $V_{SS}$                 & & 0 & & \unit{\volt} \\ \hline
+		Supply Variation                 & -5 & & 5     &   \unit{\percent}        \\ \hline
+		Temperature range                & -40 & & +125 & \unit{\degreeCelsius}     \\ \hline
+		Common Mode Input Range          & 0.1 & & 3.2 & \unit{\volt}        \\ \hline
+		Common Mode Output Range         & 1  & & 2.3    &   \unit{\volt}    \\ \hline
+		Gain Bandwidth                   & 30 & &          & \unit{\MHz}\\ \hline
+		Common-mode rejection ratio @BW  & 40 & &          & \unit{\decibel}\\ \hline
+		Power supply rejection ratio @BW & 40  & &        & \unit{\decibel}  \\ \hline
+		Variation of transconductance    & -10 & & +10        & \unit{\percent}     \\ \hline
+		Slew Rate                        & 20 & & &  \unit{\volt\per\micro\siemens}   \\ \hline
+		Input Voltage Offset             & -100& & 100          &  \unit{\micro\volt}  \\ \hline
+		Phase Margin                     & 65 & & &\unit{\decibel}         \\ \hline
+		DC Gain                          & 50 & & &\unit{\decibel}       \\ \hline
+		Current Dissipation              &  & & 1& \unit{\milli\ampere}         \\ \hline
+		Area                             & & & 0.05 & \unit{\milli\metre}     \\ \hline
+		Capacitive load                  & & 1 &  & \unit{\pico\farad}           \\   \hline
+	\end{tabular}
+\end{table}
+
+\subsection{Level Shifters}
+
+Lever shifters are digital circtuits that change the high level of signl. In this case from 3.3 V to 1.2 V and other way around.
+
+\begin{table}[ht!]
+	\centering
+	\begin{tblr}{
+		row{1}     = {bg = DarkCyan, fg = white},
+	  row{2}     = {bg = LightCyan},
+	  cell{1}{3} = {c=3}{},
+	  cell{1}{6} = {c=4}{},
+	  vline{1-4,7} = {1}{},
+	  vline{-} = {2-3,7}{},
+	  vline{2-10} = {4-6,8-12}{},
+	  hline{1-4,7-8} = {-}{},
+	  hline{5-6,9-13} = {2-9}{},
+	}
+						  &                      & Schematic &        &        & Extracted &        &        &      \\
+	Delay times           & \#                   & bcs       & nom    & wcs    & bcs       & nom    & wcs    & Unit \\
+	lvlsh 3p3V to 1p2V    & tq\_1p2\_fall\_s     & 144.5p    & 211p   & 301.8p & 147.1p    & 214.7p & 307p   &  \unit{\s}    \\
+						  & tq\_1p2\_rise\_s     & 322.8p    & 504.4p & 815.2p & 328.3p    & 512.8p & 828p   & s    \\
+						  & tqc\_1p2\_fall\_s    & 285.2p    & 432.6p & 672.9p & 290.2p    & 439.9p & 683p   & s    \\
+						  & tqc\_1p2\_rise\_s    & 94.38p    & 140.7p & 201.6p & 96.26p    & 143.5p & 205.5p & s    \\
+	lvlsh 1p2V to 3p3V    & tq\_3p3\_fall\_s     & 298.3p    & 530.2p & 1.544n & 355.1p    & 642.2p & 1.867n & s    \\
+						  & tq\_3p3\_rise\_s     & 176.9p    & 357.1p & 1.382n & 196.9p    & 413.8p & 1.688n & s    \\
+						  & tqc\_3p3\_fall\_s    & 272.7p    & 472.4p & 1.455n & 315.7p    & 563.3p & 1.786n & s    \\
+						  & tqc\_3p3\_rise\_s    & 202p      & 417.1p & 1.476n & 238.8p    & 501.6p & 1.781n & s    \\
+	Current consumption   & I\_lsh12\_33\_rms\_A & 69.55u    & 89.78u & 121.7u & 75.13u    & 96.94u & 130.7u & A    \\
+	for 100  \unit{\MHz} clock      & I\_lsh33\_12\_rms\_A & 22.01u    & 27.65u & 36.54u & 22.35u    & 28.09u & 37.12u & A    \\
+	80 ps 90\%-10\% input &                      &           &        &        &           &        &        &      
+	\end{tblr}
+\end{table}
+
+Example paper for level shifters 
+\href{http://leda.elfak.ni.ac.rs/publications/pdf/Conferences/2015/Etran/Low-power%20And%20High%20Speed%20High-to-Low%20level%20Shifter.pdf}{[pdf] High2low Level Shifter}
+
+\section{Supply Regulation}
+
+Needed to reduce the number of supplies.
+
+\subsection{LDO - Low Drop Out Regulators}
+
+Is external filter (capacitor) needed?
+
+\subsection{Bandgap}
+
+Are bandgaps always cvt?
+PTAT 
+
+
+\subsection{Ready Bit}
+
+Needs a comparator to check 1.2\unit{V} supply voltage is higer then some level 
+
+% Also interesting idea is to use TIEHIGH, prolly stupid.
+
 \include{subtex-files/spi}
 %----------------------------------------------------------------------------------------
 \section{Commercial Parts}
@@ -655,20 +544,20 @@ Commercial parts used as alternative or to augment the design.
 
 \subsubsection*{LMX2592}
 LMX2592 High Performance, Wideband PLLatinuTM RF Synthesizer With Integrated VCO
-\\
-VCO Phase Noise: –134.5 dBc/Hz at 1-MHz
-\\
-Offset for 6-GHz Output
-\\
-Industry Leading Phase Noise Performance 
-\\
-VCO Phase Noise: –134.5 dBc/Hz at 1-MHz Offset for 6-GHz Output
-\\
-Normalized PLL Noise Floor: –231 dBc/Hz 
-\\
-Normalized PLL Flicker Noise: –126 dBc/Hz – 49-\unit[]{\fs} RMS Jitter (12 kHz to 20 MHz) for 6 GHz Output
-\\
+
+\begin{itemize}
+
+	\item VCO Phase Noise: -134.5 dBc/Hz at 1-\unit{\MHz}
+	\item Offset for 6-\unit{\GHz} Output
+	\item Industry Leading Phase Noise Performance 
+	\item VCO Phase Noise: -134.5 dBc/\unit{\Hz} at 1-\unit{\MHz} Offset for 6-GHz Output
+	\item Normalized PLL Noise Floor: -231 dBc/Hz 
+	\item Normalized PLL Flicker Noise: -126 dBc/Hz - 49-\unit{\fs} RMS Jitter (12 \unit{\kHz} to 20 \unit{\MHz}) for 6 \unit{\GHz} Output
+
+\end{itemize}
+
 Applications: 
+
 \begin{itemize}
 	\item Test and Measurement Equipment
 	\item Defence and RADAR
@@ -682,7 +571,7 @@ Applications:
 
 \subsubsection*{TPS7A8300}
 
-Texas Instruments: TPS7A8300 2-A,6-\unit{\micro\volt} RMS,RF,LDOVoltage Regulator
+Texas Instruments: TPS7A8300 2-\unit{\ampere},6-\unit{\micro\volt} RMS,RF,LDOVoltage Regulator
 
 \begin{figure}[ht!]
 	\includegraphics[width=0.5\linewidth]{Figures/LDO-noise-characteristic.png}
@@ -694,6 +583,18 @@ Texas Instruments: TPS7A8300 2-A,6-\unit{\micro\volt} RMS,RF,LDOVoltage Regulato
 \subsubsection*{HP4352S}
 
 powerful VCO/PLL test system, the HP4352S
+
+\subsection{I/O Baluns}
+
+Presented commercial parts that could be used:
+
+\begin{itemize}
+	\item Minicircuits TCM1-83X
+	\item Marki Microwave BALH-0012SSG
+\end{itemize}
+
+
+
 
 \include{subtex-files/old-project}
 

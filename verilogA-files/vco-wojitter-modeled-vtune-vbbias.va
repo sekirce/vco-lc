@@ -1,0 +1,45 @@
+// check tanh for differential tuning char
+
+'include "disciplines.vams"
+'include "constants.vams"
+
+//
+// Differential quadrature voltage controlled oscillator
+// output is square wave with white accumulating jitter
+//
+module vco(in_tunep, in_tunen, out_p, out_m) ;
+
+parameter real  amplitude = 1.0,
+centre_frequency = 1K,
+gain = 1K ;
+
+parameter real vbbias_min = 1.2 from (0:5);						// input voltage bias that corresponds to minimum amplitude from VSS to VDD
+parameter real vbbias_max = 1.8 from (0:5);						// input voltage bias that corresponds to maximum amplitude from VSS to VDD
+parameter real fmin=6.9G from (0:inf);             				// minimum output frequency
+parameter real fmax=7.1G from (fmin:inf);     					// maximum output frequency
+parameter integer steps_per_cycle=20 ;
+localparam real omegac = 2.0 * 'M_PI * centre_frequency,
+
+omega_gain = 2.0 * 'M_PI * gain ;
+
+electrical in_tunep, in_tunen, out_p, out_m ;
+
+analog
+begin : main
+
+real vin, instantaneousFreq;
+
+vin = V(in_tunep, in_tunen);
+
+V(out_p) <+ amplitude*sin(idt(vin*omega_gain+omegac,0.0)) ;
+V(out_m) <+ -amplitude*sin(idt(vin*omega_gain+omegac,0.0)) ;
+
+
+// Use $bound_step system task to limit time step
+// This is to ensure that sine wave is rendered with
+// adequate detail.
+instantaneousFreq = centre_frequency + gain * vin ;
+$bound_step (1.0 / instantaneousFreq / steps_per_cycle) ;
+
+end
+endmodule
