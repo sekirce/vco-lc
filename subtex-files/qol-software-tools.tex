@@ -14,6 +14,8 @@ Quality of life regarding LaTex for this document, commercial/proprietary EDA so
 
 
 \subsubsection{Colored rows and columns}
+\href{https://www.latex-tables.com/}{Generating latex tables}
+
 
 \href{https://tex.stackexchange.com/questions/94799/how-do-i-color-table-columns}{Coloring inside of table}
 
@@ -139,6 +141,7 @@ Example:
 
 \begin{verbatim}
 	myFont = "Roboto Mono Medium,14,-1,5,75,0,0,0,0,0"
+	myFont12 = "Roboto Mono Medium,12,-1,5,75,0,0,0,0,0"
 	envSetVal("viva.horizMarker" "font" 'string myFont)
 	envSetVal("viva.referenceLineMarker" "font" 'string myFont)
 	envSetVal("viva.vertMarker" "font" 'string myFont)
@@ -150,11 +153,15 @@ Example:
 	envSetVal("viva.interceptMarker" "font" 'string myFont)
 	envSetVal("viva.multiDeltaMarker" "font" 'string myFont)
 	envSetVal("viva.transEdgeMarker" "font" 'string myFont)
-
+	envSetVal("viva.axis" "font" 'string myFont12)
 	envSetVal("viva.trace" "lineThickness" 'string "thick")
 	envSetVal("viva.trace" "lineStyle" 'string "solid")
 	envSetVal("viva.trace" "symbolsOn" 'string "true")
 	envSetVal("viva.trace" "symbolStyle" 'string "Diamond")
+	envSetVal("viva.vertMarker" "sigDigitsMode" 'string "Manual")
+	envSetVal("viva.vertMarker" "significantDigits" 'string "3")
+	envSetVal("viva.pointMarker" "sigDigitsMode" 'string "Manual")
+	envSetVal("viva.pointMarker" "significantDigits" 'string "3")
 \end{verbatim}
 
 %----------------------------------------------------------------------------------------
@@ -268,6 +275,12 @@ Curve fitting for Vtune input range (0 ; 3.2) to calculate polynomial:
 \begin{verbatim}
 {{0, -2.7}, {0.5, -2.4}, {1.1, -1.8}, {1.6, 0 }, {2.1, 1.8}, {2.7, 2.4}, {3.2, 2.7 }}		
 \end{verbatim}
+{{1.176471, 0}, {1.215686,12.578117500000001}, {1.254902, 20.840017142857143}, {1.372549, 25.7271975}, {1.490198, 28.51506375}, {1.72549, 29.55799375}, {1.843137, 28.6581575}, {2.039216, 25.558204285714286}, {2.156863, 21.808860000000003}, {2.196078, 25.431385000000002}, {2.235294, 29.525637142857146}}
+		
+
+{{1.176471, 0}, {1.215686,12.578117500000001}, {1.254902, 20.840017142857143}, {1.372549, 25.7271975}, {1.490198, 28.51506375}, {1.72549, 29.55799375}}
+	
+{{1.176471, 0}, {1.215686,12.578117500000001}, {1.254902, 20.840017142857143}, {1.372549, 25.7271975}, {1.490198, 28.51506375}, {1.72549, 29.55799375}, {1.843137, 28.6581575}, {2.039216, 25.558204285714286}, {2.156863, 21.808860000000003}}
 
 \subsubsection*{VerilogA parse code}
 

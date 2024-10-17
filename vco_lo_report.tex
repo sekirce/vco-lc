@@ -104,7 +104,7 @@ Planning VCO timeframe per core:
 
 % \href{https://gf.com/gf-partner-community/fdx-network/}{GF22FDX platform (built on 22 nm FD-SOI process technology)}
 
-% FD-SOI == Fully Depleted - Sillicon on Insulator
+% FD-SOI == Fully Depleted - Silicone on Insulator
 
 % https://gf.com/gf-partner-community/fdx-network/
 
@@ -451,6 +451,19 @@ Some commercial part examples to look into:
 	\item AD8661 
 \end{itemize}
 
+
+\subsection{Simulating Closed Loop Filter}
+
+ideal VCO model without noise to extract only noise coming from PFD and CP
+CP\_CTRL = 15 0
+CP\_CTRL = 15 0
+CP\_CORE\_PD\_R = 3 0 1 3 
+CP\_VPRE\_PD\_F = 0
+
+input is 7 GHz 
+time elapsed CPU 5h 18m 57s for tstab 
+time elapsed CPU 5h 29m 39s for tsab + pss + pnoise
+
 \subsection{OTA}
 
 Example of specification:
@@ -513,6 +526,72 @@ Lever shifters are digital circtuits that change the high level of signl. In thi
 	\end{tblr}
 \end{table}
 
+\begin{table}[ht!]
+\centering
+\begin{tblr}{
+	row{1}     = {bg = DarkCyan, fg = white},
+	row{2}     = {bg = LightCyan},
+	cell{7}{5} = {bg = red, fg = white},
+	cell{8}{8} = {bg = red, fg = white},
+  cell{1}{3} = {c=3}{},
+  cell{1}{6} = {c=3}{},
+  vline{1-4,7} = {1}{},
+  vline{-} = {2-3,7}{},
+  vline{2-9} = {4-6,8-10}{},
+  vline{1-6} = {11-12}{},
+  vline{2-3,6-9} = {13-14}{},
+  hline{1} = {1,3-8}{},
+  hline{2-4,7-8,11,13} = {-}{},
+  hline{5-6,9-10} = {2-8}{},
+  hline{12} = {1-5}{},
+  hline{14-15} = {2,6-8}{},
+}
+Delay times           &                      & Schematic &        &        & Schematic - update &        &        \\
+DUT                   & \#                   & bcs       & nom    & wcs    & bcs                & nom    & wcs    \\
+lvlsh 3.3V to 1.2V    & tq\_1p2\_fall\_s     & 144.5p    & 211p   & 301.8p & 142.3p             & 204.8p & 295.4p \\
+                      & tq\_1p2\_rise\_s     & 322.8p    & 504.4p & 815.2p & 295.1p             & 461.2p & 737.6p \\
+                      & tqc\_1p2\_fall\_s    & 285.2p    & 432.6p & 672.9p & 251.9p             & 391.8p & 618.5p \\
+                      & tqc\_1p2\_rise\_s    & 94.38p    & 140.7p & 201.6p & 97.35p             & 134.9p & 181.2p \\
+lvlsh 1.2V to 3.3V    & tq\_3p3\_fall\_s     & 298.3p    & 530.2p & 1.544n & 305.8p             & 567.3p & 1.737n \\
+                      & tq\_3p3\_rise\_s     & 176.9p    & 357.1p & 1.382n & 390p               & 674.6p & 1.802n \\
+                      & tqc\_3p3\_fall\_s    & 272.7p    & 472.4p & 1.455n & 248.2p             & 485.9p & 1.628n \\
+                      & tqc\_3p3\_rise\_s    & 202p      & 417.1p & 1.476n & 321.7p             & 576.5p & 1.684n \\
+for 100MHz clock      & I\_lsh12\_33\_rms\_A & 69.55u    & 89.78u & 121.7u &                    &        &        \\
+80 ps 90\%-10\% input & I\_lsh33\_12\_rms\_A & 22.01u    & 27.65u & 36.54u &                    &        &        \\
+                      & together IVDD 3.3V   &           &        &        & 20.15u             & 26.21u & 34.94u \\
+                      & together IVDD 1.2V   &           &        &        & 106.6u             & 136.6u & 184.9u 
+\end{tblr}
+\end{table}
+% \usepackage{tabularray}
+\begin{table}
+	\centering
+	\begin{tblr}{
+	  width = \linewidth,
+	  colspec = {Q[662]Q[169]Q[52]Q[52]},
+	  cell{1}{1} = {c=2}{0.831\linewidth},
+	  cell{1}{3} = {c=2}{0.104\linewidth},
+	  cell{2}{2} = {c=3}{0.273\linewidth},
+	  vline{1-2,4} = {1}{},
+	  vline{1-3} = {2}{},
+	  vline{-} = {3-7}{},
+	  hline{1-8} = {-}{},
+	}
+	Inputs                                                          &               & Outputs &     \\
+	1.2 V domain                                                    & 3.3 V domain  &         &     \\
+	I                                                               & vdd1V2\_ready & Q       & Qc  \\
+	0                                                               & 0             & 0       & 1   \\
+	1                                                               & 0             & 0       & 1   \\
+	0                                                               & 1             & 0       & 1   \\
+	1                                                               & 1             & 1       & 0   \\
+	case that supply is not ready, but vdd1V2\_ready bit says it is &               &         &     \\
+	0                                                               & 1             & 0/1     & 1/0 \\
+	1                                                               & 1             & 0/1     & 1/0 \\
+	outputs are undefined but forced to be complementary            &               &         &     
+	\end{tblr}
+	\end{table}
+
+
+
 Example paper for level shifters 
 \href{http://leda.elfak.ni.ac.rs/publications/pdf/Conferences/2015/Etran/Low-power%20And%20High%20Speed%20High-to-Low%20level%20Shifter.pdf}{[pdf] High2low Level Shifter}
 
@@ -524,17 +603,61 @@ Needed to reduce the number of supplies.
 
 Is external filter (capacitor) needed?
 
-\subsection{Bandgap}
+\subsection{POR - Power on Reset}
+
+SPI module requires a power-on reset (POR) input signal in order to have predictable values in the registers after power is stabilized. We didn't agree if we will get 1.2V supply from the external pad or from the internal source (LDO regulator). So we want to present our view on this topic.
+
+In the 1st option, we assume that we only get a 3.3V power rail from the outside the chip. So, we have to generate 1.2V supply using an LDO regulator that provides the POR signal to the digital part: 
+
+\begin{figure}[ht!] % from Rustam
+	\centering % try to center it
+	\includegraphics[width=0.5\linewidth]{Figures/por-option1.png}
+	\caption{Power on Reset option 1}
+	\label{fig:por-option1}
+\end{figure}
+ 
+
+In the 2nd option, we assume that we get both 1.2V and 3.3V power rails from outside the chip. So we should only have a POR circuit which should monitor the 1.2V rail and provide the POR signal to the digital part. 
+
+\begin{figure}[ht!] % from Rustam
+	\centering % try to center it
+	\includegraphics[width=0.5\linewidth]{Figures/por-option2.png}
+	\caption{Power on Reset option 2}
+	\label{fig:por-option2}
+\end{figure}
+
+In the 3rd option, we assume that we get both 1.2V and 3.3V power rails from outside the chip. But we are also generating 1.2V supply using an LDO regulator that provides the POR signal to the digital part. We consider external 1.2V power rail to be spare. So we have to add some LDO enable pad to switch between external and internal supply for 1.2V rail.
+
+\begin{figure}[ht!] % from Rustam
+	\centering % try to center it
+	\includegraphics[width=0.5\linewidth]{Figures/por-option3.png}
+	\caption{Power on Reset option 3}
+	\label{fig:por-option3}
+\end{figure}
+
+In all three cases, the POR signal should be '1' when the 1.2V power rail is stable, and it should be '0' when the 1.2V power rail is not stable.
+
+\begin{figure}[ht!] % from Anthimos
+	\centering % try to center it
+	\includegraphics[width=0.5\linewidth]{Figures/POR-sch.png}
+	\caption{Power on Reset - schematic}
+	\label{fig:por-sch}
+\end{figure}
+
+
+\subsubsection{Ready Bit or Power Reset Signal}
+
+Needs a comparator to check 1.2\unit{V} supply voltage is higer then some level 
+
+or POR reset signal
+
+\subsection{Bandgap Reference}
 
 Are bandgaps always cvt?
 PTAT 
 
 
-\subsection{Ready Bit}
-
-Needs a comparator to check 1.2\unit{V} supply voltage is higer then some level 
-
-% Also interesting idea is to use TIEHIGH, prolly stupid.
+% Also interesting idea is to use TIEHIGH, prolly stupid idea.
 
 \include{subtex-files/spi}
 %----------------------------------------------------------------------------------------
@@ -593,7 +716,8 @@ Presented commercial parts that could be used:
 	\item Marki Microwave BALH-0012SSG
 \end{itemize}
 
-
+Voltage Ratio 1:1: The differential impedance is 100 ohms because the differential side sees twice the impedance due to the combined effect of both sides. \\
+Impedance Ratio 1:1: The differential impedance is 50 ohms because the impedance is directly transferred without modification.
 
 
 \include{subtex-files/old-project}
